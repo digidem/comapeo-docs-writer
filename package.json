@@ -1,0 +1,24 @@
+{
+  "name": "comapeo-docs-writer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint:md": "markdownlint \"**/*.md\" --ignore node_modules --ignore dist",
+    "docs:build": "node scripts/build-docs.js",
+    "docs:serve": "node scripts/serve-docs.js",
+    "docs": "npm run docs:build && npm run docs:serve",
+    "docs:open": "xdg-open http://localhost:4000 || open http://localhost:4000 || start http://localhost:4000"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@openai/codex": "^0.34.0"
+  },
+  "devDependencies": {
+    "markdownlint-cli": "^0.45.0"
+  }
+}

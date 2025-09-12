@@ -1,0 +1,1 @@
+Map view centered on the Amazon (near Terra Santa and Juruti) with the large orange plus button to create a new observation, GPS accuracy indicator, scale bar, and recenter control. Project header: “My Solo Project.”

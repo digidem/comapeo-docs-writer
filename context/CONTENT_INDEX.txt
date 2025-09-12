@@ -1,0 +1,62 @@
+﻿Contents
+Preparing to Use CoMapeo
+1. Understanding CoMapeo’s Core Concepts and Functions
+2. Gathering the Right Equipment for CoMapeo
+3. Organizing Key Materials for Projects
+4. Mapping with Collaborators
+5. Installing & Uninstalling CoMapeo
+6. Setting up a Device & Maintaining It
+7. Mapping On Your Own & Next Steps (Leaving, Adding Collaborator, Adding Projects, Sharing Out)
+
+
+Gathering Observations
+1. Creating a New Observation
+2. Creating a New Track
+3. Adding Audio Recording to Observations [COMING SOON]
+
+
+Reviewing Observations
+1. Managing the Observations List
+2. Reviewing an Observation — Details, GPS Info, and Photo Info
+3. Sharing Outside Your Project
+
+
+Managing Projects
+1. Creating a New Project
+2. Adjusting Categories Set
+3. Inviting Collaborators
+4. Managing a Team
+5. Managing Multiple Projects [COMING SOON]
+
+
+Managing Data & Privacy
+1. Adjusting Data Sharing & Privacy
+6. Working with an App Passcode
+
+
+Exchanging Observations
+1. Understanding How Exchange Works
+2. Using a Remote Archive
+
+
+Sharing Observations Outside of CoMapeo
+
+
+
+
+Ending a Project
+
+
+
+
+Troubleshooting
+
+
+
+
+Glossary
+
+
+
+
+Miscellaneous
