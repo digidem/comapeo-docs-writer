@@ -143,7 +143,7 @@ Notes from María and Aldo kick off meeting:
 - Source of truth is the `context/` folder. Do not introduce information from memory or external sources.
 - Always start from the quickstart index: `context/comapeo_support_materials/quickstart_guides/INDEX.md` to locate relevant materials.
 - Treat `context/comapeo_support_materials/mapeo_docs/` as legacy (old Mapeo). Never use its technical/app‑specific instructions. Only reuse high‑level, non‑app context if strictly necessary.
-- At the end of each draft/section, add a Sources line listing exact file paths used. Separate multiple paths with semicolons.
+- Add the final `Sources:` line only in `referenced.md` (not in `index.md`), listing exact file paths used. Separate multiple paths with semicolons.
 - If a needed detail is missing in `context/`, add a clear TODO instead of inferring.
 
 Examples

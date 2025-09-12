@@ -15,11 +15,10 @@ Date started: <!-- YYYY-MM-DD -->
 - <!-- brief, link to context file/section if helpful -->
 
 ## Sources consulted (context only)
-- <!-- list paths used during drafting; final draft must include Sources line -->
+- <!-- list paths used during drafting; referenced.md must include a final Sources line; index.md must not include it -->
 
 ## Next steps
 - [ ] Draft section
-- [ ] Add Sources line with exact paths
+- [ ] Add Sources line to referenced.md with exact paths (ensure index.md has none)
 - [ ] Run `context/AGENT_CONTENT_CHECKLIST.md`
 - [ ] Move final to `./content/` with snake_case naming
-

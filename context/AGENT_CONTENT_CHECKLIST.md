@@ -5,7 +5,7 @@ Use this checklist after creating or updating any content section. Do not skip i
 - [ ] Style guide compliance: Follows `context/STYLE_GUIDE.md` (voice, clarity, brevity, structure guidance).
 - [ ] Tone match: Matches the tone and writing style in `context/templates/SECTION.template.md` (imperative, action‑oriented, concise).
 - [ ] Structure match: Mirrors `SECTION.template.md` structure (Title, Hero image, “This chapter will…/Table of contents”, clear subtitles, step lists, troubleshooting/known issues as needed).
-- [ ] Sources present: Adds a `Sources:` line with exact file paths from `context/` used (e.g., `Sources: context/.../multi_project/index.md; context/.../security_features/index.md`).
+- [ ] Sources present in referenced.md only: `referenced.md` adds a `Sources:` line with exact file paths from `context/` used (e.g., `Sources: context/.../multi_project/index.md; context/.../security_features/index.md`). Confirm `index.md` has no `Sources` section.
 - [ ] Referenced version: A `referenced.md` exists alongside `index.md` with the same content and inline `[Source: context/…]` annotations per claim or grouped bullet.
 - [ ] Start from index: Located materials via `context/comapeo_support_materials/quickstart_guides/INDEX.md`.
 - [ ] Legacy docs caution: Did NOT use technical/app‑specific content from `context/comapeo_support_materials/mapeo_docs/` (legacy). Only high‑level non‑app context if necessary.

@@ -45,7 +45,7 @@
 - Use `context/` as the single source of truth for all content. Do not introduce information from memory or external sources.
 - Always consult `context/comapeo_support_materials/quickstart_guides/INDEX.md` to locate relevant quickstart materials before drafting.
 - The folder `context/comapeo_support_materials/mapeo_docs/` contains documentation from the old Mapeo platform; never rely on its technical/app‑specific instructions. Only reuse high‑level, non‑app‑specific background/context from this folder when clearly appropriate.
-- When producing any content (notes, drafts, guides), 100% of claims must be traceable to files under `context/`. Always include an explicit “Sources” line listing the exact file paths used (e.g., `Sources: context/.../multi_project/index.md; context/.../security_features/index.md`).
+- 100% of claims must be traceable to files under `context/`. The explicit “Sources” line belongs only in `referenced.md` (not in `index.md`). In `referenced.md`, include a final `Sources:` line listing the exact file paths used (e.g., `Sources: context/.../multi_project/index.md; context/.../security_features/index.md`).
 - If a required detail is not present in `context/`, surface a clear TODO instead of inferring. Example: `TODO: confirm max audio duration — not found in context/`.
 
 ### Workflow & Deliverables
@@ -53,7 +53,7 @@
 - Content roadmap: the full list of content to produce lives in `context/CONTENT_INDEX.txt`. Use it to plan and prioritize work.
 - Three‑file section structure (required for every section):
   - `index.md` — primary reader‑facing draft for the section.
-  - `referenced.md` — exact content of `index.md` but annotated with inline source references per claim (paths under `context/`).
+  - `referenced.md` — exact content of `index.md` but annotated with inline source references per claim (paths under `context/`) and ending with a final `Sources:` block. Do not add a `Sources` section to `index.md`.
   - `TODO.md` — working notes using `context/templates/TODO.template.md`.
 - Images for every section:
   - Prefer referencing existing assets under `context/comapeo_support_materials/**` using relative links from the section folder.
@@ -64,7 +64,7 @@
   2) Copy `context/templates/TODO.template.md` to `./content/section_name/TODO.md` and fill it.
   3) Draft `index.md` following `context/STYLE_GUIDE.md` and `context/templates/SECTION.template.md` for structure.
   4) Add illustrative images: link existing assets from `context/…` or add placeholders under `./content/section_name/images/`.
-  5) Create `referenced.md` as an exact text copy of `index.md` and add inline `[Source: context/…]` references for each factual claim or list group. Keep a final `Sources:` block at the end.
+  5) Create `referenced.md` as an exact text copy of `index.md` and add inline `[Source: context/…]` references for each factual claim or list group. Keep a final `Sources:` block at the end of `referenced.md`. Do not include a `Sources` section in `index.md`.
   6) Run the checklist at `context/AGENT_CONTENT_CHECKLIST.md` and resolve any TODOs you can with available `context/` sources.
   7) Only then consider the section ready for review.
 - Before marking a section complete, go through the checklist at `context/AGENT_CONTENT_CHECKLIST.md` and ensure every item is satisfied.
