@@ -1,0 +1,1 @@
+CoMapeo mobile – observation list in “My Solo Project.” Shows the Download Observations button, recent items (for example “River” with a thumbnail) and category icons, with bottom navigation for List, Map, Camera and Tracks.

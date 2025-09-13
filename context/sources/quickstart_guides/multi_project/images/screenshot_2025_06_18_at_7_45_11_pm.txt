@@ -1,0 +1,1 @@
+Success screen after creating a project: confirmation that the project is ready to invite devices, with actions “Update Categories Set” and “Invite a Device.”

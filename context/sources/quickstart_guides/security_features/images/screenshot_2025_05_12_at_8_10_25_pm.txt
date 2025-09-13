@@ -1,0 +1,1 @@
+Security feature: “What is App Passcode?” explainer describing the optional 5‑digit passcode to open CoMapeo and the warning that forgotten passcodes cannot be recovered.

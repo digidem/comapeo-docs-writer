@@ -1,0 +1,1 @@
+Observation detail showing the map pin, timestamp, and a description (example: Oil Spill) with attached media. Serves as entry point to view metadata.

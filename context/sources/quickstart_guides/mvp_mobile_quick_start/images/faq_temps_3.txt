@@ -1,0 +1,1 @@
+Help/FAQ graphic illustrating the map screen UI with GPS accuracy pill, central plus button, and bottom navigation (Notes/List, Map, Camera).

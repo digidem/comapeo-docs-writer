@@ -1,0 +1,1 @@
+Exchange screen showing Wi‑Fi network status, device discovery, and “Ready to exchange” with a primary Start button.

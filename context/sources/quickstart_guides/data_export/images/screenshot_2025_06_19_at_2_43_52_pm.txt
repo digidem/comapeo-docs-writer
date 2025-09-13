@@ -1,0 +1,1 @@
+Observation list with the export sheet open. Shows two choices: export “All Observations” (text only as GeoJSON) or “All Observations with Media” (ZIP containing images and audio).

@@ -1,0 +1,1 @@
+Email example of exported photo metadata sent/validated by CoMapeo. Fields: UTM, latitude, longitude, accuracy, altitude, altitude accuracy and speed.

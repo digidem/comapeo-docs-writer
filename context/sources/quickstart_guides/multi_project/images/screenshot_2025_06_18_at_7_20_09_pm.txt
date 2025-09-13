@@ -1,0 +1,1 @@
+Start New Project flow. Left: All Projects list with a “Start New Project” button. Center: intro screen explaining projects are secure and separate. Right: form to enter Project Name with “Keep in mind” notes.

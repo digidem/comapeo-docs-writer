@@ -1,0 +1,1 @@
+Data export dialog opened from the observation list. Options visible: “All Observations” (GeoJSON text only), “All Observations with Media” (images/audio in a .zip) and “Tracks” (GeoJSON). Download button at the bottom.

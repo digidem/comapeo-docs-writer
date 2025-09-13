@@ -1,0 +1,1 @@
+Exchange settings dialog — options to “Exchange Everything” (full size photos + audio) or “Exchange Previews Only” (reduced photos, no audio), with Save/Close.

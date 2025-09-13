@@ -1,0 +1,1 @@
+Project Settings for a solo project showing an “Invite Collaborators” action and the current Project Categories configuration.

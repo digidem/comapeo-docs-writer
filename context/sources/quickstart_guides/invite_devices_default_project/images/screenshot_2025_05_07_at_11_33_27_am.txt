@@ -1,0 +1,1 @@
+“Invite Collaborators” explainer screen summarizing how sharing works: name your project, only invited devices can contribute, and manage contributors in Project Settings.

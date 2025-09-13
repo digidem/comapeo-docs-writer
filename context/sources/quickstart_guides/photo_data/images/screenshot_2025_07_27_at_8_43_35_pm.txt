@@ -1,0 +1,1 @@
+Photo Info — expanded “Validated by CoMapeo” card with details: time difference from observation, distance from observation, and which device attached the photo; followed by date and UTM.

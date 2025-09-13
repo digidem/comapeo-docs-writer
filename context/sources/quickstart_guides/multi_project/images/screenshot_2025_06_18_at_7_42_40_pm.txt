@@ -1,0 +1,1 @@
+Success screen confirming “[New Project Name] now added to All Projects,” with primary actions to start mapping or view the project.

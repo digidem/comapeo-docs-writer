@@ -1,0 +1,1 @@
+Project Settings overview card list: edit project info, manage collaborators (View Team), Remote Archive status (OFF), and Project Categories with “Update Set.”

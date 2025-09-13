@@ -1,0 +1,1 @@
+Exchange screen — “Devices found” with summary text for Exchange everything (full size photos and audio). Modal displays the same options with the selected radio for Exchange Everything.

@@ -1,0 +1,1 @@
+Audio improvements — recording flow. Left: New Observation with Audio/Photo/Details actions; Right: “Now Recording” timer with remaining time indicator.

@@ -1,0 +1,1 @@
+Map view in a solo project with the large orange plus button. This is the starting point before opening the project menu to invite another device.

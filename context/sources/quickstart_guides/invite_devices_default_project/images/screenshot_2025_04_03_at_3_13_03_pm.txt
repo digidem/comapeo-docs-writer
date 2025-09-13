@@ -1,0 +1,1 @@
+Device menu on “Cholla” with the current solo project card (“My Solo Project”) and “View/Invite” actions — entry point for inviting additional devices.

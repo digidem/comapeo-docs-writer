@@ -1,0 +1,1 @@
+Media Manager — Sync Settings options showing “Sync Previews (Photos Only)” vs “Sync Everything” (full size photos, audio, and videos) with note about storage.

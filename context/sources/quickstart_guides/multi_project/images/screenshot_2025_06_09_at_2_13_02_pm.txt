@@ -1,0 +1,1 @@
+All Projects — card list showing the current project and additional projects with their role indicators, plus a button to create a new project.

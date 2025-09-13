@@ -1,0 +1,1 @@
+Tracks improvements — recording controls in map view. Left: Start Tracks button; Right: Stop Tracks state with on‑map timer and distance pill.

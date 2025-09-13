@@ -1,0 +1,1 @@
+Exchange/Sync in progress — “Syncing with 4 out of 6 devices” progress display for a project on a local Wi‑Fi network, with Stop control.

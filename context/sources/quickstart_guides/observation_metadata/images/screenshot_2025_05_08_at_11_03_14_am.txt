@@ -1,0 +1,1 @@
+Observation Metadata — example where data was manually entered. Banner states “This data was manually entered.” Shows manual UTM, latitude and longitude values with share action.

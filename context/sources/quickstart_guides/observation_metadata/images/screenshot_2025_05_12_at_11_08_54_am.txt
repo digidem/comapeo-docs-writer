@@ -1,0 +1,1 @@
+Example of exported observation metadata received by email: includes UTM, latitude, longitude, accuracy, altitude, altitude accuracy, speed, and a “Sent and Validated by CoMapeo” footer.

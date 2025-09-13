@@ -1,0 +1,1 @@
+Observation Metadata — validated shield icon with timestamp and UTM location, followed by fields for latitude, longitude, accuracy, altitude, altitude accuracy, and speed. Share action at bottom.

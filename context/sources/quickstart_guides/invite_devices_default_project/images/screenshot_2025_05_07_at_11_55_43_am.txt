@@ -1,0 +1,1 @@
+Device menu open on “Marco’s Device” with the current project card (“Apple”), showing role (coordinator) and actions: View and Invite.

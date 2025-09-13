@@ -1,0 +1,1 @@
+Photo Info — condensed view listing validation badge, date/time, UTM with accuracy, camera make/model placeholders, and two unique IDs for traceability.

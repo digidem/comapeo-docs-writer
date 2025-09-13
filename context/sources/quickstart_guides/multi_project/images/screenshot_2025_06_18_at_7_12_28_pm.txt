@@ -1,0 +1,1 @@
+Invite Collaborators setup. Left: Project menu showing current project with “View” and “Invite.” Center: “Invite Collaborators” explainer. Right: naming the project with reminders about uniqueness and invites.

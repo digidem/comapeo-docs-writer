@@ -1,0 +1,1 @@
+Joining success screen (left) confirming the device joined the “Apple” project with options to go to Map or Sync; device menu (right) shows the project card with role “participant.”
