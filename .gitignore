@@ -3,6 +3,8 @@ node_modules/
 
 # Build output
 dist/
+*.docx
+*.pptx
 
 # Logs
 npm-debug.log*
@@ -19,3 +21,4 @@ Thumbs.db
 # Misc
 *.local
 *.env
+context/to_delete/
