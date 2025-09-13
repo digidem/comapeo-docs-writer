@@ -2,8 +2,9 @@
 /*
  Build a browsable docs site into dist/:
  - Copies context/ into dist/context
- - Generates dist/index.html with links to all Markdown files
+ - Generates dist/index.html with links to latest version files
  - Generates dist/viewer.html that renders any md via Marked + DOMPurify
+ - Emits dist/versions.json mapping sections to all available versions
 */
 const fs = require('fs');
 const fsp = require('fs/promises');
@@ -64,6 +65,28 @@ function relToRoot(fullPath) {
   return rel.split(path.sep).join('/');
 }
 
+function stripPrefix(seg) {
+  return seg.replace(/^\d{2}_/, '');
+}
+function titleCaseName(seg) {
+  // Convert snake_case to Title Case, fixing CoMapeo and similar tokens
+  const minor = new Set(['a','an','and','as','at','but','by','for','from','in','into','nor','of','on','or','per','the','to','vs','via','with','your','outside']);
+  const base = stripPrefix(seg).replace(/_/g, ' ');
+  const parts = base.split(/\s+/).filter(Boolean).map((w, i) => {
+    const lw = w.toLowerCase();
+    if (i > 0 && minor.has(lw)) return lw;
+    return lw.charAt(0).toUpperCase() + lw.slice(1);
+  });
+  let out = parts.join(' ');
+  out = out.replace(/Comapeo/g, 'CoMapeo');
+  out = out.replace(/CoMapeo s/g, "CoMapeo's");
+  out = out.replace(/ Gps /g, ' GPS ');
+  out = out.replace(/ Id /g, ' ID ');
+  out = out.replace(/ Qr /g, ' QR ');
+  out = out.replace(/Can t/g, "Can't");
+  return out;
+}
+
 function toDisplayName(relPath) {
   const parts = relPath.split('/');
   const filename = parts[parts.length - 1] || '';
@@ -73,8 +96,7 @@ function toDisplayName(relPath) {
   } else {
     base = filename.replace(/\.md$/i, '');
   }
-  const spaced = base.replace(/_/g, ' ');
-  return spaced ? spaced.charAt(0).toUpperCase() + spaced.slice(1) : spaced;
+  return titleCaseName(base);
 }
 
 function makeIndexHtml(items) {
@@ -207,6 +229,39 @@ function makeViewerHtml() {
   + '        footer.innerHTML = links;\n'
   + '      } catch (e) {}\n'
   + '    }\n'
+  + '    var versionsMap = null;\n'
+  + '    function sectionBaseFromPath(p) {\n'
+  + '      try {\n'
+  + '        var parts = (p || "").split("/");\n'
+  + '        var i = parts.indexOf("content");\n'
+  + '        if (i === -1 || parts.length < i + 3) return null;\n'
+  + '        return parts.slice(0, i + 3).join("/");\n'
+  + '      } catch (e) { return null; }\n'
+  + '    }\n'
+  + '    function injectVersionsBar(file) {\n'
+  + '      try {\n'
+  + '        var base = sectionBaseFromPath(file);\n'
+  + '        if (!base || !versionsMap || !versionsMap[base]) return;\n'
+  + '        var info = versionsMap[base];\n'
+  + '        if (!info || !info.versions || info.versions.length <= 1) return;\n'
+  + '        var bar = document.createElement("div");\n'
+  + '        bar.style.margin = "0 0 12px 0";\n'
+  + '        bar.style.padding = "8px 10px";\n'
+  + '        bar.style.background = "#f9fafb";\n'
+  + '        bar.style.border = "1px solid #e5e7eb";\n'
+  + '        bar.style.borderRadius = "8px";\n'
+  + '        var html = "<strong>Versions:</strong> ";\n'
+  + '        info.versions.forEach(function(v, idx){\n'
+  + '          var isCurrent = (v.path === file);\n'
+  + '          var label = v.label;\n'
+  + '          if (isCurrent) html += "<span style=\\"margin-right:8px\\"><em>" + label + "</em></span>";\n'
+  + '          else html += "<a style=\\"margin-right:8px\\" href=\\"viewer.html?file=" + encodeURIComponent(v.path) + "\\">" + label + "</a>";\n'
+  + '        });\n'
+  + '        var content = document.getElementById("content");\n'
+  + '        if (content) content.insertAdjacentElement("afterbegin", bar);\n'
+  + '        bar.innerHTML = html;\n'
+  + '      } catch (e) {}\n'
+  + '    }\n'
   + '    async function load(file) {\n'
   + '      try {\n'
   + '        var absUrl = new URL(file, window.location.href);\n'
@@ -217,6 +272,7 @@ function makeViewerHtml() {
   + '        var html = DOMPurify.sanitize(marked.parse(md));\n'
   + '        currentFile = file;\n'
   + '        document.getElementById(\'content\').innerHTML = html;\n'
+  + '        injectVersionsBar(file);\n'
   + '        updateFooter();\n'
   + '      } catch (e) {\n'
   + '        document.getElementById(\'content\').textContent = e.message;\n'
@@ -234,6 +290,10 @@ function makeViewerHtml() {
   + '        var res = await fetch(filesUrl.href);\n'
   + '        var files = await res.json();\n'
   + '        allFiles = files;\n'
+  + '        try {\n'
+  + '          var vres = await fetch(new URL(\'versions.json\', window.location.href));\n'
+  + '          versionsMap = await vres.json();\n'
+  + '        } catch (e) { versionsMap = null; }\n'
   + '        var sidebar = document.getElementById(\'sidebar\');\n'
   + '        var input = document.createElement(\'input\');\n'
   + '        input.placeholder = \"Filter files…\";\n'
@@ -241,6 +301,20 @@ function makeViewerHtml() {
   + '        sidebar.appendChild(input);\n'
   + '        var list = document.createElement(\'div\');\n'
   + '        sidebar.appendChild(list);\n'
+  + '        function stripPrefix(seg){ return seg.replace(/^\\d{2}_/, ""); }\n'
+  + '        function titleCaseName(seg){\n'
+  + '          var minor = new Set(["a","an","and","as","at","but","by","for","from","in","into","nor","of","on","or","per","the","to","vs","via","with","your","outside"]);\n'
+  + '          var base = stripPrefix(seg).replace(/_/g, " ");\n'
+  + '          var parts = base.split(/\\s+/).filter(Boolean).map(function(w,i){ var lw = w.toLowerCase(); if (i>0 && minor.has(lw)) return lw; return lw.charAt(0).toUpperCase() + lw.slice(1); });\n'
+  + '          var out = parts.join(" ");\n'
+  + '          out = out.replace(/Comapeo/g, "CoMapeo");\n'
+  + '          out = out.replace(/CoMapeo s/g, "CoMapeo\'s");\n'
+  + '          out = out.replace(/ Gps /g, " GPS ");\n'
+  + '          out = out.replace(/ Id /g, " ID ");\n'
+  + '          out = out.replace(/ Qr /g, " QR ");\n'
+  + '          out = out.replace(/Can t/g, "Can\'t");\n'
+  + '          return out;\n'
+  + '        }\n'
   + '        function displayName(p) {\n'
   + '          var parts = (p || \"\").split(\"/\");\n'
   + '          var fname = parts[parts.length - 1] || \"\";\n'
@@ -250,8 +324,7 @@ function makeViewerHtml() {
   + '          } else {\n'
   + '            base = fname.replace(/\\.md$/i, \"\");\n'
   + '          }\n'
-  + '          var spaced = base.replace(/_/g, \" \" );\n'
-  + '          return spaced ? spaced.charAt(0).toUpperCase() + spaced.slice(1) : spaced;\n'
+  + '          return titleCaseName(base);\n'
   + '        }\n'
   + '        function render(items) {\n'
   + '          list.innerHTML = \"\";\n'
@@ -277,6 +350,58 @@ function makeViewerHtml() {
   + '</html>';
 }
 
+function isSectionDirName(name) { return /^\d{2}_.+/.test(name); }
+function isVersionDirName(name) { return /^v\d+$/.test(name); }
+
+async function findLatestAndVersions(contentRoot) {
+  // Discover sections and their versions. Return { latestFiles: [], versionsMap: { sectionPath: { latest, versions: [{label, path}] } } }
+  const result = { latestFiles: [], versionsMap: {} };
+  const topics = await fsp.readdir(contentRoot, { withFileTypes: true });
+  for (const t of topics) {
+    if (!t.isDirectory() || !isSectionDirName(t.name)) continue; // only numbered topics
+    const topicDir = path.join(contentRoot, t.name);
+    const sections = await fsp.readdir(topicDir, { withFileTypes: true });
+    for (const s of sections) {
+      if (!s.isDirectory() || !isSectionDirName(s.name)) continue; // only numbered sections
+      const sectionDir = path.join(topicDir, s.name);
+      const sectionRel = relToRoot(sectionDir);
+      const entries = await fsp.readdir(sectionDir, { withFileTypes: true }).catch(()=>[]);
+      // Collect version directories
+      const versions = entries.filter(e => e.isDirectory() && isVersionDirName(e.name));
+      let versionList = [];
+      for (const v of versions) {
+        const idxPath = path.join(sectionDir, v.name, 'index.md');
+        if (await exists(idxPath)) {
+          versionList.push({ label: v.name, path: relToRoot(idxPath) });
+        }
+      }
+      // If no version folders, fall back to template/template.md as the latest
+      if (versionList.length === 0) {
+        const tpl = path.join(sectionDir, 'template', 'template.md');
+        if (await exists(tpl)) {
+          result.latestFiles.push(relToRoot(tpl));
+          result.versionsMap[sectionRel] = { latest: relToRoot(tpl), versions: [] };
+          continue;
+        }
+        // Also support plain index.md directly in section
+        const idx = path.join(sectionDir, 'index.md');
+        if (await exists(idx)) {
+          result.latestFiles.push(relToRoot(idx));
+          result.versionsMap[sectionRel] = { latest: relToRoot(idx), versions: [] };
+          continue;
+        }
+        continue; // nothing to show
+      }
+      // Sort versions by numeric descending
+      versionList.sort((a, b) => parseInt(b.label.slice(1)) - parseInt(a.label.slice(1)));
+      const latest = versionList[0];
+      result.latestFiles.push(latest.path);
+      result.versionsMap[sectionRel] = { latest: latest.path, versions: versionList };
+    }
+  }
+  return result;
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const allMode = args.includes('--all');
@@ -300,23 +425,29 @@ async function main() {
   }
 
   // Collect md files according to mode
-  let files = [];
+  let relFiles = [];
+  let versionsPayload = {};
   if (allMode) {
+    let files = [];
     if (hasContext) files = files.concat(await collectMarkdownFiles(CONTEXT_DIR));
     if (hasContent) files = files.concat(await collectMarkdownFiles(CONTENT_DIR));
+    relFiles = files.map(relToRoot).sort();
   } else {
-    // Default: only index.md files from ./content
+    // Default: pick latest version per section
     if (hasContent) {
-      const allContentMds = await collectMarkdownFiles(CONTENT_DIR);
-      files = allContentMds.filter((p) => path.basename(p).toLowerCase() === 'index.md');
+      const { latestFiles, versionsMap } = await findLatestAndVersions(CONTENT_DIR);
+      relFiles = latestFiles.sort();
+      versionsPayload = versionsMap;
     }
   }
-  const relFiles = files.map(relToRoot).sort();
 
   // Write index, viewer, and files manifest
   await fsp.writeFile(path.join(DIST_DIR, 'index.html'), makeIndexHtml(relFiles));
   await fsp.writeFile(path.join(DIST_DIR, 'viewer.html'), makeViewerHtml());
   await fsp.writeFile(path.join(DIST_DIR, 'files.json'), JSON.stringify(relFiles, null, 2));
+  if (!allMode) {
+    await fsp.writeFile(path.join(DIST_DIR, 'versions.json'), JSON.stringify(versionsPayload, null, 2));
+  }
 
   const modeLabel = allMode ? 'all markdown (context + content)' : 'content index.md only';
   console.log('Built docs: ' + relFiles.length + ' files (' + modeLabel + ') → dist/');
