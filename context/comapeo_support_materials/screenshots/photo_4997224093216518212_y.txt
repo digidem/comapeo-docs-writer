@@ -1,1 +1,0 @@
-New Observation screen — category “River” in “My Solo Project.” Displays UTM location with accuracy, a title field filled with “The Amazon river,” two attached photos and one 6‑second audio clip, plus quick actions: Details, Photo, Audio.
