@@ -22,13 +22,13 @@ A content authoring workspace for CoMapeo Product Support documentation. Write a
 
 1) Create the section folder under `./content/<section_name>/` (use `snake_case`).
 2) Copy the TODO template: `cp context/templates/TODO.template.md content/<section_name>/TODO.md` and fill it.
-3) Draft `index.md` following `context/STYLE_GUIDE.md` and `context/templates/SECTION.template.md`.
+3) Draft `index.md` following `context/system/STYLE_GUIDE.md` and `context/templates/SECTION.template.md`.
 4) Add images:
    - Prefer existing assets under `context/comapeo_support_materials/**` using relative links from your section.
    - If no image exists, create a placeholder file under `./content/<section_name>/images/placeholder_<topic>.txt` describing what to capture, and reference it with a visible TODO.
 5) Create `referenced.md` as an exact copy of `index.md` and add inline `[Source: context/…]` annotations per claim or grouped list.
 6) Add a final `Sources:` block at the end of `referenced.md` listing every `context/` file used. Do not add a `Sources` section to `index.md`.
-7) Run the checklist in `context/AGENT_CONTENT_CHECKLIST.md` and fix any issues (links, images, style, naming).
+7) Run the checklist in `context/system/AGENT_CONTENT_CHECKLIST.md` and fix any issues (links, images, style, naming).
 
 ### How Codex behaves (rules and guardrails)
 
@@ -36,16 +36,16 @@ A content authoring workspace for CoMapeo Product Support documentation. Write a
 - Starts from quickstart index to locate materials: `context/comapeo_support_materials/quickstart_guides/INDEX.md`.
 - Treats `context/comapeo_support_materials/mapeo_docs/` as legacy (only high‑level background, no app‑specific instructions).
 - Enforces structure and naming: three files per section (`index.md`, `referenced.md`, `TODO.md`), `snake_case` folders, compact headings.
-- Follows `context/STYLE_GUIDE.md` tone and `context/templates/SECTION.template.md` structure, so content reads consistently.
+- Follows `context/system/STYLE_GUIDE.md` tone and `context/templates/SECTION.template.md` structure, so content reads consistently.
 - Manages images per repo rules: prefer existing assets with relative links; otherwise creates precise placeholders under `content/<section>/images/`.
 - Adds inline `[Source: context/…]` annotations in `referenced.md` and a final `Sources:` block there to make every claim traceable.
-- Uses `context/AGENT_CONTENT_CHECKLIST.md` before marking a section complete.
+- Uses `context/system/AGENT_CONTENT_CHECKLIST.md` before marking a section complete.
 - Obeys `AGENTS.md` for tool usage, minimal diffs, and safe iteration (no destructive changes, no secrets, focused patches).
 
 Reference files:
 - `AGENTS.md`
-- `context/STYLE_GUIDE.md`
-- `context/AGENT_CONTENT_CHECKLIST.md`
+- `context/system/STYLE_GUIDE.md`
+- `context/system/AGENT_CONTENT_CHECKLIST.md`
 - `context/templates/SECTION.template.md`
 - `context/templates/REFERENCED_SECTION.template.md`
 - `context/templates/TODO.template.md`
@@ -67,5 +67,5 @@ Reference files:
 ## Where to Start
 
 - Locate materials via the quickstart index: `context/comapeo_support_materials/quickstart_guides/INDEX.md`.
-- Follow voice, tone, and structure guidance in `context/STYLE_GUIDE.md` and `context/templates/SECTION.template.md`.
+- Follow voice, tone, and structure guidance in `context/system/STYLE_GUIDE.md` and `context/templates/SECTION.template.md`.
 - Check the content roadmap: `context/CONTENT_INDEX.txt` and `context/MATERIALS_INDEX.md`.

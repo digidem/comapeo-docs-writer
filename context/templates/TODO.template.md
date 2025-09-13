@@ -20,5 +20,5 @@ Date started: <!-- YYYY-MM-DD -->
 ## Next steps
 - [ ] Draft section
 - [ ] Add Sources line to referenced.md with exact paths (ensure index.md has none)
-- [ ] Run `context/AGENT_CONTENT_CHECKLIST.md`
+- [ ] Run `context/system/AGENT_CONTENT_CHECKLIST.md`
 - [ ] Move final to `./content/` with snake_case naming

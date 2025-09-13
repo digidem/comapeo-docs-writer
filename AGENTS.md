@@ -17,7 +17,7 @@
 - Markdown with clear headings and compact paragraphs.
 - Filenames/folders: `snake_case`, lowercase, ASCII.
 - Assets under `context/comapeo_support_materials/`; optional image captions `image_name.txt`.
-- JSON: 2‑space indent. Follow `context/STYLE_GUIDE.md`.
+- JSON: 2‑space indent. Follow `context/system/STYLE_GUIDE.md`.
 
 ## Testing Guidelines
 
@@ -34,7 +34,7 @@
 
 ## Agent Role & Tasks
 
-- Most important: strictly follow `context/STYLE_GUIDE.md` for all content.
+- Most important: strictly follow `context/system/STYLE_GUIDE.md` for all content.
 - Analyze: parse and summarize context files.
 - Organize: enforce `snake_case`, tidy folders, add image captions.
 - Create: drafts aligned to style and roadmap.
@@ -62,12 +62,12 @@
 - Process to create/update a section:
   1) Create the section folder under `./content/section_name/` (snake_case).
   2) Copy `context/templates/TODO.template.md` to `./content/section_name/TODO.md` and fill it.
-  3) Draft `index.md` following `context/STYLE_GUIDE.md` and `context/templates/SECTION.template.md` for structure.
+  3) Draft `index.md` following `context/system/STYLE_GUIDE.md` and `context/templates/SECTION.template.md` for structure.
   4) Add illustrative images: link existing assets from `context/…` or add placeholders under `./content/section_name/images/`.
   5) Create `referenced.md` as an exact text copy of `index.md` and add inline `[Source: context/…]` references for each factual claim or list group. Keep a final `Sources:` block at the end of `referenced.md`. Do not include a `Sources` section in `index.md`.
-  6) Run the checklist at `context/AGENT_CONTENT_CHECKLIST.md` and resolve any TODOs you can with available `context/` sources.
+  6) Run the checklist at `context/system/AGENT_CONTENT_CHECKLIST.md` and resolve any TODOs you can with available `context/` sources.
   7) Only then consider the section ready for review.
-- Before marking a section complete, go through the checklist at `context/AGENT_CONTENT_CHECKLIST.md` and ensure every item is satisfied.
+- Before marking a section complete, go through the checklist at `context/system/AGENT_CONTENT_CHECKLIST.md` and ensure every item is satisfied.
 - Finalized content should be placed under the `./content` folder, preserving `snake_case` naming and using relative links to assets in `context/comapeo_support_materials/`.
 - Use `context/templates/SECTION.template.md` when starting a new section to ensure consistent structure and tone. Also see `context/templates/REFERENCED_SECTION.template.md` for the annotated version.
 

@@ -21,7 +21,7 @@
 
 ## Images
 
-![descriptive_alt_text](../../context/comapeo_support_materials/quickstart_guides/<guide>/images/<image>.png)
+![descriptive_alt_text](../../context/sources/quickstart_guides/<guide>/images/<image>.png)
 [If image unavailable, add a placeholder under `./images/placeholder_<name>.txt` and place a TODO in the draft]
 
 ## Notes
