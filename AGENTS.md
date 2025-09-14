@@ -14,6 +14,7 @@ Non‑negotiable Rules
   - Complement with new information strictly from `context/sources/**`.
   - Ensure every new claim follows `context/system/STYLE_GUIDE.md` and passes `context/system/AGENT_CONTENT_CHECKLIST.md`.
   - Keep “Sources:” only in `referenced.md` (never in `index.md`).
+ - When committing, never run `git add -A`; stage only the specific files you modified to keep diffs minimal and focused.
 
 References (do not duplicate rules here)
 - Style & tone: `context/system/STYLE_GUIDE.md`

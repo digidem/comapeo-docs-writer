@@ -4,7 +4,7 @@ Use this as a quick map of where to find authoritative materials under `context/
 
 Folders
 - `quickstart_guides/`
-  - What: Canonical quickstart materials organized by topic (many with their own `index.md` and images/ subfolders).
+  - What: Canonical quickstart materials organized by topic (sub-guides, each with an `index.md` and images/).
   - When to use: First stop for feature- and workflow-level instructions, screenshots, and vocabulary used in current content.
   - How: Start from `context/sources/quickstart_guides/INDEX.md` to locate relevant sub-guides.
   - What: Documentation from the legacy Mapeo platform.
@@ -37,4 +37,3 @@ Recommended lookup order
 
 Citations
 - In `referenced.md`, add inline `[Source: context/…]` for each claim or grouped list and a final `Sources:` block listing every file used.
-
