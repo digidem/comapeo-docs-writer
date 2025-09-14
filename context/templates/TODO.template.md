@@ -1,9 +1,5 @@
 # TODOs for this content task
 
-Section/title: <!-- e.g., Multi Projects -->
-Owner(s): <!-- names/handles -->
-Date started: <!-- YYYY-MM-DD -->
-
 ## Open questions
 - [ ] <!-- question 1 -->
 - [ ] <!-- question 2 -->

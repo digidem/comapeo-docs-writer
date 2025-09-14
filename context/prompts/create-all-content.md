@@ -1,13 +1,13 @@
-# Create All Content From Index
+# Create All Content From Deck Roadmap
 
-- Purpose: Generate all missing items from `context/CONTENT_INDEX.txt` by repeatedly invoking the “Create Next Missing Content” procedure.
+- Purpose: Generate all missing items from the deck roadmap by repeatedly invoking the “Create Next Missing Content” procedure.
 
 ## Scope and Inputs
-- Working directory: project root containing `./content/` and `./context/CONTENT_INDEX.txt`.
-- Index lines represent items (titles, slugs, or explicit filenames). Ignore blank lines and lines starting with `#` or `//`.
+- Working directory: project root containing `./content/` and `./context/content_deck/`.
+- Roadmap: `context/content_deck/INDEX.md` (summaries + folders) or `context/content_deck/MATERIALS_INDEX.md` (order only).
 
 ## Preflight
-- Ensure `./context/CONTENT_INDEX.txt` exists and is readable.
+- Ensure `./context/content_deck/INDEX.md` exists and is readable.
 - Ensure `./content/` exists (create if missing).
 
 ## Optional Stash
@@ -20,7 +20,7 @@
 ## Rules
 - “Call” other prompts by following their instructions precisely (inlining steps is fine).
 - Idempotent after stashing; do not overwrite generated output.
-- Safety: never delete or overwrite files in `../old-content`; do not modify `context/CONTENT_INDEX.txt`.
+- Safety: never delete or overwrite files in `../old-content`; do not modify the deck index.
 
 ## Edge Cases
 - Missing index: abort with a clear error message.
@@ -28,8 +28,8 @@
 - Concurrent changes: if new files appear mid-run, skip on the next check without failing.
 
 ## Acceptance
-- Every item in `context/CONTENT_INDEX.txt` has a corresponding section under `./content/` as defined in `create-next-content.md`.
-- For sections generated during this run, their `TODO.md` has all items checked `[x]` per the `create-next-content.md` acceptance.
+- Every item in `context/content_deck/INDEX.md` has a corresponding section under `./content/` as defined in `create-next-content.md`.
+- For sections generated during this run, do not create `TODO.md` files; use `context/templates/TODO.template.md` as an internal thinking aid only.
 
 ## Reporting
 - Print a concise summary: number of items created, list of created sections, whether stashing occurred, and any items skipped.

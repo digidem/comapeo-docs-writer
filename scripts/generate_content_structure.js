@@ -1,3 +1,8 @@
+/**
+ * NOTE: Deprecated workflow helper.
+ * Summaries now live in context/content_deck/INDEX.md.
+ * This script is not required for current content generation.
+ */
 #!/usr/bin/env node
 /**
  * Generates content folder structure from MATERIALS_INDEX.md, cleans content_deck.md,
@@ -10,6 +15,7 @@ const ROOT = process.cwd();
 const CONTENT_ROOT = path.join(ROOT, 'content');
 const DECK_DIR = path.join(ROOT, 'context', 'content_deck');
 const MATERIALS_INDEX = path.join(DECK_DIR, 'MATERIALS_INDEX.md');
+// Deprecated: summaries now live in context/content_deck/INDEX.md
 const SUMMARY_FILE = path.join(DECK_DIR, 'comapeo_materials_summary.md');
 const DECK_MD = path.join(DECK_DIR, 'content_deck.md');
 const CLEANED_DECK_MD = path.join(DECK_DIR, 'cleaned_content_deck.md');
@@ -74,38 +80,9 @@ for (const line of lines) {
 }
 
 // 2) Parse comapeo_materials_summary.md into a map from title to summary + links
-const summaryRaw = readFileSafe(SUMMARY_FILE);
 const summaryMap = new Map();
-if (summaryRaw) {
-  // Split by bullet points starting with '*   **'
-  const bullets = summaryRaw.split(/\n\s*\*\s+/).filter(Boolean);
-  for (const b of bullets) {
-    const m = b.match(/^\*?\s*\*\*(.*?)\*\*\s*:\s*([\s\S]*)$/) || b.match(/^\*?\s*\*\*(.*?)\*\*\s*—\s*([\s\S]*)$/);
-    let title, body;
-    if (m) {
-      title = m[1].trim();
-      body = m[2].trim();
-    } else {
-      // Fallback: take until first ':' as title
-      const idx = b.indexOf(':');
-      if (idx !== -1) {
-        title = b.slice(0, idx).replace(/^\*?\s*\*\*/,'').replace(/\*\*$/,'').trim();
-        body = b.slice(idx + 1).trim();
-      } else {
-        continue;
-      }
-    }
-    if (!title) continue;
-    // Prefer Notion links only
-    const notionLinks = Array.from(body.matchAll(/\[Notion\]\((https?:\/\/[^)]+)\)/g)).map(m => m[1]);
-    const cleanedBody = body
-      .replace(/\s*\[Notion\]\((https?:\/\/[^)]+)\)/g, '')
-      .replace(/\s*\[Google Drive\]\((https?:\/\/[^)]+)\)/g, '')
-      .replace(/^\*\*\s*/, '')
-      .replace(/\s+/g, ' ')
-      .trim();
-    summaryMap.set(normalizeKey(title), { title, summary: cleanedBody, notionLinks });
-  }
+if (!readFileSafe(SUMMARY_FILE)) {
+  console.warn('[generate_content_structure] Note: comapeo_materials_summary.md not found. Skipping summaries; use context/content_deck/INDEX.md instead.');
 }
 
 // 3) Clean content_deck.md and write cleaned_deck
@@ -198,7 +175,7 @@ function buildIndex() {
         if (scored[0] && scored[0].score > 0) matched = scored[0].v;
       }
       const relPath = path.join('..','..','content', snakeCase(group.title), snakeCase(item.title));
-      if (matched) {
+      if (matched && matched.summary) {
         const uniqueLinks = Array.from(new Set(matched.notionLinks || []));
         const links = uniqueLinks.map(u => `[Notion](${u})`).join(' ');
         const safeSummary = matched.summary.replace(/^\*\*\s*/, '').trim();

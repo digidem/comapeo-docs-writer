@@ -1,117 +1,92 @@
-# Setting up CoMapeo for Projects and Teams
+# CoMapeo Setup Guide (Projects and Teams)
 
-<span style="color:#ffffff">Getting Started  •  </span>  _Download CoMapeo_
+This guide helps you install CoMapeo, prepare a device, and set up a project and team so you can start mapping together.
 
-![](images/setup_guide_0.png)
+## Download CoMapeo
+- Get CoMapeo from the Google Play Store.
+- If Play Store access is unavailable, download the APK and install it directly.
 
-<span style="color:#ffffff">Download CoMapeo from the Google Playstore\.</span>
+![Welcome](images/setup_guide_2.png)
 
-<span style="color:#ffffff">If you don’t have access to the Playstore an \.apk is also available for download and direct installation\.</span>
+## First Launch and Permissions
+- On first launch, CoMapeo requests permissions it needs to function:
+  - Camera (take photos)
+  - Location (record observations)
+- After permissions, you will see a Welcome screen. Tap “Get Started”.
 
-![](images/setup_guide_1.jpg)
+## Metrics and Data Privacy
+- CoMapeo presents metrics it collects; you can opt in or opt out.
+- You can change this later in Settings → Data Privacy.
 
----
+![Metrics and privacy options](images/setup_guide_9.png)
 
-READY FOR REVIEW: Getting Started — Welcome
+## Device Naming
+- Enter a device name. Other devices see this when inviting you to a project, and it appears in the list of project members.
+- After naming the device, tap “Go to Map”.
 
-<span style="color:#ffffff">Getting Started  •  </span>  _Welcome_
+![Device naming](images/setup_guide_12.png)
 
-![](images/setup_guide_2.png)
+## Map Overview
+On the Map view you can:
+- Open Exchange (share with devices on the same project)
+- Check GPS accuracy (in meters)
+- Recenter your location
+- Change background map
+- See the scale bar
+- Create an observation (orange button)
+- Switch between Map, Camera, and Observations list
+- Open the main menu
 
-![](images/setup_guide_3.png)
+## Projects
+A project keeps data consistent and secure across a team. Project settings may include the project name, verified devices, and categories.
 
-<span style="color:#ffffff">When launching CoMapeo the first time\, you will be asked for access to some permissions\.</span>
+### Create a Project
+- Open the main menu → Project → Create
+- Name the project
 
-<span style="color:#ffffff">It will ask for access to camera to take photos</span>
+### Categories (Configuration)
+- Categories in CoMapeo identify and organize what you collect; each category has a label and an icon.
+- CoMapeo includes default categories. Coordinators can import a custom category file (`.COMAPEOCAT`) tailored to project needs.
+- When a Coordinator imports a category file, it is shared with devices that join the project or exchange data.
 
-<span style="color:#ffffff">And location to take observations</span>
+### Project Roles
+- Coordinator: invite devices; manage project details and users; edit and delete data as needed.
+- Participant: create and share observations within a project; cannot manage project settings or users.
 
-![](images/setup_guide_4.jpg)
+### Add Team Members
+- Install CoMapeo and name each device.
+- Connect devices to the same Wi‑Fi network (internet not required; a local hotspot is fine).
+- On a Coordinator device: Project Settings → Your Team → Invite Device.
+- Other devices on the same network appear; invite them as Coordinators or Participants.
+- Invited devices receive an on‑screen invitation (CoMapeo must be open) and can accept to join the project.
 
-![](images/setup_guide_5.jpg)
+## Offline Map (Optional)
+- If working offline, add a custom background map to each device.
+- Steps: Settings → Map Management → Background Map → choose your downloaded map (e.g., `.smp`).
+- After selection, CoMapeo confirms and the map appears in the Map view.
 
-![](images/setup_guide_6.jpg)
+## Collecting Data
+- From Map or Camera, tap the orange “+” button to create an observation, then pick a category.
 
----
+## Observation Details
+- Add a short description.
+- Answer category‑specific detail fields (if present).
+- Add photos.
+- Optionally record audio.
+- Save the observation.
 
-READY FOR REVIEW: Getting Started — Welcome
+## Observations List and Editing
+- The Observations list shows your device’s observations and those exchanged from teammates.
+- Participants can edit observations collected on their own device.
+- Coordinators can edit all observations.
+- For data integrity, GPS coordinates and the timestamp of a saved observation cannot be edited.
 
-<span style="color:#ffffff">Getting Started  •  </span>  _Welcome_
+## Audio Recording
+- Add an audio recording when creating an observation to include context and testimony.
+- Maximum length per recording: 5 minutes (recording saved as an `.mp4`).
 
-![](images/setup_guide_7.png)
-
-<span style="color:#ffffff">Then</span>  <span style="color:#ffffff"> you will see a Welcome screen\.</span>
-
-<span style="color:#ffffff">This screen highlights the benefits of using CoMapeo\.</span>
-
-<span style="color:#ffffff">To proceed\, tap on </span>  <span style="color:#ffffff">“Get Started”</span>
-
-![](images/setup_guide_8.png)
-
----
-
-READY FOR REVIEW: Getting Started — Welcome
-
-<span style="color:#ffffff">Getting Started  •  </span>  _Metrics & Privacy Policy_
-
-![](images/setup_guide_9.png)
-
-<span style="color:#ffffff">The app will present the metrics it collects\.</span>
-
-<span style="color:#ffffff">You can choose to “opt in” or “opt out” which can be changed later via </span>  <span style="color:#ffffff">“Settings > Data Privacy\.”</span>
-
-<span style="color:#ffffff">See Our Privacy Policy in English:</span>  <span style="color:#ffffff">[CoMapeo Data & Privacy](https://www.notion.so/CoMapeo-Data-Privacy-d8f413bbbf374a2092655b89b9ceb2b0?pvs=21)</span>
-
-![](images/setup_guide_10.png)
-
----
-
-IN-PROGRESS: Getting Started — Metrics Consent & Privacy Policy
-
-<span style="color:#ffffff">Getting Started  •  </span>  _Device Naming_
-
-![](images/setup_guide_11.png)
-
-![](images/setup_guide_12.png)
-
-
-
-* <span style="color:#ffffff">You must enter a name for the device\. </span>
-  * <span style="color:#ffffff">Can you change your name? What if two people have the same name on a project?</span>
-* <span style="color:#ffffff">This is the name other devices will see when inviting you to project\.</span>
-* <span style="color:#ffffff">It will also display in the list of project members\.</span>
-* <span style="color:#ffffff">Once you have added a name you can ‘Go to Map’ and start mapping\!</span>
-
-
-![](images/setup_guide_13.jpg)
-
-![](images/setup_guide_14.png)
-
-![](images/setup_guide_15.png)
-
----
-
-READY FOR REVIEW: Getting Started — Device Naming
-
-<span style="color:#ffffff">Getting Started  •  </span>  _Overview_
-
-![](images/setup_guide_16.png)
-
-![](images/setup_guide_17.png)
-
-![](images/setup_guide_18.png)
-
-![](images/setup_guide_19.png)
-
-![](images/setup_guide_20.png)
-
-![](images/setup_guide_21.png)
-
-![](images/setup_guide_22.png)
-
-![](images/setup_guide_23.png)
-
-<span style="color:#ffffff">Welcome</span>
+## Exchanging Data
+- Data exchanges work between devices on the same project. Use Exchange when connected to the same local network or per your project’s setup.
 
 <span style="color:#ffffff">Data & Privacy Policy</span>
 
@@ -713,4 +688,3 @@ READY FOR REVIEW: Getting Started — Overview
 ![](images/setup_guide_121.png)
 
 ![](images/setup_guide_122.png)
-
