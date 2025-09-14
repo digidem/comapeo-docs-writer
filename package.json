@@ -13,8 +13,8 @@
     "update-prompts": "mkdir -p \"$HOME/.codex/prompts\" && cp -a context/prompts/. \"$HOME/.codex/prompts/\"",
     "caption:all": "prompt_content=\"$(cat context/prompts/caption-all-images.md)\" codex --dangerously-bypass-approvals-and-sandbox --full-auto exec \"$prompt_content\"",
     "caption": "prompt_content=\"$(cat context/prompts/caption-image.md)\" codex --dangerously-bypass-approvals-and-sandbox --full-auto exec \"$prompt_content\"",
-    "gen:all": "node scripts/generate_missing_versions.js",
-    "gen:test": "node scripts/generate_missing_versions.js --limit 3",
+    "gen:all": "prompt_content=\"$(cat context/prompts/create-all-content.md)\" codex --dangerously-bypass-approvals-and-sandbox --full-auto exec \"$prompt_content\"",
+    "gen:test": "prompt_content=\"$(cat context/prompts/create-first-three.md)\" codex --dangerously-bypass-approvals-and-sandbox --full-auto exec \"$prompt_content\"",
     "check:links": "node scripts/check_links.js"
   },
   "keywords": [],
