@@ -21,6 +21,7 @@
 - “Call” other prompts by following their instructions precisely (inlining steps is fine).
 - Idempotent after stashing; do not overwrite generated output.
 - Safety: never delete or overwrite files in `../old-content`; do not modify the deck index.
+- Versioning: always create or update `vN/` inside the numbered topic/section folder (do not edit `template/`).
 
 ## Edge Cases
 - Missing index: abort with a clear error message.
@@ -30,6 +31,14 @@
 ## Acceptance
 - Every item in `context/content_deck/INDEX.md` has a corresponding section under `./content/` as defined in `create-next-content.md`.
 - For sections generated during this run, do not create `TODO.md` files; use `context/templates/TODO.template.md` as an internal thinking aid only.
+
+## References
+- Process: `context/system/PROCESS.md`
+- Style: `context/system/STYLE_GUIDE.md`
+- Tone: `context/system/TONE_GUIDE.md`
+- Checklist: `context/system/AGENT_CONTENT_CHECKLIST.md`
+- Templates: `context/templates/INDEX.md`
+- Sources: `context/sources/INDEX.md`
 
 ## Reporting
 - Print a concise summary: number of items created, list of created sections, whether stashing occurred, and any items skipped.

@@ -19,7 +19,7 @@ Validation
 - If the file doesn’t exist or extension is unsupported, abort with a clear message.
 
 Caption Style Guide
-- Be factual, specific, and concise (8–20 words ideal).
+- Be factual, specific, and concise (8–20 words ideal). See also `context/system/TONE_GUIDE.md`.
 - Lead with the subject; avoid “Image of”/“Picture of”.
 - Mention key visual details (colors, setting, composition) when relevant.
 - Use present tense; sentence case; no trailing period for single-sentence captions.
@@ -35,3 +35,6 @@ Procedure
 
 Done Criteria
 - A single sidecar caption file is created for the provided image path, or the command reports a skip if a caption already exists.
+
+References
+- Tone: `context/system/TONE_GUIDE.md`

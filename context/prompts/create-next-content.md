@@ -15,6 +15,7 @@
 - `index.md`: Use `context/templates/SECTION.template.md` and `context/system/STYLE_GUIDE.md`. Substitute `{{title}}`, `{{slug}}`, `{{date}}`.
 - `referenced.md`: Same text as `index.md` plus inline `[Source: context/…]` per claim/list group and a final “Sources:” block with exact file paths.
 - Internal TODOs: Use `context/templates/TODO.template.md` as a thinking aid only; do not create a `TODO.md` file in the section.
+- Versioning: create or increment `vN/` inside the numbered topic/section folder. Do not modify `template/`.
 - Images: Prefer `context/sources/**` via relative links. If none fit, create `images/placeholder_<slug>.txt` describing the needed image and reference it with a TODO.
 
 ## Rules
@@ -36,6 +37,14 @@
 
 ## Acceptance
 - Exactly one new section folder with `index.md` and `referenced.md`.
+
+## References
+- Process: `context/system/PROCESS.md`
+- Style: `context/system/STYLE_GUIDE.md`
+- Tone: `context/system/TONE_GUIDE.md`
+- Checklist: `context/system/AGENT_CONTENT_CHECKLIST.md`
+- Templates: `context/templates/INDEX.md`
+- Sources: `context/sources/INDEX.md`
 - `index.md` follows `context/system/STYLE_GUIDE.md`.
 - `referenced.md` mirrors `index.md` and includes inline sources plus a final “Sources:” block.
 - Images link to `context/sources/**` or a placeholder file exists.

@@ -17,7 +17,7 @@ Sidecar Rules
   - `<image_basename>.caption.txt`
   - `caption.txt` (generic, in the same directory)
 
-Caption Style Guide
+Caption Style Guide (see also `context/system/TONE_GUIDE.md`)
 - Be factual, specific, and concise (ideally 8–20 words).
 - Lead with the subject; avoid “Image of”/“Picture of”.
 - Mention key visual details (colors, setting, composition) when relevant.
@@ -45,3 +45,7 @@ Safety and Idempotency
 
 Done Criteria
 - Every image under `./context/` has either an existing caption or a newly created sidecar `.txt` file.
+
+References
+- Tone: `context/system/TONE_GUIDE.md`
+- Sources: `context/sources/INDEX.md`

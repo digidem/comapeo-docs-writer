@@ -38,6 +38,10 @@ Procedure
 Safety
 - Never delete or modify prior stash folders in `./old-content/`.
 - Do not attempt to merge or deduplicate stashes; each run creates a new folder.
+- Versioned workflow: Only use stashing when you explicitly need a fresh workspace; the preferred workflow is to add new versions under `vN/` and avoid disruptive resets.
 
 Done Criteria
 - All prior content under `./content/` is moved into a new `./old-content/<timestamp>/` folder, and `./content/` is empty (except optional `.gitkeep`).
+
+References
+- Process: `context/system/PROCESS.md`
