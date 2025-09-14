@@ -10,7 +10,13 @@
     "docs:serve": "node scripts/serve-docs.js",
     "docs": "npm run docs:build && npm run docs:serve",
     "docs:open": "xdg-open http://localhost:4000 || open http://localhost:4000 || start http://localhost:4000",
-    "update-prompts": "mkdir -p \"$HOME/.codex/prompts\" && cp -a context/prompts/. \"$HOME/.codex/prompts/\""
+    "update-prompts": "mkdir -p \"$HOME/.codex/prompts\" && cp -a context/prompts/. \"$HOME/.codex/prompts/\"",
+    "codex:prompt:caption-all-images": "prompt_content=\"$(cat context/prompts/caption-all-images.md)\" codex --full-auto exec \"$prompt_content\"",
+    "codex:prompt:caption-image": "prompt_content=\"$(cat context/prompts/caption-image.md)\" codex --full-auto exec \"$prompt_content\"",
+    "codex:prompt:create-all-content": "prompt_content=\"$(cat context/prompts/create-all-content.md)\" codex --full-auto exec \"$prompt_content\"",
+    "codex:prompt:create-next-content": "prompt_content=\"$(cat context/prompts/create-next-content.md)\" codex --full-auto exec \"$prompt_content\"",
+    "codex:prompt:stash-content": "prompt_content=\"$(cat context/prompts/stash-content.md)\" codex --full-auto exec \"$prompt_content\"",
+    "check:links": "node scripts/check_links.js"
   },
   "keywords": [],
   "author": "",
