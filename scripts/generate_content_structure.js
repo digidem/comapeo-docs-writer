@@ -18,7 +18,7 @@ const MATERIALS_INDEX = path.join(DECK_DIR, 'MATERIALS_INDEX.md');
 // Deprecated: summaries now live in context/content_deck/INDEX.md
 const SUMMARY_FILE = path.join(DECK_DIR, 'comapeo_materials_summary.md');
 const DECK_MD = path.join(DECK_DIR, 'content_deck.md');
-const CLEANED_DECK_MD = path.join(DECK_DIR, 'cleaned_content_deck.md');
+const CLEANED_DECK_MD = path.join(DECK_DIR, 'content_deck.md');
 const OUTPUT_INDEX = path.join(DECK_DIR, 'INDEX.md');
 
 function snakeCase(str) {
