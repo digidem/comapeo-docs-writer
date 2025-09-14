@@ -15,6 +15,7 @@
     "caption": "codex --dangerously-bypass-approvals-and-sandbox exec \"$(cat context/prompts/caption-image.md)\"",
     "gen:all": "codex --dangerously-bypass-approvals-and-sandbox exec \"$(cat context/prompts/create-all-content.md)\"",
     "gen:test": "codex --dangerously-bypass-approvals-and-sandbox exec \"$(cat context/prompts/create-first-three.md)\"",
+    "gen:next": "SECTION=\"$SECTION\" codex --dangerously-bypass-approvals-and-sandbox exec \"$(cat context/prompts/create-next-version.md; echo; echo Section: $SECTION)\"",
     "check:links": "node scripts/check_links.js"
   },
   "keywords": [],
