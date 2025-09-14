@@ -54,7 +54,7 @@ Reference files:
 
 - Use only information from `context/`. If a detail is missing, add `TODO:` and do not speculate.
 - File/folder naming: `snake_case`, lowercase, ASCII.
-- Use relative links to assets, for example: `![alt](context/sources/screenshots/photo_example.jpg)` when linking from within the `context/` tree, or relative paths from your section when linking assets in `context/`.
+- Use relative links to assets, for example: `![alt](context/sources/screenshots/photo_4997224093216518211_y.jpg)` when linking from within the `context/` tree, or relative paths from your section when linking assets in `context/`.
 - Treat `context/sources/mapeo_docs/` as legacy: reuse only high‑level, non‑app‑specific background when strictly appropriate.
 
 ## Useful Commands
@@ -64,8 +64,17 @@ Reference files:
 - `npm run docs:open` — open preview URL
 - `npm run lint:md` — run Markdown lint
 
+### Codex (prompt‑driven generation)
+- `npm run gen:test` — Generate first three missing sections (non‑interactive). Uses deck roadmap and sources; in read‑only/never mode, Codex outputs an `apply_patch` you can apply manually.
+- `npm run gen:all` — Generate all missing sections (non‑interactive). Same behavior as above for read‑only/never.
+- `npm run gen:next` — Create next version for a specific section. Provide the section path via env var:
+  - `SECTION="content/01_preparing_to_use_comapeo_mobile/01_understanding_comapeo_s_core_concepts_and_functions" npm run gen:next`
+- `npm run caption:all` — Propose captions for all images under `context/` (writes sidecars if permitted).
+- `npm run caption` — Propose a caption for a single image (expects path in the interactive session or adapted script).
+- `npm run check:links` — Check Markdown links across the repo (skips external links and template examples).
+
 ## Where to Start
 
 - Locate materials via the quickstart index: `context/sources/quickstart_guides/INDEX.md`.
 - Follow voice, tone, and structure guidance in `context/system/STYLE_GUIDE.md` and `context/templates/SECTION.template.md`.
-- Check the content roadmap: `context/CONTENT_INDEX.txt` and `context/MATERIALS_INDEX.md`.
+- Check the content roadmap: `context/content_deck/INDEX.md` (summaries + folders) and `context/content_deck/MATERIALS_INDEX.md` (order only).
