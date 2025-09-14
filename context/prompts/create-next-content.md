@@ -7,7 +7,7 @@
 - Input index: use `context/content_deck/INDEX.md` (preferred) or `MATERIALS_INDEX.md`.
 
 ## Selection
-- Iterate index in order. Pick the first item whose section does not contain `index.md`.
+- Iterate index in order. Pick the first item whose section does not contain any version folder with an `index.md` (e.g., no `v1/index.md`, `v2/index.md`, …).
 - If the line has an extension (`.md|.mdx|.txt|.json|.yaml|.yml`): treat as explicit path. Section folder: `./content/<dirparts>/<base-no-ext>/`.
 - Otherwise: treat as a title. Slugify (lowercase, trim, replace non-alphanumerics with `-`, trim `-`). Section folder: `./content/<slug>/`.
 
