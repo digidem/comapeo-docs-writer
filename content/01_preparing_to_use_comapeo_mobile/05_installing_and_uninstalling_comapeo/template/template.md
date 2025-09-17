@@ -32,10 +32,10 @@ these steps before uninstalling CoMapeo.
   🔗 Go to **Managing a Team**
 ## **Uninstalling CoMapeo**
 ](https://drive.google.com/file/d/1heo-81t9Z9aQAp5vP3sYATVcwp6kAHzk/view?usp=drive_link)
-![](../../../../context/content_deck/images/image25.jpg)
-![](../../../../context/content_deck/images/image68.jpg) — CoMapeo.
-![](../../../../context/content_deck/images/image70.jpg)
-![](../../../../context/content_deck/images/image71.jpg) — homescreen. All the data held within
+![](./images/image25.jpg)
+![](./images/image68.jpg) — CoMapeo.
+![](./images/image70.jpg)
+![](./images/image71.jpg) — homescreen. All the data held within
 CoMapeo has been deleted from your phone.
 # Troubleshooting
 ## **Deleting your app data**

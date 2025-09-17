@@ -1,1 +1,1 @@
-Images are referenced from ../../../../context/content_deck/images.
+Images are referenced locally from ./images/.

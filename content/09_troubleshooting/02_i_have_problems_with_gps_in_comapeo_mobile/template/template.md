@@ -3,13 +3,13 @@ For [Version Data]
 
 To review CoMapeo's Default Category Set within the app itself, use the
 following steps.
-![](../../../../context/content_deck/images/image57.png)
-![](../../../../context/content_deck/images/image29.png)
-![](../../../../context/content_deck/images/image67.png) — corner of each category to find the kinds
+![](./images/image57.png)
+![](./images/image29.png)
+![](./images/image67.png) — corner of each category to find the kinds
 of information you can add using this
-![](../../../../context/content_deck/images/image12.png)
+![](./images/image12.png)
 ### — **Step 3**
-![](../../../../context/content_deck/images/image24.png) — you can explore the ones available at our
+![](./images/image24.png) — you can explore the ones available at our
 [[CoMapeo Category
 Library]
 ](https://www.earthdefenderstoolkit.com/we
@@ -68,7 +68,7 @@ CoMapeo Category Set.
 height="9.40625in"} — https://docs.google.com/spreadsheets/d/
 195Zb0URLP_PP5h4_28mFu33cFem76rLO-es9rj
 ![](./im—ckZ5k/edit?gid=169401870#gid=169401870)
-![image26.png](../../../../context/content_deck/images/image26.png)
+![image26.png](./images/image26.png)
 > We recommend including the name of
 > your project and version in the name
 > file and date, considering you might
@@ -76,7 +76,7 @@ height="9.40625in"} — https://docs.google.com/spreadsheets/d/
 > customizing your categories, and you
 > will want to know which is the most
 > updated file.
-![](../../../../context/content_deck/images/image69.png) — the copy you make of the template
+![](./images/image69.png) — the copy you make of the template
 has **"CoMapeo Tools" on the right
 of the top menu**. This means this
 spreadsheet has the script that
@@ -88,8 +88,8 @@ create a copy for each iteration,
 rather than just editing their
 version, and update the name and
 date fo the copy.
-### ![](../../../../context/content_deck/images/image15.png)
-### ![](../../../../context/content_deck/images/image1.png) — -\> give all permissions requested
+### ![](./images/image15.png)
+### ![](./images/image1.png) — -\> give all permissions requested
 -\> select "Continue".
 ### — 5.  Once you have given permissions, go
 back to the "CoMapeo Tools" menu
@@ -112,23 +112,23 @@ default) to type the name of each
 category. You can change the
 language to the one you are using
 as your default language.
-![](../../../../context/content_deck/images/image10.png) — This means you will choose the
+![](./images/image10.png) — This means you will choose the
 color in which each observation
 Example of thematic colors — will be shown as a point in the
 in the default category — map.
 set:
 > To do this, click on the cells of the
-![](../../../../context/content_deck/images/image29.png) — >
+![](./images/image29.png) — >
 > NOTE: This will not determine the
-![](../../../../context/content_deck/images/image21.png) — Example of icons grouped in thematic
+![](./images/image21.png) — Example of icons grouped in thematic
 colors within the default category set.
-![](../../../../context/content_deck/images/image7.png) - human
+![](./images/image7.png) - human
 ight="2.68163167104112in"} — activity
 Dark red - threats
 Green - plants and trees
 Purple - human made paths or buildings
 ### — **Icons** (COLUMN B)
-![](../../../../context/content_deck/images/image48.png) — configuration file and within the
+![](./images/image48.png) — configuration file and within the
 list of files and folders find the
 GDrive and name it "icons".
 10. In the folder, make sure the
@@ -140,13 +140,13 @@ Copy Link. Copy the link and paste
 it in the Icon column, next to the
 category name that you want it to
 represent.
-### ![](../../../../context/content_deck/images/image33.png) — icon
+### ![](./images/image33.png) — icon
 generator]](http
 ![](./im—s://icons.earthdefenderstoolkit.com/)**
-![image34.png](../../../../context/content_deck/images/image34.png)
+![image34.png](./images/image34.png)
 13. Follow the steps displayed on the
 continue with step 10.
-### ![](../../../../context/content_deck/images/image5.png) — > right image for the right category.
+### ![](./images/image5.png) — > right image for the right category.
 **Color of the icon** (COLUMN D)
 14. When you create an icon using the
 **CoMapeo Icon Generator, you will
@@ -166,7 +166,7 @@ keep record of this color code.
 > is just a convenient place to have it
 > documented.
 ![](./im—**Details**(COLUMNC)
-![image53.png](../../../../context/content_deck/images/image53.png)
+![image53.png](./images/image53.png)
 will select the details that you
 want to add to each category.
 > To add details to the list of
@@ -175,7 +175,7 @@ want to add to each category.
 > reflected on the Details column in
 > the Categories tab.
 ### **.** — **DETAILS TAB**
-![](../../../../context/content_deck/images/image32.png) — category. You can **label** them
+![](./images/image32.png) — category. You can **label** them
 (which works like a title), add a
 **helper text** (that explains what
 that detail field is for or a
@@ -199,7 +199,7 @@ to double check, go to CoMapeo Tools
 any of these.
 .
 ### ! — NOTE: Common errors to watch out for:
-![image64.png](../../../../context/content_deck/images/image64.png)
+![image64.png](./images/image64.png)
 png) — that there are no commas in the labels,
 especially if you have phrases longer
 than 1 or 2 words. Commas indicate to
@@ -220,18 +220,18 @@ columns. You can always go back to the
 "Details" tab and fix typos, mistakes,
 and refresh the spreadsheet.
 ## — 17\. Once its ready go to the top menu
-### ![](../../../../context/content_deck/images/image36.png) — work.
+### ![](./images/image36.png) — work.
 ### ! — 19\. After completing 8 automatic
-![image47.png](../../../../context/content_deck/images/image47.png)
+![image47.png](./images/image47.png)
 png) — be in a zip folder, open it and find it
 ending in comapeocat.
-![](../../../../context/content_deck/images/image46.png)
-### ![](../../../../context/content_deck/images/image66.png) — You can use an email, Google Drive,
+![](./images/image46.png)
+### ![](./images/image66.png) — You can use an email, Google Drive,
 WhatsApp or the tool that works best
 for you to get files to your phone.
-### ![](../../../../context/content_deck/images/image58.png) — Coordinator.
-![](../../../../context/content_deck/images/image18.png)
-### ![](../../../../context/content_deck/images/image20.png)
+### ![](./images/image58.png) — Coordinator.
+![](./images/image18.png)
+### ![](./images/image20.png)
 ### — 23\. Invite people in your team to your
 project, and they will have your
 categories once they join your project.
@@ -241,7 +241,7 @@ Category Files, exchange information
 with them and this will update their
 categories.
 ### ![ — **Translations**
-![image14.png](../../../../context/content_deck/images/image14.png)
+![image14.png](./images/image14.png)
 automatically creates other tabs that
 you will see at the bottom of your
 spreadsheet. There you can see the

@@ -1,13 +1,13 @@
 # I can t Start CoMapeo
 For [Version Data]
 
-# ![](../../../../context/content_deck/images/image74.jpg)
+# ![](./images/image74.jpg)
 .59375in" height="21.3
 33333333333332in"} — S is turned on on your phone. You can usual
 ly find this in the quickfind menu, located
 by pulling down from the top of the screen
 .
-# ![](../../../../context/content_deck/images/image81.jpg)
+# ![](./images/image81.jpg)
 .59375in" height="21.3
 33333333333332in"} — optimize battery life during data collectio
 n use flight mode. If possible bring an ext
@@ -16,7 +16,7 @@ to recharge whilst in the field.
 # Also try and make sure that other ap
 ps are not running in the background, drain
 ing your battery.
-![](../../../../context/content_deck/images/image27.jpg) — notes) don't take up very much space.
+![](./images/image27.jpg) — notes) don't take up very much space.
 However if you start taking lots of
 photographs, or recording audio, these can
 begin to fill up your memory.
@@ -39,13 +39,13 @@ the wrong hands.
 by setting an app passcode: see
 **Working with an App Passcode**
 ## **2. Keep your operating system updated**
-![](../../../../context/content_deck/images/image50.png) — -   **Step 2.** Tap on Software Update
+![](./images/image50.png) — -   **Step 2.** Tap on Software Update
 ## **3. Practice a regular maintenance routine**
-![](../../../../context/content_deck/images/image49.png) — -   **Step 2.** Run a malware scan
+![](./images/image49.png) — -   **Step 2.** Run a malware scan
 -   **Step 3.** Check your storage
 -   **Step 4.** Check you battery usage
 ## **4. Protect your phone against physical damage**
-![](../../../../context/content_deck/images/image23.png) — it, ideally waterproof and
+![](./images/image23.png) — it, ideally waterproof and
 shock-resistant.
 -   **Weather Considerations.** If you are
 working in environments with extreme

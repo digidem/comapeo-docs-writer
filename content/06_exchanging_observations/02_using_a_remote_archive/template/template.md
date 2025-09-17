@@ -77,15 +77,15 @@ application
 Test it out with a dummy project before
 sharing with partners
 # Step 2: Add a Remote Archive
-![](../../../../context/content_deck/images/image83.gif)
+![](./images/image83.gif)
 Go to the project where you\'ll use a **Remote Archive**.
-![](../../../../context/content_deck/images/image13.png) — tapping the **Device Icon**
-![](../../../../context/content_deck/images/image51.png) — tap **View** **Button**
-![](../../../../context/content_deck/images/image55.png) — **Remote Archive \ — OFF** (third module
+![](./images/image13.png) — tapping the **Device Icon**
+![](./images/image51.png) — tap **View** **Button**
+![](./images/image55.png) — **Remote Archive \ — OFF** (third module
 down)\
 and tap **View Details**.
-![](../../../../context/content_deck/images/image52.png) — Remote Archive Button**
-![](../../../../context/content_deck/images/image6.png) — generated **Remote Archive URL**.
+![](./images/image52.png) — Remote Archive Button**
+![](./images/image6.png) — generated **Remote Archive URL**.
 Attention: CoMapeo does not support
 insecure HTTP servers; be sure to remove
 any \`**http:**\` or replace it with
@@ -95,9 +95,9 @@ any \`**http:**\` or replace it with
 \`https://comapeo.example\`
 -   Incorrect ---
 \`http://comapeo.example\`
-![](../../../../context/content_deck/images/image59.png) — entered, tap on the **Save** button to
+![](./images/image59.png) — entered, tap on the **Save** button to
 proceed.
-![](../../../../context/content_deck/images/image4.png) — saved, the Remote Archive screen will
+![](./images/image4.png) — saved, the Remote Archive screen will
 update to **ON**.
 Also, when going back to Project Settings,
 the third module will now display **Remote

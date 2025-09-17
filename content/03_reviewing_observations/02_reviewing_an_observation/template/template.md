@@ -67,10 +67,10 @@ their own goals.
 Observations are the heart of CoMapeo. They allow you to capture data
 about what you see in the field, including text, photos, audios, and
 location.
-![](../../../../context/content_deck/images/image76.jpg)
-![](../../../../context/content_deck/images/image42.jpg)
-![](../../../../context/content_deck/images/image30.jpg)
-![](../../../../context/content_deck/images/image77.jpg)
+![](./images/image76.jpg)
+![](./images/image42.jpg)
+![](./images/image30.jpg)
+![](./images/image77.jpg)
 💡 Tip: You can also add audio recordings to Observations to provide
 context and narratives
 # Tracks
