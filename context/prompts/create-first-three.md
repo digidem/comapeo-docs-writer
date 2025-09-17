@@ -16,6 +16,24 @@
   - `referenced.md`: Same text as `index.md` with inline `[Source: context/…]` per claim/group and a final `Sources:` block.
   - Images: Prefer `context/sources/**` via relative links. If none fit, add `images/placeholder_<name>.txt` and a visible TODO in the draft.
 
+### Fallback when filesystem is read‑only or approvals are disabled
+- If you cannot write to the repository (read‑only FS or approval policy is `never`), do NOT stop.
+- Instead, output a single, valid apply_patch patch with minimal diffs that the user can apply manually. Follow this format exactly:
+
+```
+*** Begin Patch
+*** Add File: content/<NN_topic>/<NN_section>/v1/index.md
+[# Title]
+[Body per SECTION.template.md]
+*** Add File: content/<NN_topic>/<NN_section>/v1/referenced.md
+[# Title]
+[Body matching index.md with [Source: context/…] annotations]
+*** End Patch
+```
+
+- Include up to three new sections in the same patch block.
+- Do not add `TODO.md`.
+
 ## Rules
 - Use only facts from `context/`; if a detail is missing add a visible `TODO:` (do not invent details).
 - Use `context/sources/INDEX.md` to choose folders; start with `quickstart_guides/INDEX.md`, then follow the order in the checklist.
@@ -26,6 +44,10 @@
 - Up to three new section folders with `vN/index.md` and `vN/referenced.md` created.
 - Drafts pass the `context/system/AGENT_CONTENT_CHECKLIST.md`.
 
+If outputting a patch (fallback):
+- The patch applies cleanly and creates the same files.
+
+
 ## References
 - Process: `context/system/PROCESS.md`
 - Style: `context/system/STYLE_GUIDE.md`
@@ -33,4 +55,3 @@
 - Checklist: `context/system/AGENT_CONTENT_CHECKLIST.md`
 - Templates: `context/templates/INDEX.md`
 - Sources: `context/sources/INDEX.md`, `context/content_deck/INDEX.md`
-

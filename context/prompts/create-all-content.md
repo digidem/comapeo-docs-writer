@@ -15,6 +15,7 @@
 
 ## Generation
 - Loop: apply the `create-next-content.md` procedure until no missing items remain.
+ - If you cannot write files (read‑only FS / `never` approvals), output a single apply_patch patch that aggregates the minimal diffs to add all missing sections, following the format documented in `create-first-three.md`.
 - Stop condition: one full pass over the index yields no new files created.
 
 ## Rules
@@ -31,6 +32,7 @@
 ## Acceptance
 - Every item in `context/content_deck/INDEX.md` has a corresponding section under `./content/` as defined in `create-next-content.md`.
 - For sections generated during this run, do not create `TODO.md` files; use `context/templates/TODO.template.md` as an internal thinking aid only.
+ - If a patch was emitted, it applies cleanly and creates the same files.
 
 ## References
 - Process: `context/system/PROCESS.md`

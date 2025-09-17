@@ -16,6 +16,7 @@ Non‑negotiable Rules
   - Keep “Sources:” only in `referenced.md` (never in `index.md`).
 - When committing, never run `git add -A`; stage only the specific files you modified to keep diffs minimal and focused.
  - Content generation is a content creation task, not a coding task. Do not write ad‑hoc scripts or automation to produce drafts; use Codex prompts under `context/prompts/` (e.g., `npm run gen:all`, `npm run gen:test`) to drive creation aligned with PROCESS, templates, and sources.
+ - When the environment is read‑only or approvals are disabled (`never`), output a valid apply_patch patch with minimal diffs so that a maintainer can apply it. Include all file additions/updates required, and keep the patch self‑contained and correct.
  - Keep a human‑in‑the‑loop: validate outputs with `context/system/AGENT_CONTENT_CHECKLIST.md`, and ensure every new claim in `referenced.md` cites `context/` files.
 
 References (do not duplicate rules here)
