@@ -78,12 +78,12 @@ function titleCaseName(seg) {
     return lw.charAt(0).toUpperCase() + lw.slice(1);
   });
   let out = parts.join(' ');
-  out = out.replace(/Comapeo/g, 'CoMapeo');
-  out = out.replace(/CoMapeo s/g, "CoMapeo's");
-  out = out.replace(/ Gps /g, ' GPS ');
-  out = out.replace(/ Id /g, ' ID ');
-  out = out.replace(/ Qr /g, ' QR ');
-  out = out.replace(/Can t/g, "Can't");
+  out = out.replace(/Comapeo/gi, 'CoMapeo');
+  out = out.replace(/CoMapeo\s+[Ss]/g, "CoMapeo's");
+  out = out.replace(/ Gps /gi, ' GPS ');
+  out = out.replace(/ Id /gi, ' ID ');
+  out = out.replace(/ Qr /gi, ' QR ');
+  out = out.replace(/Can t/gi, "Can't");
   return out;
 }
 
@@ -99,14 +99,96 @@ function toDisplayName(relPath) {
   return titleCaseName(base);
 }
 
-function makeIndexHtml(items) {
-  const links = items
-    .sort()
-    .map((p) => {
-      const label = toDisplayName(p);
-      return '<li><a href="viewer.html?file=' + encodeURIComponent(p) + '">' + label + '</a></li>';
-    })
-    .join('\n');
+function makeIndexHtml(items, sections = []) {
+  const hasSections = Array.isArray(sections) && sections.length > 0;
+  function escape(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  if (!hasSections) {
+    const links = items
+      .sort()
+      .map((p) => {
+        const label = toDisplayName(p);
+        return '<li><a href="viewer.html?file=' + encodeURIComponent(p) + '">' + escape(label) + '</a></li>';
+      })
+      .join('\n');
+    return '<!doctype html>\n'
+    + '<html lang="en">\n'
+    + '<head>\n'
+    + '  <meta charset="utf-8" />\n'
+    + '  <meta name="viewport" content="width=device-width, initial-scale=1" />\n'
+    + '  <title>Docs Index</title>\n'
+    + '  <style>\n'
+    + '    html, body { height: 100%; overflow-x: hidden; }\n'
+    + '    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif; margin: 0; }\n'
+    + '    header { padding: 12px 16px; border-bottom: 1px solid #e5e7eb; }\n'
+    + '    main { padding: 16px; max-width: 980px; margin: 0 auto; }\n'
+    + '    input { width: 100%; padding: 8px 10px; margin: 8px 0 16px; }\n'
+    + '    ul { line-height: 1.6; padding-left: 1rem; }\n'
+    + '    li { margin: 2px 0; }\n'
+    + '    .count { color: #6b7280; font-size: 12px; }\n'
+    + '    a { color: #2563eb; text-decoration: none; word-break: break-word; }\n'
+    + '    a:hover { text-decoration: underline; }\n'
+    + '    @media (max-width: 640px) { header { padding: 10px 12px; } main { padding: 12px; } }\n'
+    + '  </style>\n'
+    + '  <script>\n'
+    + '    (function injectFooterCSS(){\n'
+    + '      try {\n'
+    + '        var css = ".footer{margin-top:24px;padding-top:16px;border-top:1px solid #e5e7eb}.footer a.btn{display:inline-block;margin:4px 8px 0 0;padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;color:#111827;background:#f9fafb;text-decoration:none;font-size:14px}.footer a.btn:hover{background:#f3f4f6;border-color:#9ca3af}.footer a.btn:active{background:#e5e7eb}";\n'
+    + '        var s = document.createElement(\'style\'); s.textContent = css; document.head.appendChild(s);\n'
+    + '      } catch(e) {}\n'
+    + '    })();\n'
+    + '    function filterList() {\n'
+    + '      var q = document.getElementById(\'q\').value.toLowerCase();\n'
+    + '      var items = document.querySelectorAll(\'#list li\');\n'
+    + '      var shown = 0;\n'
+    + '      items.forEach(function(li){\n'
+    + '        var text = li.textContent.toLowerCase();\n'
+    + '        var match = text.includes(q);\n'
+    + '        li.style.display = match ? \"\" : \"none\";\n'
+    + '        if (match) shown++;\n'
+    + '      });\n'
+    + '      document.getElementById(\'count\').textContent = shown + \" files\";\n'
+    + '    }\n'
+    + '  </script>\n'
+    + '  </head>\n'
+    + '<body>\n'
+    + '  <header>\n'
+    + '    <h1 style="margin: 0; font-size: 18px;">Docs Index</h1>\n'
+    + '    <div class="count" id="count">' + items.length + ' files</div>\n'
+    + '  </header>\n'
+    + '  <main>\n'
+    + '    <input id="q" type="search" placeholder="Filter files..." oninput="filterList()" />\n'
+    + '    <ul id="list">' + links + '</ul>\n'
+    + '  </main>\n'
+    + '</body>\n'
+    + '</html>';
+  }
+
+  const sectionsMarkup = sections.map((section) => {
+    const topicsMarkup = (section.topics || []).map((topic) => {
+      if (!topic || !topic.latest) return '';
+      const label = escape(topic.label || 'Untitled Topic');
+      const latestLabel = topic.latestLabel ? escape(topic.latestLabel) : '';
+      const latestTag = latestLabel ? '<span class="latest">Latest: ' + latestLabel + '</span>' : '';
+      const href = 'viewer.html?file=' + encodeURIComponent(topic.latest);
+      return '<li><a href="' + href + '">' + label + '</a>' + latestTag + '</li>';
+    }).join('');
+    const sectionLabel = escape(section.label || 'Untitled Section');
+    const count = (section.topics || []).length;
+    const countLabel = count ? '<span class="meta">' + count + ' topic' + (count === 1 ? '' : 's') + '</span>' : '';
+    return '<section class="section">\n'
+      + '  <h2>' + sectionLabel + countLabel + '</h2>\n'
+      + '  <ul>' + topicsMarkup + '</ul>\n'
+      + '</section>';
+  }).join('\n');
+
   return '<!doctype html>\n'
   + '<html lang="en">\n'
   + '<head>\n'
@@ -114,48 +196,34 @@ function makeIndexHtml(items) {
   + '  <meta name="viewport" content="width=device-width, initial-scale=1" />\n'
   + '  <title>Docs Index</title>\n'
   + '  <style>\n'
-  + '    html, body { height: 100%; overflow-x: hidden; }\n'
-  + '    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif; margin: 0; }\n'
-  + '    header { padding: 12px 16px; border-bottom: 1px solid #e5e7eb; }\n'
-  + '    main { padding: 16px; max-width: 980px; margin: 0 auto; }\n'
-  + '    input { width: 100%; padding: 8px 10px; margin: 8px 0 16px; }\n'
-  + '    ul { line-height: 1.6; padding-left: 1rem; }\n'
-  + '    li { margin: 2px 0; }\n'
-  + '    .count { color: #6b7280; font-size: 12px; }\n'
-  + '    a { color: #2563eb; text-decoration: none; word-break: break-word; }\n'
-  + '    a:hover { text-decoration: underline; }\n'
-  + '    @media (max-width: 640px) { header { padding: 10px 12px; } main { padding: 12px; } }\n'
+  + '    :root { color-scheme: light; }\n'
+  + '    html, body { min-height: 100%; }\n'
+  + '    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif; margin: 0; background: #f9fafb; color: #111827; }\n'
+  + '    header { padding: 20px 24px; background: white; border-bottom: 1px solid #e5e7eb; }\n'
+  + '    header h1 { margin: 0; font-size: 22px; }\n'
+  + '    header p { margin: 6px 0 0; color: #6b7280; font-size: 14px; }\n'
+  + '    main { padding: 24px; max-width: 1080px; margin: 0 auto; }\n'
+  + '    .section { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px 20px; margin-bottom: 20px; box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04); }\n'
+  + '    .section h2 { margin: 0 0 12px; font-size: 18px; display: flex; align-items: center; gap: 10px; }\n'
+  + '    .section ul { margin: 0; padding-left: 18px; list-style: disc; }\n'
+  + '    .section li { margin: 4px 0; }\n'
+  + '    .section a { color: #2563eb; text-decoration: none; font-weight: 600; }\n'
+  + '    .section a:hover { text-decoration: underline; }\n'
+  + '    .meta { color: #6b7280; font-size: 13px; font-weight: 500; }\n'
+  + '    .latest { display: inline-block; margin-left: 8px; color: #6b7280; font-size: 12px; font-weight: 500; }\n'
+  + '    footer { margin: 32px 0 0; text-align: center; color: #9ca3af; font-size: 13px; }\n'
+  + '    footer a { color: #6b7280; text-decoration: none; }\n'
+  + '    footer a:hover { text-decoration: underline; }\n'
+  + '    @media (max-width: 720px) { main { padding: 16px; } .section { padding: 16px; } .section h2 { font-size: 16px; } }\n'
   + '  </style>\n'
-  + '  <script>\n'
-  + '    (function injectFooterCSS(){\n'
-  + '      try {\n'
-  + '        var css = ".footer{margin-top:24px;padding-top:16px;border-top:1px solid #e5e7eb}.footer a.btn{display:inline-block;margin:4px 8px 0 0;padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;color:#111827;background:#f9fafb;text-decoration:none;font-size:14px}.footer a.btn:hover{background:#f3f4f6;border-color:#9ca3af}.footer a.btn:active{background:#e5e7eb}";\n'
-  + '        var s = document.createElement(\'style\'); s.textContent = css; document.head.appendChild(s);\n'
-  + '      } catch(e) {}\n'
-  + '    })();\n'
-  + '    function filterList() {\n'
-  + '      var q = document.getElementById(\'q\').value.toLowerCase();\n'
-  + '      var items = document.querySelectorAll(\'#list li\');\n'
-  + '      var shown = 0;\n'
-  + '      items.forEach(function(li){\n'
-  + '        var text = li.textContent.toLowerCase();\n'
-  + '        var match = text.includes(q);\n'
-  + '        li.style.display = match ? \"\" : \"none\";\n'
-  + '        if (match) shown++;\n'
-  + '      });\n'
-  + '      document.getElementById(\'count\').textContent = shown + \" files\";\n'
-  + '    }\n'
-  + '  </script>\n'
-  + '  </head>\n'
+  + '</head>\n'
   + '<body>\n'
   + '  <header>\n'
-  + '    <h1 style="margin: 0; font-size: 18px;">Docs Index</h1>\n'
-  + '    <div class="count" id="count">' + items.length + ' files</div>\n'
+  + '    <h1>CoMapeo Docs</h1>\n'
+  + '    <p>Browse the latest guidance by section. Each topic opens in the viewer with version history links at the top.</p>\n'
   + '  </header>\n'
-  + '  <main>\n'
-  + '    <input id="q" type="search" placeholder="Filter files..." oninput="filterList()" />\n'
-  + '    <ul id="list">' + links + '</ul>\n'
-  + '  </main>\n'
+  + '  <main>' + sectionsMarkup + '</main>\n'
+  + '  <footer>Built with scripts/build-docs.js</footer>\n'
   + '</body>\n'
   + '</html>';
 }
@@ -177,11 +245,15 @@ function makeViewerHtml() {
   + '    .markdown-body { box-sizing: border-box; min-width: 200px; max-width: 980px; margin: 0 auto; padding: 15px; overflow-wrap: anywhere; word-wrap: break-word; }\n'
   + '    .markdown-body img { max-width: 100%; height: auto; max-height: 80vh; display: block; margin: 8px auto; object-fit: contain; }\n'
   + '    .markdown-body pre { max-width: 100%; overflow: auto; }\n'
-  + '    input { width: 100%; padding: 8px 10px; margin: 8px 0 16px; }\n'
   + '    a { color: #2563eb; text-decoration: none; }\n'
   + '    a:hover { text-decoration: underline; }\n'
-  + '    .file { display:block; margin: 4px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }\n'
-  + '    @media (max-width: 900px) { body { grid-template-columns: 1fr; grid-template-rows: auto 1fr; } nav { border-right: none; border-bottom: 1px solid #e5e7eb; } .file { white-space: normal; } }\n'
+  + '    nav h2 { margin: 16px 0 6px; font-size: 16px; line-height: 1.25; color: #111827; }\n'
+  + '    nav h3 { margin: 10px 0 6px; font-size: 14px; font-weight: 600; color: #111827; }\n'
+  + '    .nav-topic-link { color: #1f2937; font-weight: 600; display: inline-block; padding: 2px 0; }\n'
+  + '    .nav-topic-link:hover { text-decoration: underline; }\n'
+  + '    .nav-topic-link.active { color: #111827; font-weight: 700; }\n'
+  + '    .sidebar-empty { color: #6b7280; font-size: 14px; margin: 12px 0; }\n'
+  + '    @media (max-width: 900px) { body { grid-template-columns: 1fr; grid-template-rows: auto 1fr; } nav { border-right: none; border-bottom: 1px solid #e5e7eb; } }\n'
   + '  </style>\n'
   + '  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>\n'
   + '  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>\n'
@@ -209,6 +281,7 @@ function makeViewerHtml() {
   + '    }\n'
   + '    var currentFile = null;\n'
   + '    var allFiles = null;\n'
+  + '    var viewerUrl = null;\n'
   + '    function updateFooter() {\n'
   + '      try {\n'
   + '        var footer = document.getElementById(\'footer\');\n'
@@ -238,29 +311,143 @@ function makeViewerHtml() {
   + '        return parts.slice(0, i + 3).join("/");\n'
   + '      } catch (e) { return null; }\n'
   + '    }\n'
+  + '    function fixImageSources(file) {\n'
+  + '      try {\n'
+  + '        var container = document.getElementById("content");\n'
+  + '        if (!container) return;\n'
+  + '        var imgs = container.querySelectorAll("img[src]");\n'
+  + '        if (!imgs.length) return;\n'
+  + '        var fileUrl = new URL(file, window.location.href);\n'
+  + '        var rootUrl = new URL("./", viewerUrl || window.location.href);\n'
+  + '        imgs.forEach(function(img){\n'
+  + '          var src = img.getAttribute("src");\n'
+  + '          if (!src || /^(?:[a-z]+:|data:|\#)/i.test(src)) return;\n'
+  + '          var trimmed = src;\n'
+  + '          var removed = 0;\n'
+  + '          while (trimmed.indexOf("../") === 0) {\n'
+  + '            trimmed = trimmed.slice(3);\n'
+  + '            removed++;\n'
+  + '          }\n'
+  + '          if (removed > 0 && trimmed.indexOf("context/") === 0) {\n'
+  + '            img.setAttribute("src", rootUrl.href + trimmed);\n'
+  + '            return;\n'
+  + '          }\n'
+  + '          var resolved = new URL(src, fileUrl).href;\n'
+  + '          img.setAttribute("src", resolved);\n'
+  + '        });\n'
+  + '      } catch (e) {}\n'
+  + '    }\n'
   + '    function injectVersionsBar(file) {\n'
   + '      try {\n'
   + '        var base = sectionBaseFromPath(file);\n'
   + '        if (!base || !versionsMap || !versionsMap[base]) return;\n'
   + '        var info = versionsMap[base];\n'
-  + '        if (!info || !info.versions || info.versions.length <= 1) return;\n'
+  + '        if (!info || !info.versions || info.versions.length === 0) return;\n'
+  + '        var content = document.getElementById("content");\n'
+  + '        if (!content) return;\n'
   + '        var bar = document.createElement("div");\n'
   + '        bar.style.margin = "0 0 12px 0";\n'
   + '        bar.style.padding = "8px 10px";\n'
   + '        bar.style.background = "#f9fafb";\n'
   + '        bar.style.border = "1px solid #e5e7eb";\n'
   + '        bar.style.borderRadius = "8px";\n'
-  + '        var html = "<strong>Versions:</strong> ";\n'
-  + '        info.versions.forEach(function(v, idx){\n'
+  + '        var label = document.createElement("strong");\n'
+  + '        label.textContent = "Versions: ";\n'
+  + '        bar.appendChild(label);\n'
+  + '        info.versions.forEach(function(v){\n'
+  + '          if (!v) return;\n'
   + '          var isCurrent = (v.path === file);\n'
-  + '          var label = v.label;\n'
-  + '          if (isCurrent) html += "<span style=\\"margin-right:8px\\"><em>" + label + "</em></span>";\n'
-  + '          else html += "<a style=\\"margin-right:8px\\" href=\\"viewer.html?file=" + encodeURIComponent(v.path) + "\\">" + label + "</a>";\n'
+  + '          if (isCurrent) {\n'
+  + '            var span = document.createElement("span");\n'
+  + '            span.style.marginRight = "8px";\n'
+  + '            var em = document.createElement("em");\n'
+  + '            em.textContent = v.label;\n'
+  + '            span.appendChild(em);\n'
+  + '            bar.appendChild(span);\n'
+  + '          } else {\n'
+  + '            var link = document.createElement("a");\n'
+  + '            link.style.marginRight = "8px";\n'
+  + '            link.textContent = v.label;\n'
+  + '            var absViewer = viewerUrl || new URL("viewer.html", window.location.href).href;\n'
+  + '            var baseUrl = absViewer.split("?")[0];\n'
+  + '            link.href = baseUrl + "?file=" + encodeURIComponent(v.path);\n'
+  + '            link.addEventListener("click", function(ev){\n'
+  + '              ev.preventDefault();\n'
+  + '              var target = v.path;\n'
+  + '              var url = new URL(window.location.href);\n'
+  + '              url.searchParams.set("file", target);\n'
+  + '              window.history.pushState({}, "", url.toString());\n'
+  + '              load(target);\n'
+  + '            });\n'
+  + '            bar.appendChild(link);\n'
+  + '          }\n'
   + '        });\n'
-  + '        var content = document.getElementById("content");\n'
-  + '        if (content) content.insertAdjacentElement("afterbegin", bar);\n'
-  + '        bar.innerHTML = html;\n'
+  + '        content.insertAdjacentElement("afterbegin", bar);\n'
   + '      } catch (e) {}\n'
+  + '    }\n'
+  + '    function setActiveLink(file) {\n'
+  + '      try {\n'
+  + '        var links = document.querySelectorAll(".nav-topic-link");\n'
+  + '        links.forEach(function(el){\n'
+  + '          var topicPath = el.getAttribute("data-topic");\n'
+  + '          var isMatch = false;\n'
+  + '          if (file && topicPath) {\n'
+  + '            var prefix = topicPath.endsWith("/") ? topicPath : topicPath + "/";\n'
+  + '            isMatch = file === topicPath || file.indexOf(prefix) === 0;\n'
+  + '          }\n'
+  + '          el.classList.toggle("active", isMatch);\n'
+  + '        });\n'
+  + '      } catch (e) {}\n'
+  + '    }\n'
+  + '    function firstLatest(sections) {\n'
+  + '      if (!sections) return null;\n'
+  + '      for (var i = 0; i < sections.length; i++) {\n'
+  + '        var topics = sections[i] && sections[i].topics;\n'
+  + '        if (!topics || !topics.length) continue;\n'
+  + '        var candidate = topics[0] && topics[0].latest;\n'
+  + '        if (candidate) return candidate;\n'
+  + '      }\n'
+  + '      return null;\n'
+  + '    }\n'
+  + '    function renderSidebar(structure, viewerAbs) {\n'
+  + '      var container = document.getElementById("sidebar");\n'
+  + '      if (!container) return;\n'
+  + '      container.innerHTML = "";\n'
+  + '      if (!structure || !structure.length) {\n'
+  + '        var empty = document.createElement("p");\n'
+  + '        empty.className = "sidebar-empty";\n'
+  + '        empty.textContent = "No content available.";\n'
+  + '        container.appendChild(empty);\n'
+  + '        return;\n'
+  + '      }\n'
+  + '      structure.forEach(function(section){\n'
+  + '        var h2 = document.createElement("h2");\n'
+  + '        h2.textContent = section.label || "Untitled Section";\n'
+  + '        container.appendChild(h2);\n'
+  + '        (section.topics || []).forEach(function(topic){\n'
+  + '          var h3 = document.createElement("h3");\n'
+  + '          var topicLink = document.createElement("a");\n'
+  + '          topicLink.className = "nav-topic-link";\n'
+  + '          topicLink.textContent = topic.label || "Untitled Topic";\n'
+  + '          topicLink.dataset.topic = topic.path || "";\n'
+  + '          if (topic.latest) {\n'
+  + '            topicLink.href = viewerAbs + "?file=" + encodeURIComponent(topic.latest);\n'
+  + '            topicLink.addEventListener("click", async function(ev){\n'
+  + '              ev.preventDefault();\n'
+  + '              var target = topic.latest;\n'
+  + '              if (!target) return;\n'
+  + '              var url = new URL(window.location.href);\n'
+  + '              url.searchParams.set("file", target);\n'
+  + '              window.history.pushState({}, "", url.toString());\n'
+  + '              await load(target);\n'
+  + '            });\n'
+  + '          } else {\n'
+  + '            topicLink.href = "#";\n'
+  + '          }\n'
+  + '          h3.appendChild(topicLink);\n'
+  + '          container.appendChild(h3);\n'
+  + '        });\n'
+  + '      });\n'
   + '    }\n'
   + '    async function load(file) {\n'
   + '      try {\n'
@@ -272,77 +459,49 @@ function makeViewerHtml() {
   + '        var html = DOMPurify.sanitize(marked.parse(md));\n'
   + '        currentFile = file;\n'
   + '        document.getElementById(\'content\').innerHTML = html;\n'
+  + '        fixImageSources(file);\n'
   + '        injectVersionsBar(file);\n'
   + '        updateFooter();\n'
+  + '        setActiveLink(file);\n'
   + '      } catch (e) {\n'
   + '        document.getElementById(\'content\').textContent = e.message;\n'
   + '      }\n'
   + '    }\n'
   + '    async function init() {\n'
-  + '      // Set absolute links not affected by <base>\n'
   + '      var back = document.getElementById("backLink");\n'
   + '      if (back) { back.href = new URL("index.html", window.location.href).href; }\n'
-  + '      var viewerAbs = new URL("viewer.html", window.location.href).href;\n'
-  + '      var file = getParam(\'file\');\n'
-  + '      if (file) await load(file);\n'
+  + '      viewerUrl = new URL("viewer.html", window.location.href).href;\n'
+  + '      var viewerAbs = viewerUrl;\n'
   + '      try {\n'
-  + '        var filesUrl = new URL(\'files.json\', window.location.href);\n'
-  + '        var res = await fetch(filesUrl.href);\n'
-  + '        var files = await res.json();\n'
-  + '        allFiles = files;\n'
-  + '        try {\n'
-  + '          var vres = await fetch(new URL(\'versions.json\', window.location.href));\n'
-  + '          versionsMap = await vres.json();\n'
-  + '        } catch (e) { versionsMap = null; }\n'
-  + '        var sidebar = document.getElementById(\'sidebar\');\n'
-  + '        var input = document.createElement(\'input\');\n'
-  + '        input.placeholder = \"Filter files…\";\n'
-  + '        input.addEventListener(\'input\', function(){ filter(files, input.value); });\n'
-  + '        sidebar.appendChild(input);\n'
-  + '        var list = document.createElement(\'div\');\n'
-  + '        sidebar.appendChild(list);\n'
-  + '        function stripPrefix(seg){ return seg.replace(/^\\d{2}_/, ""); }\n'
-  + '        function titleCaseName(seg){\n'
-  + '          var minor = new Set(["a","an","and","as","at","but","by","for","from","in","into","nor","of","on","or","per","the","to","vs","via","with","your","outside"]);\n'
-  + '          var base = stripPrefix(seg).replace(/_/g, " ");\n'
-  + '          var parts = base.split(/\\s+/).filter(Boolean).map(function(w,i){ var lw = w.toLowerCase(); if (i>0 && minor.has(lw)) return lw; return lw.charAt(0).toUpperCase() + lw.slice(1); });\n'
-  + '          var out = parts.join(" ");\n'
-  + '          out = out.replace(/Comapeo/g, "CoMapeo");\n'
-  + '          out = out.replace(/CoMapeo s/g, "CoMapeo\'s");\n'
-  + '          out = out.replace(/ Gps /g, " GPS ");\n'
-  + '          out = out.replace(/ Id /g, " ID ");\n'
-  + '          out = out.replace(/ Qr /g, " QR ");\n'
-  + '          out = out.replace(/Can t/g, "Can\'t");\n'
-  + '          return out;\n'
+  + '        var filesRes = await fetch(new URL("files.json", window.location.href));\n'
+  + '        if (filesRes.ok) { allFiles = await filesRes.json(); }\n'
+  + '      } catch (e) { allFiles = null; }\n'
+  + '      try {\n'
+  + '        var vres = await fetch(new URL("versions.json", window.location.href));\n'
+  + '        if (vres.ok) { versionsMap = await vres.json(); }\n'
+  + '      } catch (e) { versionsMap = null; }\n'
+  + '      var sidebarData = { sections: [] };\n'
+  + '      try {\n'
+  + '        var sres = await fetch(new URL("sidebar.json", window.location.href));\n'
+  + '        if (sres.ok) { sidebarData = await sres.json(); }\n'
+  + '      } catch (e) { sidebarData = { sections: [] }; }\n'
+  + '      var sections = (sidebarData && sidebarData.sections) ? sidebarData.sections : [];\n'
+  + '      renderSidebar(sections, viewerAbs);\n'
+  + '      var file = getParam("file");\n'
+  + '      if (!file) {\n'
+  + '        var fallback = firstLatest(sections);\n'
+  + '        if (fallback) {\n'
+  + '          file = fallback;\n'
+  + '          var url = new URL(window.location.href);\n'
+  + '          url.searchParams.set("file", fallback);\n'
+  + '          window.history.replaceState({}, "", url.toString());\n'
   + '        }\n'
-  + '        function displayName(p) {\n'
-  + '          var parts = (p || \"\").split(\"/\");\n'
-  + '          var fname = parts[parts.length - 1] || \"\";\n'
-  + '          var base;\n'
-  + '          if (fname.toLowerCase() === \"index.md\" && parts.length >= 2) {\n'
-  + '            base = parts[parts.length - 2];\n'
-  + '          } else {\n'
-  + '            base = fname.replace(/\\.md$/i, \"\");\n'
-  + '          }\n'
-  + '          return titleCaseName(base);\n'
-  + '        }\n'
-  + '        function render(items) {\n'
-  + '          list.innerHTML = \"\";\n'
-  + '          items.forEach(function(p){\n'
-  + '            var a = document.createElement(\'a\');\n'
-  + '            a.className = \"file\";\n'
-  + '            a.href = viewerAbs + \"?file=\" + encodeURIComponent(p);\n'
-  + '            a.textContent = displayName(p);\n'
-  + '            list.appendChild(a);\n'
-  + '          });\n'
-  + '        }\n'
-  + '        function filter(items, q) {\n'
-  + '          var s = (q || \"\").toLowerCase();\n'
-  + '          render(items.filter(function(p){ return p.toLowerCase().includes(s); }));\n'
-  + '        }\n'
-  + '        render(files);\n'
-  + '        updateFooter();\n'
-  + '      } catch (e) {}\n'
+  + '      }\n'
+  + '      if (file) { await load(file); }\n'
+  + '      window.addEventListener("popstate", async function(){\n'
+  + '        var current = getParam("file");\n'
+  + '        if (current) { await load(current); }\n'
+  + '      });\n'
   + '    }\n'
   + '    init();\n'
   + '  </script>\n'
@@ -353,52 +512,80 @@ function makeViewerHtml() {
 function isSectionDirName(name) { return /^\d{2}_.+/.test(name); }
 function isVersionDirName(name) { return /^v\d+$/.test(name); }
 
-async function findLatestAndVersions(contentRoot) {
-  // Discover sections and their versions. Return { latestFiles: [], versionsMap: { sectionPath: { latest, versions: [{label, path}] } } }
-  const result = { latestFiles: [], versionsMap: {} };
-  const topics = await fsp.readdir(contentRoot, { withFileTypes: true });
-  for (const t of topics) {
-    if (!t.isDirectory() || !isSectionDirName(t.name)) continue; // only numbered topics
-    const topicDir = path.join(contentRoot, t.name);
-    const sections = await fsp.readdir(topicDir, { withFileTypes: true });
-    for (const s of sections) {
-      if (!s.isDirectory() || !isSectionDirName(s.name)) continue; // only numbered sections
-      const sectionDir = path.join(topicDir, s.name);
-      const sectionRel = relToRoot(sectionDir);
-      const entries = await fsp.readdir(sectionDir, { withFileTypes: true }).catch(()=>[]);
-      // Collect version directories
-      const versions = entries.filter(e => e.isDirectory() && isVersionDirName(e.name));
-      let versionList = [];
-      for (const v of versions) {
-        const idxPath = path.join(sectionDir, v.name, 'index.md');
+async function buildContentTree(contentRoot) {
+  /*
+    Walk the content directory and prepare:
+    - latestFiles: newest version file per topic for dist/files.json
+    - versionsMap: lookup for versions bar in viewer (includes Template when present)
+    - sections: hierarchy for sidebar rendering
+  */
+  const result = { latestFiles: [], versionsMap: {}, sections: [] };
+  const mainSections = await fsp.readdir(contentRoot, { withFileTypes: true }).catch(() => []);
+  for (const top of mainSections) {
+    if (!top.isDirectory() || !isSectionDirName(top.name)) continue;
+    const sectionDir = path.join(contentRoot, top.name);
+    const sectionRel = relToRoot(sectionDir);
+    const sectionEntry = { label: titleCaseName(top.name), path: sectionRel, topics: [] };
+
+    const topicDirs = await fsp.readdir(sectionDir, { withFileTypes: true }).catch(() => []);
+    for (const topic of topicDirs) {
+      if (!topic.isDirectory() || !isSectionDirName(topic.name)) continue;
+      const topicDir = path.join(sectionDir, topic.name);
+      const topicRel = relToRoot(topicDir);
+      const topicLabel = titleCaseName(topic.name);
+
+      const entries = await fsp.readdir(topicDir, { withFileTypes: true }).catch(() => []);
+      const numericVersions = [];
+      for (const entry of entries) {
+        if (!entry.isDirectory() || !isVersionDirName(entry.name)) continue;
+        const idxPath = path.join(topicDir, entry.name, 'index.md');
         if (await exists(idxPath)) {
-          versionList.push({ label: v.name, path: relToRoot(idxPath) });
+          numericVersions.push({ label: entry.name, path: relToRoot(idxPath) });
         }
       }
-      // If no version folders, fall back to template/template.md as the latest
-      if (versionList.length === 0) {
-        const tpl = path.join(sectionDir, 'template', 'template.md');
-        if (await exists(tpl)) {
-          result.latestFiles.push(relToRoot(tpl));
-          result.versionsMap[sectionRel] = { latest: relToRoot(tpl), versions: [] };
-          continue;
-        }
-        // Also support plain index.md directly in section
-        const idx = path.join(sectionDir, 'index.md');
-        if (await exists(idx)) {
-          result.latestFiles.push(relToRoot(idx));
-          result.versionsMap[sectionRel] = { latest: relToRoot(idx), versions: [] };
-          continue;
-        }
-        continue; // nothing to show
+
+      numericVersions.sort((a, b) => parseInt(b.label.slice(1), 10) - parseInt(a.label.slice(1), 10));
+
+      const extras = [];
+      const templatePath = path.join(topicDir, 'template', 'template.md');
+      if (await exists(templatePath)) {
+        extras.push({ label: 'Template', path: relToRoot(templatePath) });
       }
-      // Sort versions by numeric descending
-      versionList.sort((a, b) => parseInt(b.label.slice(1)) - parseInt(a.label.slice(1)));
-      const latest = versionList[0];
-      result.latestFiles.push(latest.path);
-      result.versionsMap[sectionRel] = { latest: latest.path, versions: versionList };
+
+      const versionList = numericVersions.concat(extras);
+
+      let latestEntry = versionList[0] || null;
+      if (!latestEntry) {
+        const idxPath = path.join(topicDir, 'index.md');
+        if (await exists(idxPath)) {
+          latestEntry = { label: 'index.md', path: relToRoot(idxPath) };
+          versionList.push(latestEntry);
+        }
+      }
+      if (!latestEntry) continue; // nothing usable in this topic
+
+      result.latestFiles.push(latestEntry.path);
+      result.versionsMap[topicRel] = { latest: latestEntry.path, versions: versionList };
+      sectionEntry.topics.push({
+        label: topicLabel,
+        path: topicRel,
+        latest: latestEntry.path,
+        latestLabel: latestEntry.label,
+        versions: versionList,
+      });
+    }
+
+    if (sectionEntry.topics.length > 0) {
+      result.sections.push(sectionEntry);
     }
   }
+
+  // Sort sections and topics by their directory names to keep sidebar stable
+  result.sections.sort((a, b) => a.path.localeCompare(b.path));
+  for (const section of result.sections) {
+    section.topics.sort((a, b) => a.path.localeCompare(b.path));
+  }
+  result.latestFiles.sort();
   return result;
 }
 
@@ -427,24 +614,31 @@ async function main() {
   // Collect md files according to mode
   let relFiles = [];
   let versionsPayload = {};
+  let sidebarPayload = { sections: [] };
+
+  let contentTree = null;
+  if (hasContent) {
+    contentTree = await buildContentTree(CONTENT_DIR);
+    versionsPayload = contentTree.versionsMap;
+    sidebarPayload = { sections: contentTree.sections };
+  }
+
   if (allMode) {
     let files = [];
     if (hasContext) files = files.concat(await collectMarkdownFiles(CONTEXT_DIR));
     if (hasContent) files = files.concat(await collectMarkdownFiles(CONTENT_DIR));
     relFiles = files.map(relToRoot).sort();
-  } else {
-    // Default: pick latest version per section
-    if (hasContent) {
-      const { latestFiles, versionsMap } = await findLatestAndVersions(CONTENT_DIR);
-      relFiles = latestFiles.sort();
-      versionsPayload = versionsMap;
-    }
+  } else if (contentTree) {
+    // Default: pick latest version per topic
+    relFiles = contentTree.latestFiles;
   }
 
   // Write index, viewer, and files manifest
-  await fsp.writeFile(path.join(DIST_DIR, 'index.html'), makeIndexHtml(relFiles));
+  const sectionsForIndex = (!allMode && contentTree) ? contentTree.sections : [];
+  await fsp.writeFile(path.join(DIST_DIR, 'index.html'), makeIndexHtml(relFiles, sectionsForIndex));
   await fsp.writeFile(path.join(DIST_DIR, 'viewer.html'), makeViewerHtml());
   await fsp.writeFile(path.join(DIST_DIR, 'files.json'), JSON.stringify(relFiles, null, 2));
+  await fsp.writeFile(path.join(DIST_DIR, 'sidebar.json'), JSON.stringify(sidebarPayload, null, 2));
   if (!allMode) {
     await fsp.writeFile(path.join(DIST_DIR, 'versions.json'), JSON.stringify(versionsPayload, null, 2));
   }
