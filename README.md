@@ -65,8 +65,9 @@ Reference files:
 - `npm run lint:md` — run Markdown lint
 
 ### Codex (prompt‑driven generation)
-- `npm run gen:test` — Generate first three missing sections (non‑interactive). Uses deck roadmap and sources; in read‑only/never mode, Codex outputs an `apply_patch` you can apply manually.
-- `npm run gen:all` — Generate all missing sections (non‑interactive). Same behavior as above for read‑only/never.
+- `npm run gen:test` — Generate first three missing sections (non-interactive). Uses deck roadmap and sources; in read-only/never mode, Codex outputs an `apply_patch` you can apply manually.
+- `npm run gen:all` — Generate all missing sections (non-interactive). Same behavior as above for read-only/never.
+- `npm run gen:smoke` — Dry-run sanity check that scaffolds a test section without calling Codex (0 tokens) and verifies a new `v1/` is produced.
 - `npm run gen:next` — Create next version for a specific section. Provide the section path via env var:
   - `SECTION="content/01_preparing_to_use_comapeo_mobile/01_understanding_comapeo_s_core_concepts_and_functions" npm run gen:next`
 - `npm run caption:all` — Propose captions for all images under `context/` (writes sidecars if permitted).

@@ -15,6 +15,7 @@
     "caption": "codex -m gpt-5 --dangerously-bypass-approvals-and-sandbox exec \"$(cat context/prompts/caption-image.md)\"",
     "gen": "node scripts/gen.js",
     "gen:all": "node scripts/gen-all.js",
+    "gen:smoke": "node scripts/gen-smoke.js",
     "gen:test": "node scripts/gen-test.js",
     "test:ds": "node scripts/gen-test-ds.js",
     "gen:next": "SECTION=\"$SECTION\" codex -m gpt-5 --dangerously-bypass-approvals-and-sandbox exec \"$(cat context/prompts/create-next-version.md; echo; echo Section: $SECTION)\"",
