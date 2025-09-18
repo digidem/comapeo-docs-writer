@@ -19,31 +19,31 @@ CoMapeo lets you collect and review georeferenced information on a mobile device
 - Observations
   - A single record you create on the map. You can add photos and, in recent versions, audio recordings. Observation metadata (date/time, GPS, accuracy, altitude, speed) can be viewed and shared when needed. [Source: context/comapeo_support_materials/quickstart_guides/audio_tracks_map_file/index.md; context/comapeo_support_materials/quickstart_guides/observation_metadata/index.md]
   
-  ![Observation list and status](../../context/comapeo_support_materials/quickstart_guides/invite_devices_default_project/images/screenshot_2025_05_07_at_3_02_27_pm.png) [Source: context/comapeo_support_materials/quickstart_guides/invite_devices_default_project/index.md]
+  ![Observation list and status](../../../../context/sources/quickstart_guides/invite_devices_default_project/images/screenshot_2025_05_07_at_3_02_27_pm.png) [Source: context/sources/quickstart_guides/invite_devices_default_project/index.md]
 - Tracks
   - GPS traces you record to document paths and movement. Tracks appear in your observation list and link to observations made while tracking. Saving a track requires that you moved; if you start and stop without moving, it will not save. [Source: context/comapeo_support_materials/quickstart_guides/audio_tracks_map_file/index.md; context/comapeo_support_materials/quickstart_guides/tracks_improvements/index.md]
   
-  ![Start recording a track](../../context/comapeo_support_materials/quickstart_guides/tracks_improvements/images/screenshot_2025_07_27_at_7_19_04_pm.png) [Source: context/comapeo_support_materials/quickstart_guides/tracks_improvements/index.md]
+  ![Start recording a track](../../../../context/sources/quickstart_guides/tracks_improvements/images/screenshot_2025_07_27_at_7_19_04_pm.png) [Source: context/sources/quickstart_guides/tracks_improvements/index.md]
 - Projects
   - You start on “My Solo Project” (mapping on your own). Rename it to create a team project and become a Coordinator. Coordinators can invite devices; invited devices join as Participants. [Source: context/comapeo_support_materials/quickstart_guides/invite_devices_default_project/index.md]
 - Exchange (Sync)
   - Exchange data with nearby devices. Exchange Settings include “Exchange Everything” (all media) and “Exchange Previews Only” (reduced media to save space). [Source: context/comapeo_support_materials/quickstart_guides/exchange_settings/index.md]
   
-  ![Exchange screen entry point](../../context/comapeo_support_materials/quickstart_guides/exchange_settings/images/screenshot_2025_07_24_at_11_08_47_am.png) [Source: context/comapeo_support_materials/quickstart_guides/exchange_settings/index.md]
+  ![Exchange screen entry point](../../../../context/sources/quickstart_guides/exchange_settings/images/screenshot_2025_07_24_at_11_08_47_am.png) [Source: context/sources/quickstart_guides/exchange_settings/index.md]
 - Remote Archive
   - Optional server participant for exchanging and storing data over the internet. Add a server URL in Project Settings; requires HTTPS. In 1.2.0, removing a server after adding it is not supported. [Source: context/comapeo_support_materials/quickstart_guides/remote_archive/index.md]
   
-  ![Remote Archive settings](../../context/comapeo_support_materials/quickstart_guides/remote_archive/images/screenshot_2025_02_10_at_5_13_48_pm.png) [Source: context/comapeo_support_materials/quickstart_guides/remote_archive/index.md]
+  ![Remote Archive settings](../../../../context/sources/quickstart_guides/remote_archive/images/screenshot_2025_02_10_at_5_13_48_pm.png) [Source: context/sources/quickstart_guides/remote_archive/index.md]
 - Security features
   - App Passcode locks the app with a 5‑digit code. Obscure Passcode (00000) opens a “decoy” app state with no accessible data when you need to hide real data quickly. [Source: context/comapeo_support_materials/quickstart_guides/security_features/index.md]
   
-  ![App Passcode screen](../../context/comapeo_support_materials/quickstart_guides/security_features/images/screenshot_2025_05_12_at_8_10_25_pm.png) [Source: context/comapeo_support_materials/quickstart_guides/security_features/index.md]
+  ![App Passcode screen](../../../../context/sources/quickstart_guides/security_features/images/screenshot_2025_05_12_at_8_10_25_pm.png) [Source: context/sources/quickstart_guides/security_features/index.md]
 - Data export
   - Export observations (GeoJSON, or ZIP with media) and tracks (GeoJSON). File names include the project name and date. [Source: context/comapeo_support_materials/quickstart_guides/data_export/index.md]
 - Photo and observation metadata
   - Photo Info shows photo metadata and a “Validated by CoMapeo” header. Observation Metadata screens show whether data is validated (collected automatically) or un‑validated (manually entered) and can be shared. [Source: context/comapeo_support_materials/quickstart_guides/photo_data/index.md; context/comapeo_support_materials/quickstart_guides/observation_metadata/index.md]
   
-  ![Photo Info details](../../context/comapeo_support_materials/quickstart_guides/photo_data/images/screenshot_2025_07_27_at_8_43_35_pm.png) [Source: context/comapeo_support_materials/quickstart_guides/photo_data/index.md]
+  ![Photo Info details](../../../../context/sources/quickstart_guides/photo_data/images/screenshot_2025_07_27_at_8_43_35_pm.png) [Source: context/sources/quickstart_guides/photo_data/index.md]
 - Maps
   - Map File Picker lets you add a custom map from a file on your device without placing files in special folders. [Source: context/comapeo_support_materials/quickstart_guides/audio_tracks_map_file/index.md]
 

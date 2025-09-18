@@ -1,6 +1,6 @@
 # Understanding CoMapeo’s Core Concepts and Functions
 
-![Map view after first use — internal guide graphic](../../context/sources/quickstart_guides/audio_tracks_map_file/images/faq_temps_3.jpg)
+![Map view after first use — internal guide graphic](../../../../context/sources/quickstart_guides/audio_tracks_map_file/images/faq_temps_3.jpg)
 
 ## In this page you will learn
 
@@ -26,7 +26,7 @@ CoMapeo uses two roles for teams: Project Coordinator and Project Participant. C
 - Audio recordings and Tracks: Record audio for context and capture geo‑referenced tracks to document paths and boundaries.
 - Map File Picker: Add a single custom map from anywhere on your device into CoMapeo.
 
-![Exchange Settings entry point](../../context/sources/quickstart_guides/exchange_settings/images/screenshot_2025_07_24_at_11_08_47_am.png)
+![Exchange Settings entry point](../../../../context/sources/quickstart_guides/exchange_settings/images/screenshot_2025_07_24_at_11_08_47_am.png)
 
 ## Exchange and storage
 
