@@ -8,6 +8,41 @@ const CONTENT_ROOT = path.join(ROOT, 'content');
 const PROMPT_FILE = path.join(ROOT, 'context', 'prompts', 'create-next-version.md');
 const SECTION_TEMPLATE = path.join(ROOT, 'context', 'templates', 'SECTION.template.md');
 
+const COLORS = {
+  reset: '\u001b[0m',
+  blue: '\u001b[36m',
+  orange: '\u001b[38;5;214m',
+  green: '\u001b[32m',
+  red: '\u001b[31m',
+  magenta: '\u001b[35m',
+  yellow: '\u001b[33m'
+};
+const DEBUG = Boolean(process.env.DEBUG && !['0', 'false', 'off', ''].includes(String(process.env.DEBUG).toLowerCase()));
+
+const TAG = `${COLORS.orange}◼ GEN${COLORS.reset}`;
+
+function color(text, tint) {
+  return `${COLORS[tint] || ''}${text}${COLORS.reset}`;
+}
+
+function logInfo(message) {
+  console.log(`${TAG} ${message}`);
+}
+
+function logSuccess(message) {
+  console.log(`${TAG} ${color('✓', 'green')} ${message}`);
+}
+
+function logWarn(message) {
+  console.warn(`${TAG} ${color('⚠', 'red')} ${message}`);
+}
+
+function logDebug(message) {
+  if (DEBUG) {
+    console.log(`${TAG} ${color('debug', 'magenta')} ${message}`);
+  }
+}
+
 function stripPrefix(name) {
   return name.replace(/^\d{2}_/, '');
 }
@@ -52,10 +87,12 @@ function ensureNextVersion(sectionPath, { copyFromPrevious = false, ensureTempla
   if (!fs.existsSync(versionDir)) {
     fs.mkdirSync(versionDir, { recursive: true });
     createdDir = true;
+    logSuccess(`Created ${path.relative(ROOT, versionDir)}`);
   }
   const imagesDir = path.join(versionDir, 'images');
   if (!fs.existsSync(imagesDir)) {
     fs.mkdirSync(imagesDir, { recursive: true });
+    logDebug(`Ensured images directory ${path.relative(ROOT, imagesDir)}`);
   }
 
   const template = fs.readFileSync(SECTION_TEMPLATE, 'utf8');
@@ -71,10 +108,12 @@ function ensureNextVersion(sectionPath, { copyFromPrevious = false, ensureTempla
   if (copyFromPrevious && prevIndexPath && fs.existsSync(prevIndexPath) && !fs.existsSync(indexPath)) {
     fs.copyFileSync(prevIndexPath, indexPath);
     copiedFiles = true;
+    logInfo(`Copied previous index.md from ${path.relative(ROOT, prevIndexPath)}`);
   }
   if (copyFromPrevious && prevReferencedPath && fs.existsSync(prevReferencedPath) && !fs.existsSync(referencedPath)) {
     fs.copyFileSync(prevReferencedPath, referencedPath);
     copiedFiles = true;
+    logInfo(`Copied previous referenced.md from ${path.relative(ROOT, prevReferencedPath)}`);
   }
   if (copyFromPrevious && prevVersionDir) {
     const prevImagesDir = path.join(prevVersionDir, 'images');
@@ -85,8 +124,10 @@ function ensureNextVersion(sectionPath, { copyFromPrevious = false, ensureTempla
         const dest = path.join(imagesDir, entry.name);
         if (entry.isDirectory()) {
           fs.cpSync(src, dest, { recursive: true });
+          logDebug(`Copied image directory ${path.relative(ROOT, src)} -> ${path.relative(ROOT, dest)}`);
         } else if (!fs.existsSync(dest)) {
           fs.copyFileSync(src, dest);
+          logDebug(`Copied image file ${path.relative(ROOT, src)} -> ${path.relative(ROOT, dest)}`);
         }
       }
     }
@@ -95,10 +136,12 @@ function ensureNextVersion(sectionPath, { copyFromPrevious = false, ensureTempla
   if (ensureTemplate && !fs.existsSync(indexPath)) {
     fs.writeFileSync(indexPath, filled);
     wroteFiles = true;
+    logWarn(`index.md missing – inserted section template for ${path.relative(ROOT, indexPath)}`);
   }
   if (ensureTemplate && !fs.existsSync(referencedPath)) {
     fs.writeFileSync(referencedPath, filled);
     wroteFiles = true;
+    logWarn(`referenced.md missing – inserted section template for ${path.relative(ROOT, referencedPath)}`);
   }
 
   const templateTrimmed = filled.trim();
@@ -158,15 +201,17 @@ function main() {
   
   const sections = listSections();
   if (sections.length === 0) {
-    console.error('No sections found under ./content');
+    logWarn('No sections found under ./content');
     process.exit(1);
   }
   const sectionPath = sectionArg ? path.join(ROOT, sectionArg) : sections[0];
   if (!fs.existsSync(sectionPath)) {
-    console.error('Section does not exist:', sectionPath);
+    logWarn(`Section does not exist: ${sectionPath}`);
     process.exit(1);
   }
   const relSection = path.relative(ROOT, sectionPath);
+  logInfo(`Preparing next version for ${color(relSection, 'blue')}`);
+  logDebug(`Options → profile=${profile || 'default'}, skipCodex=${skipCodex}`);
   const initial = ensureNextVersion(sectionPath, {
     copyFromPrevious: !skipCodex,
     ensureTemplate: skipCodex
@@ -174,13 +219,13 @@ function main() {
   const { versionDir, versionName } = initial;
   const relVersion = path.relative(ROOT, versionDir);
   const creationNote = initial.createdDir ? '(created directory)' : '(existing directory)';
-  console.log(`[gen] Next version ready: ${relVersion} ${creationNote}`);
+  logInfo(`Next version ready: ${color(relVersion, 'blue')} ${creationNote}`);
 
   if (skipCodex) {
     if (!initial.wroteFiles && !initial.copiedFiles) {
       ensureNextVersion(sectionPath, { ensureTemplate: true });
     }
-    console.log('[gen] Skipping Codex execution (dry run).');
+    logWarn('Skipping Codex execution (dry run).');
     return;
   }
 
@@ -191,19 +236,23 @@ function main() {
   try {
     const profileFlag = profile ? `-p ${profile}` : '--dangerously-bypass-approvals-and-sandbox';
     const cmd = `codex -m gpt-5 ${profileFlag} exec "$(cat "${tmpFile}")"`;
+    logInfo(`Invoking Codex with model ${color('gpt-5', 'blue')} (${profile ? `profile ${profile}` : 'default profile'})`);
+    logDebug(`Command: ${cmd}`);
     execSync(cmd, { stdio: 'inherit', shell: '/bin/bash' });
+    logSuccess(`Codex run completed for ${color(versionName, 'blue')}`);
   } finally {
     if (fs.existsSync(tmpFile)) {
       fs.unlinkSync(tmpFile);
+      logDebug(`Removed temp prompt file ${path.relative(ROOT, tmpFile)}`);
     }
   }
 
   const post = ensureNextVersion(sectionPath, { ensureTemplate: true });
   const finalIndex = fs.readFileSync(post.indexPath, 'utf8');
   if (finalIndex.trim() === post.templateTrimmed) {
-    console.warn(`[gen] Warning: ${relVersion}/index.md still matches the template. Codex may not have generated content.`);
+    logWarn(`${relVersion}/index.md still matches the template. Codex may not have generated content.`);
   } else if (initial.prevIndexContent && finalIndex.trim() === initial.prevIndexContent.trim()) {
-    console.warn(`[gen] Warning: ${relVersion}/index.md is identical to previous version. Codex may have skipped regeneration.`);
+    logWarn(`${relVersion}/index.md is identical to previous version. Codex may have skipped regeneration.`);
   }
 }
 
