@@ -48,7 +48,7 @@ function main() {
   
   try {
     const profileFlag = profile ? `-p ${profile}` : '--dangerously-bypass-approvals-and-sandbox';
-    const cmd = `codex ${profileFlag} exec "$(cat "${tmpFile}")"`;
+    const cmd = `codex -m gpt-5 ${profileFlag} exec "$(cat "${tmpFile}")"`;
     execSync(cmd, { stdio: 'inherit', shell: '/bin/bash' });
   } finally {
     // Clean up temporary file
@@ -59,4 +59,3 @@ function main() {
 }
 
 main();
-
