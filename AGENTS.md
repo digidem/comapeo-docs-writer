@@ -2,9 +2,25 @@
 
 This project is content‑first (low/no‑code). Your job is to produce clear, versioned Markdown docs by following our prompts and system guidelines.
 
-Start Here
+## Context Overview
+
+This document links into the `./context/` folder, where each module of the codebase is documented for the agent. The context files provide comprehensive information about system architecture, workflows, and best practices.
+
+### Module Reference
+
+| Module | File | Summary |
+|--------|------|---------|
+| Content Generation System | [`context/01-content-generation-system.md`](context/01-content-generation-system.md) | Codex-driven generation scripts, versioning logic, and prompt orchestration |
+| Documentation Builder | [`context/02-documentation-builder.md`](context/02-documentation-builder.md) | Static site generation, viewer, and local preview server |
+| Context System | [`context/03-context-system.md`](context/03-context-system.md) | Templates, prompts, style guides, source materials, and content roadmap |
+| Content Storage | [`context/04-content-storage.md`](context/04-content-storage.md) | Versioned documentation structure, file conventions, and quality gates |
+| Utility Scripts | [`context/05-utility-scripts.md`](context/05-utility-scripts.md) | Validation, image management, formatting, and maintenance tools |
+| Configuration & Infrastructure | [`context/06-configuration-infrastructure.md`](context/06-configuration-infrastructure.md) | Project setup, npm scripts, Git conventions, and agent workflows |
+
+## Start Here
 - Use the prompts under `context/prompts/` to drive work. Prompts define entry points and link to process docs.
 - Roadmap: `context/content_deck/INDEX.md` is the source for what to create next and in what order.
+- **When you need to operate in a specific module**, open the corresponding `context/*.md` file to view the summary and links to code files.
 
 Non‑negotiable Rules
 - Never modify files under `context/templates/`. Templates are static; copy them when starting a new version.
@@ -28,3 +44,18 @@ References (do not duplicate rules here)
 Notes
 - Filenames/folders use `snake_case`, lowercase, ASCII. Keep images local to each section.
 - If a needed detail is not in `context/`, add a visible TODO rather than guessing.
+
+## Usage for the Coding Agent
+
+When you need to operate in module X, open `./context/<filename>.md` to view the summary and links to the code files.
+
+**Navigation:**
+- To add new modules: Create a new `context/0N-module-name.md` file following the established pattern (Purpose, Key Files, Major Functions, Dependencies, Context Engineering Considerations)
+- To update modules: Edit the corresponding `.md` file in `context/`
+- To understand data flow: Start with `context/03-context-system.md` (inputs) → `context/01-content-generation-system.md` (processing) → `context/04-content-storage.md` (outputs) → `context/02-documentation-builder.md` (presentation)
+
+**Common Workflows:**
+- **Generate content**: See `context/01-content-generation-system.md` → Data Flow section
+- **Build docs**: See `context/02-documentation-builder.md` → Data Flow section
+- **Validate content**: See `context/05-utility-scripts.md` → Common Workflows section
+- **Update configuration**: See `context/06-configuration-infrastructure.md` → Configuration Updates section
