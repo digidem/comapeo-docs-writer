@@ -4,7 +4,11 @@ A content authoring workspace for CoMapeo Product Support documentation. Write a
 
 ## Structure
 
-- `context/` — Source of truth (style guide, templates, quickstart materials, images). Do not edit originals.
+- `context/` — Source of truth and codebase documentation
+  - Module documentation (`01-*.md` through `06-*.md`) explains system architecture for agents
+  - Style guide, templates, prompts for content generation
+  - Source materials (quickstart guides, screenshots, legacy docs)
+  - Content roadmap and deck materials
 - `content/` — Your drafts by section. Each section version includes `index.md` and `referenced.md`.
 - `scripts/` — Local helpers for previewing docs.
 - `.github/` — PR template and CI automations.
@@ -43,7 +47,13 @@ A content authoring workspace for CoMapeo Product Support documentation. Write a
 - Obeys `AGENTS.md` for tool usage, minimal diffs, and safe iteration (no destructive changes, no secrets, focused patches).
 
 Reference files:
-- `AGENTS.md`
+- `AGENTS.md` — Agent guide with module reference table
+- `context/01-content-generation-system.md` — Generation scripts and versioning
+- `context/02-documentation-builder.md` — Static site builder and viewer
+- `context/03-context-system.md` — Templates, prompts, sources
+- `context/04-content-storage.md` — Content structure and conventions
+- `context/05-utility-scripts.md` — Validation and maintenance tools
+- `context/06-configuration-infrastructure.md` — Project setup and workflows
 - `context/system/STYLE_GUIDE.md`
 - `context/system/AGENT_CONTENT_CHECKLIST.md`
 - `context/templates/SECTION.template.md`
@@ -76,6 +86,12 @@ Reference files:
 
 ## Where to Start
 
+### For Content Authors
 - Locate materials via the quickstart index: `context/sources/quickstart_guides/INDEX.md`.
 - Follow voice, tone, and structure guidance in `context/system/STYLE_GUIDE.md` and `context/templates/SECTION.template.md`.
 - Check the content roadmap: `context/content_deck/INDEX.md` (summaries + folders) and `context/content_deck/MATERIALS_INDEX.md` (order only).
+
+### For Agents/Developers
+- Start with `AGENTS.md` for an overview and module reference table
+- When working in a specific module, open the corresponding `context/*.md` file (e.g., `context/01-content-generation-system.md` for generation scripts)
+- Follow the data flow: Context System (inputs) → Content Generation (processing) → Content Storage (outputs) → Documentation Builder (presentation)
