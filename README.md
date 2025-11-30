@@ -20,6 +20,17 @@ A content authoring workspace for CoMapeo Product Support documentation. Write a
 - Optional: `npm run docs:open` to open `http://localhost:4000`
 - Lint Markdown: `npm run lint:md`
 
+## Content Migration and Organization
+
+If you have a bulk export of content (e.g. from Notion) placed in `content/new/`, you can use the organization script to automatically structure it into the repository's hierarchy.
+
+1. Place markdown files and images in `content/new/`.
+2. Run `node scripts/organize_new_content.js`.
+   - This will archive existing content to `content/old/`.
+   - It will process files in `content/new/` and create structured `template` directories in `content/`.
+   - Files marked with `Publish Status: Remove` will be skipped.
+3. Verify the structure in `content/`.
+
 ## Authoring Workflow (required)
 
 [Codex](https://github.com/openai/codex) (terminal-based assistant) is used to process the `context/` materials and enforce the rules in this repo. It follows the constraints defined in `AGENTS.md` and the guidance in the `context/` files listed below, so drafts end up consistent and verifiable.
