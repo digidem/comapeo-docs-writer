@@ -25,7 +25,14 @@ See `context/system/TONE_GUIDE.md` for voice and language. This Style Guide focu
 🔵
 
 ## Links and callouts
-For callouts (💡 Tip, 🔗 Go to, 👉🏾 More) see `context/system/TONE_GUIDE.md`.
+For callouts (💡 Tip, 👉🏾 More) see `context/system/TONE_GUIDE.md`.
+
+### Hyperlinks
+Limit hyperlinked text to the following specific formats:
+- Go to 🔗 [**Title of linked page**](/docs/page-slug)
+- Go to 🔗 [**Title of linked page → page section**](/docs/page-slug/#section-slug)
+
+Do not hyperlink arbitrary words in the middle of sentences. Use the dedicated "Go to 🔗" format.
 🟤
 
 ## Titles

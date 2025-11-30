@@ -7,12 +7,15 @@ Audience (orientation only)
 - Assume general app literacy; do not over‑explain basics. Keep content practical and respectful.
 
 Core tone principles
-- Imperative, action‑oriented: “Tap Add Photo”, “Open Exchange”, “Save the track”.
-- Concise and straightforward: prefer short sentences; remove filler and hedging.
-- Active voice: “CoMapeo saves the observation”, not “the observation is saved”.
-- Concrete, literal terms: use specific nouns (“Wi‑Fi router”, “Android phone”) instead of vague terms (“Wi‑Fi”, “device” when specificity matters).
-- Consistent wording: repeat the same term for the same thing; avoid synonym drift.
-- Neutral and calm: avoid expressive punctuation (!) and subjective adjectives.
+- **Clear and Concrete**: Use clear, concrete words to describe features. Be as literal as possible (e.g., use "Wi-Fi router" instead of just "Wi-Fi" to avoid implying internet necessity).
+- **Imperative and Action-Oriented**: Use commands for steps: "Press XX then go to XX". Avoid "This action will take you to...".
+- **Straightforward and Concise**:
+  - Avoid expressive tone (!) and adjectives.
+  - Use simple, everyday terms.
+  - Avoid complicated clauses.
+  - Say less: Write short sentences. Focus on what users need to know first; add details only if relevant.
+- **Active Voice**: Avoid passive constructions.
+- **Consistent Wording**: Repeat the exact term for the same thing; do not use synonyms for variety.
 
 Voice and person
 - Address the reader directly when it helps action (“You can…”, “Tap…”), but prefer imperative without excess “you”.
@@ -25,7 +28,6 @@ Plain language and inclusivity
 
 Highlights and callouts (usage)
 - 💡 Tip — helpful but non‑essential advice.
-- 🔗 Go to — link to a related section that complements the current one.
 - 👉🏾 More — short side note you would otherwise place in parentheses.
 
 Headings (tone aspects)

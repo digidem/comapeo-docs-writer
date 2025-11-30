@@ -44,6 +44,7 @@ Required input
 - Style: `context/system/STYLE_GUIDE.md`
 - Tone: `context/system/TONE_GUIDE.md`
 - Checklist: `context/system/AGENT_CONTENT_CHECKLIST.md`
+- Glossary: `context/system/GLOSSARY_REF.md`
 - Templates: `context/templates/INDEX.md`
 - Sources: `context/sources/INDEX.md`, `context/content_deck/INDEX.md`
 

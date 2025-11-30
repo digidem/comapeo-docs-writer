@@ -4,6 +4,7 @@ Use these files to create consistent, versioned content. Start with PROCESS (onc
 
 - `STYLE_GUIDE.md` — Structure and formatting rules (titles, sections, visuals). Tone lives in `TONE_GUIDE.md`.
 - `TONE_GUIDE.md` — Voice and language (imperative, concise, active, callouts).
+- `GLOSSARY_REF.md` — Concise definitions of project terminology.
 - `AGENT_CONTENT_CHECKLIST.md` — Post‑draft QA (roadmap/source lookup, citations, assets, naming, readability).
 - `PROCESS.md` — End‑to‑end workflow and folder map.
 
