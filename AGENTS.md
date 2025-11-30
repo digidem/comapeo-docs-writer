@@ -18,6 +18,14 @@ This document links into the `./context/` folder, where each module of the codeb
 | Configuration & Infrastructure | [`context/06-configuration-infrastructure.md`](context/06-configuration-infrastructure.md) | Project setup, npm scripts, Git conventions, and agent workflows |
 
 ## Start Here
+
+### Quick Start for New Agents
+1. **First time?** Read this file (`AGENTS.md`) completely
+2. **Need to understand a module?** Use the Module Reference table above to find the right `context/*.md` file
+3. **Generating content?** Start with [`context/01-content-generation-system.md`](context/01-content-generation-system.md) → Data Flow section
+4. **Validating work?** Use [`context/system/AGENT_CONTENT_CHECKLIST.md`](context/system/AGENT_CONTENT_CHECKLIST.md)
+
+### For Content Work
 - Use the prompts under `context/prompts/` to drive work. Prompts define entry points and link to process docs.
 - Roadmap: `context/content_deck/INDEX.md` is the source for what to create next and in what order.
 - **When you need to operate in a specific module**, open the corresponding `context/*.md` file to view the summary and links to code files.

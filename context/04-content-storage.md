@@ -108,18 +108,13 @@ Content organized by subtopics.
 
 ## Related Topics (optional)
 
-- [Other Section](../other_section/v1/index.md)
+- `[Other Section](../other_section/v1/index.md)` - Link to related sections
 ```
 
 ### Image References
-Within Markdown files:
-```markdown
-![Description](./images/screenshot.png)
-```
-or
-```markdown
-![Description](../../../context/sources/screenshots/photo_123.jpg)
-```
+Within Markdown files, use one of these patterns:
+- Local images: `![Description](./images/screenshot.png)`
+- Context sources: `![Description](../../../context/sources/screenshots/photo_123.jpg)`
 
 ### Source Citations (referenced.md only)
 ```markdown

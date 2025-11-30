@@ -67,7 +67,7 @@ Already covered in module 01 (Content Generation), but summarized here:
 
 ### check_links.js
 - **`findMarkdownFiles(dir)`** - Recursively finds all `.md` files
-- **`extractLinks(content)`** - Parses Markdown to extract `[text](url)` links
+- **`extractLinks(content)`** - Parses Markdown to extract links in `[text](url)` format
 - **`resolveLink(baseFile, linkPath)`** - Resolves relative links to absolute paths
 - **`checkLink(absPath)`** - Verifies a file or image exists
 - **`main()`** - Orchestrates link checking, reports errors
