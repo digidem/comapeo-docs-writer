@@ -87,4 +87,7 @@
 
 ## Miscellaneous
 
+- Miscellaneous Content — A collection of various content items that don't fit into other categories.
+  Folder: `../../content/11_miscellaneous/template`
+
 

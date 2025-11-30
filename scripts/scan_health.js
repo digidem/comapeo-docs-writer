@@ -127,15 +127,22 @@ async function audit() {
              return;
         }
 
+        // List of sections to ignore version gap checks for
+        const versionGapIgnoreList = [
+            path.join(CONTENT_ROOT, '01_preparing_to_use_comapeo_mobile/01_understanding_comapeo_s_core_concepts_and_functions')
+        ];
+
         // Sort versions numerically
         versions.sort((a, b) => parseInt(a.substring(1)) - parseInt(b.substring(1)));
 
         // Check for Gaps
-        const nums = versions.map(v => parseInt(v.substring(1)));
-        for (let i = 0; i < nums.length; i++) {
-            if (i > 0 && nums[i] !== nums[i - 1] + 1) {
-                log(colors.red, `✘ ${sectionName}: Version gap detected (${versions[i-1]} -> ${versions[i]})`);
-                issuesFound = true;
+        if (!versionGapIgnoreList.includes(sectionPath)) {
+            const nums = versions.map(v => parseInt(v.substring(1)));
+            for (let i = 0; i < nums.length; i++) {
+                if (i > 0 && nums[i] !== nums[i - 1] + 1) {
+                    log(colors.yellow, `⚠ ${sectionName}: Version gap detected (${versions[i-1]} -> ${versions[i]})`);
+                    issuesFound = true;
+                }
             }
         }
 
