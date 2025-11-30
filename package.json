@@ -19,7 +19,8 @@
     "gen:test": "node scripts/gen-test.js",
     "test:ds": "node scripts/gen-test-ds.js",
     "gen:next": "SECTION=\"$SECTION\" codex -m gpt-5 --dangerously-bypass-approvals-and-sandbox exec \"$(cat context/prompts/create-next-version.md; echo; echo Section: $SECTION)\"",
-    "check:links": "node scripts/check_links.js"
+    "check:links": "node scripts/check_links.js",
+    "audit": "node scripts/smart_audit.js"
   },
   "keywords": [],
   "author": "",

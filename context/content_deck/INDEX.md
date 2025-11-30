@@ -81,6 +81,9 @@
 
 ## Glossary
 
+- Glossary of Terms — A collection of definitions for key terms used throughout CoMapeo.
+  Folder: `../../content/10_glossary/01_terms`
+
 
 ## Miscellaneous
 

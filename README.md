@@ -84,6 +84,13 @@ Reference files:
 - `npm run caption` — Propose a caption for a single image (expects path in the interactive session or adapted script).
 - `npm run check:links` — Check Markdown links across the repo (skips external links and template examples).
 
+### Maintenance & Analysis
+- `npm run audit` — **Smart Health Check**. Runs all visualization and scanning tools, then uses Codex to analyze the output and provide a prioritized list of action items.
+- `node scripts/scan_health.js` — Run the structural integrity scanner (gaps, orphans).
+- `node scripts/find_duplicates.js` — Scan for duplicate content or potential copy-paste errors.
+- `node scripts/visualize_content.js` — Display a tree view of the `content/` folder with status indicators (✓/⚠/✘).
+- `node scripts/visualize_context.js` — Display a tree view of the `context/` source library.
+
 ## Where to Start
 
 ### For Content Authors
