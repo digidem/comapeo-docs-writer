@@ -10,8 +10,8 @@ Folders
   - What: Documentation from the legacy Mapeo platform.
   - When to use: High-level, non-app-specific background/context only. Never rely on technical/app-specific instructions.
 - `mega_deck/`
-  - What: Deck-derived source text (e.g., `mega_deck_primary_template.txt`).
-  - When to use: To understand overarching narratives, feature scopes, and terms when quickstarts are insufficient.
+  - What: Deck-derived source text (e.g., `brand_and_narrative_assets.md`).
+  - When to use: To understand overarching narratives, feature scopes, and terms when quickstarts are insufficient. Includes case studies and roadmap info.
 - `setup_guide/`
   - What: Materials focused on setup/installation flows and device preparation (with `images/`).
   - When to use: Installing, onboarding, device setup/maintenance, and related screenshots.
