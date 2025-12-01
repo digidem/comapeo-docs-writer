@@ -12,7 +12,7 @@
 - Otherwise: treat as a title. Slugify (lowercase, trim, replace non-alphanumerics with `-`, trim `-`). Section folder: `./content/<slug>/`.
 
 ## Create Section (only if missing)
-- `index.md`: Use `context/templates/SECTION.template.md` and `context/system/STYLE_GUIDE.md`. Substitute `{{title}}`, `{{slug}}`, `{{date}}`.
+- `index.md`: Use `context/templates/step-by-step.template.md` (preferred for procedural content) or `context/templates/SECTION.template.md`. Refer to `context/system/GOLD_STANDARD.md` for tone and structural examples. Substitute `{{title}}`, `{{slug}}`, `{{date}}`.
 - `referenced.md`: Same text as `index.md` plus inline `[Source: context/…]` per claim/list group and a final “Sources:” block with exact file paths.
 - Internal TODOs: Use `context/templates/TODO.template.md` as a thinking aid only; do not create a `TODO.md` file in the section.
 - Versioning: create or increment `vN/` inside the numbered topic/section folder. Do not modify `template/`.
@@ -39,6 +39,7 @@
 - Exactly one new section folder with `index.md` and `referenced.md`.
 
 ## References
+- Gold Standard: `context/system/GOLD_STANDARD.md`
 - Process: `context/system/PROCESS.md`
 - Style: `context/system/STYLE_GUIDE.md`
 - Tone: `context/system/TONE_GUIDE.md`
