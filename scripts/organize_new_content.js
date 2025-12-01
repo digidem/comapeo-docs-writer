@@ -1,8 +1,10 @@
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const ROOT = process.cwd();
 const SOURCE_DIR = path.join(ROOT, 'content', 'new');
+const IMAGES_DIR_NEW = path.join(SOURCE_DIR, 'images');
 const CONTENT_ROOT = path.join(ROOT, 'content');
 const OLD_DIR = path.join(CONTENT_ROOT, 'old');
 
@@ -22,7 +24,7 @@ const SECTION_MAP = {
 function snakeCase(str) {
     return str
         .toLowerCase()
-        .normalize('NFKD').replace(/[̀-ͯ]/g, '') // Corrected unicode range for diacritics
+        .normalize('NFKD').replace(/[̀-ͯ]/g, '')
         .replace(/&/g, 'and')
         .replace(/[^a-z0-9]+/g, '_')
         .replace(/^_+|_+$/g, '')
@@ -39,7 +41,6 @@ function parseFrontMatter(content) {
         if (match) {
             const key = match[1].trim();
             const value = match[2].trim();
-            // Capture all keys for potential filtering
             metadata[key] = value;
         }
     }
@@ -50,36 +51,76 @@ function getCleanTitle(filename) {
     return filename.replace(/ [a-f0-9]{32}\.md$/, '');
 }
 
-// --- 1. Clean Content Directory (Instead of Archiving Again) ---
-// We assume archiving was done in a previous run or manually. 
-// This step ensures we rebuild the structure cleanly.
+// --- 0. Pre-process Source Files (Extract Base64 to content/new/images) ---
+// This ensures the source files themselves are clean for grep, and simplifies subsequent processing.
+if (fs.existsSync(SOURCE_DIR)) {
+    if (!fs.existsSync(IMAGES_DIR_NEW)) {
+        fs.mkdirSync(IMAGES_DIR_NEW, { recursive: true });
+    }
+
+    const sourceFiles = fs.readdirSync(SOURCE_DIR).filter(f => f.endsWith('.md'));
+    
+    sourceFiles.forEach(filename => {
+        const filePath = path.join(SOURCE_DIR, filename);
+        let content = fs.readFileSync(filePath, 'utf8');
+        let modified = false;
+
+        // Replace base64 links/images with relative paths to extracted files
+        const newContent = content.replace(/(!?)\[([^\]]*?)\]\(([^)]+?)\)/g, (match, prefix, alt, link) => {
+            const cleanLink = link.trim();
+            if (cleanLink.startsWith('data:image')) {
+                const matchParts = cleanLink.match(/^data:image\/(\w+);base64,([\s\S]+)$/);
+                if (matchParts) {
+                    const ext = matchParts[1] === 'jpeg' ? 'jpg' : matchParts[1];
+                    const data = matchParts[2].replace(/\s/g, '');
+                    const buffer = Buffer.from(data, 'base64');
+                    const hash = crypto.createHash('md5').update(buffer).digest('hex').substring(0, 12);
+                    const imageName = `extracted_${hash}.${ext}`;
+                    const imagePath = path.join(IMAGES_DIR_NEW, imageName);
+
+                    if (!fs.existsSync(imagePath)) {
+                        fs.writeFileSync(imagePath, buffer);
+                        console.log(`Extracted base64 image from ${filename} to ${imageName}`);
+                    }
+                    
+                    modified = true;
+                    // Return as standard markdown image link
+                    return `![${alt}](./images/${imageName})`;
+                }
+            }
+            return match;
+        });
+
+        if (modified) {
+            fs.writeFileSync(filePath, newContent);
+            console.log(`Updated source file: ${filename}`);
+        }
+    });
+}
+
+// --- 1. Clean Content Directory ---
 const items = fs.readdirSync(CONTENT_ROOT);
 items.forEach(item => {
     const itemPath = path.join(CONTENT_ROOT, item);
-    // Skip 'new', 'old', and non-directories
     if (item === 'new' || item === 'old' || !fs.statSync(itemPath).isDirectory()) {
         return;
     }
-    
     fs.rmSync(itemPath, { recursive: true, force: true });
 });
 console.log('Cleaned content directory (preserved new/ and old/).');
 
-
-// --- 2. Analyze Existing Structure (from Archive) to Match Section Names ---
-const existingSections = new Map(); // TopicDir -> [SectionDir, ...]
+// --- 2. Analyze Existing Structure ---
+const existingSections = new Map();
 if (fs.existsSync(OLD_DIR)) {
-    const topics = fs.readdirSync(OLD_DIR, { withFileTypes: true })
-        .filter(d => d.isDirectory());
-    
+    const topics = fs.readdirSync(OLD_DIR, { withFileTypes: true }).filter(d => d.isDirectory());
     topics.forEach(topic => {
-        const sections = fs.readdirSync(path.join(OLD_DIR, topic.name), { withFileTypes: true })
-            .filter(d => d.isDirectory());
+        const sections = fs.readdirSync(path.join(OLD_DIR, topic.name), { withFileTypes: true }).filter(d => d.isDirectory());
         existingSections.set(topic.name, sections.map(s => s.name));
     });
 }
 
-// --- 3. Process New Content ---
+// --- 3. Process New Content (Standard Logic) ---
+// Now that source files are clean, we just process them normally.
 const files = fs.readdirSync(SOURCE_DIR).filter(f => f.endsWith('.md'));
 const nodes = new Map();
 
@@ -87,9 +128,7 @@ files.forEach(filename => {
     const content = fs.readFileSync(path.join(SOURCE_DIR, filename), 'utf8');
     const metadata = parseFrontMatter(content);
     
-    // FILTER: Check for Publish Status: Remove
     if (metadata['Publish Status'] && metadata['Publish Status'].trim().toLowerCase() === 'remove') {
-        console.log(`Skipping ${filename} (Publish Status: Remove)`);
         return;
     }
 
@@ -113,7 +152,6 @@ files.forEach(filename => {
     });
 });
 
-// Build Tree
 const roots = [];
 nodes.forEach(node => {
     if (node.parentFilename && nodes.has(node.parentFilename)) {
@@ -123,12 +161,8 @@ nodes.forEach(node => {
     }
 });
 
-// Process Roots
 roots.forEach(root => {
-    // Determine Topic
     let topicDir = SECTION_MAP[root.section];
-    
-    // Overrides
     if (root.cleanTitle.toLowerCase().includes('glossary')) topicDir = '10_glossary';
     if (root.cleanTitle.toLowerCase().includes('troubleshooting')) topicDir = '09_troubleshooting';
     
@@ -136,14 +170,11 @@ roots.forEach(root => {
         topicDir = snakeCase(root.section || 'uncategorized');
     }
 
-    // Determine Section Directory Name
     let sectionDirName = null;
     const snakeTitle = snakeCase(root.cleanTitle);
     
-    // Check existing in OLD_DIR (our reference)
     if (existingSections.has(topicDir)) {
         const existing = existingSections.get(topicDir);
-        // Try to match by snake_case title
         const match = existing.find(e => e.includes(snakeTitle) || snakeTitle.includes(e.replace(/^\d+_/, '')));
         if (match) sectionDirName = match;
     }
@@ -153,7 +184,6 @@ roots.forEach(root => {
         sectionDirName = `${prefix}_${snakeTitle}`;
     }
 
-    // Determine Content Node (English Child)
     let contentNode = root.children.find(c => c.language === 'English');
     if (!contentNode) {
         if (root.language === 'English' || !root.language) {
@@ -163,13 +193,12 @@ roots.forEach(root => {
         }
     }
 
-    // Output Path: content/<Topic>/<Section>/template/
     const sectionPath = path.join(CONTENT_ROOT, topicDir, sectionDirName);
     const templatePath = path.join(sectionPath, 'template');
     fs.mkdirSync(templatePath, { recursive: true });
     const imagesDir = path.join(templatePath, 'images');
 
-    // Process Content & Images
+    // The content is already cleaned of base64, so we just need to resolve image paths
     let newContent = contentNode.content.replace(/!\[(.*?)\]\((.*?)\)/g, (match, alt, link) => {
         const decodedLink = decodeURIComponent(link);
         const linkParts = decodedLink.split('/');
@@ -180,7 +209,8 @@ roots.forEach(root => {
             const candidates = [
                 path.join(SOURCE_DIR, resourceFolder, imageName),
                 path.join(SOURCE_DIR, decodeURIComponent(resourceFolder), imageName),
-                path.join(SOURCE_DIR, contentNode.cleanTitle, imageName)
+                path.join(SOURCE_DIR, contentNode.cleanTitle, imageName),
+                path.join(IMAGES_DIR_NEW, imageName) // Also check the new centralized images folder
             ];
             
             for (const srcPath of candidates) {
