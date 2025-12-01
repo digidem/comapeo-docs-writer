@@ -95,11 +95,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add content/
-          git commit -m "chore: generate content for ${{ inputs.section_name }}
-
-Generated using model: ${{ inputs.model }}
-Engine: ${{ inputs.engine }}
-Triggered by: @${{ github.actor }}"
+          git commit -m "chore: generate content for ${{ inputs.section_name }}" \
+            -m "Generated using model: ${{ inputs.model }}" \
+            -m "Engine: ${{ inputs.engine }}" \
+            -m "Triggered by: @${{ github.actor }}"
           git push
 
       - name: No changes detected
