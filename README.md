@@ -103,6 +103,16 @@ Reference files:
   - **Smart Selection**: Automatically identifies the next logical section to work on (prioritizes new sections, then lowest versions).
   - Usage: `npm run gen:next -- [options]` (e.g., `npm run gen:next -- -e gemini`)
   - Override: To target a specific section, use `npm run gen:next <section_path>` or set `SECTION="<path>" npm run gen:next`.
+- `npm run show-prompt` — **View generation prompt context** (for human analysis). Displays all context files that get injected into gen calls with statistics and file information.
+  - Options:
+    - `-c, --content`: Show full content of each file (default: summary only)
+    - `--no-stats`: Hide statistics summary
+    - `-s, --section <path>`: Specify target section path
+    - `-o, --output <file>`: Write output to markdown file (auto-enables --content)
+  - Examples:
+    - `npm run show-prompt` - View summary in console
+    - `npm run show-prompt -- --content` - View full content in console
+    - `npm run show-prompt -- --output prompt-context.md` - Save to markdown file
 - `npm run caption:all` — Propose captions for all images under `context/` (writes sidecars if permitted).
 - `npm run caption` — Propose a caption for a single image (expects path in the interactive session or adapted script).
 - `npm run check:links` — Check Markdown links across the repo (skips external links and template examples).

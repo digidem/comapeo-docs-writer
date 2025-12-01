@@ -23,6 +23,7 @@ Thumbs.db
 *.env
 context/to_delete/
 .tmp-prompt.md
+prompt-context.md
 old/
 content/old/
 content/new/

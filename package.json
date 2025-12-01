@@ -20,7 +20,8 @@
     "test:ds": "node scripts/gen-test-ds.js",
     "gen:next": "node scripts/gen.js",
     "check:links": "node scripts/check_links.js",
-    "audit": "node scripts/smart_audit.js"
+    "audit": "node scripts/smart_audit.js",
+    "show-prompt": "node scripts/show-prompt.js"
   },
   "keywords": [],
   "author": "",
