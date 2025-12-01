@@ -72,6 +72,88 @@ function titleCaseName(seg) {
   return out;
 }
 
+function extractHumanName(sectionPath) {
+  // Extract human-readable name from section path
+  // Example: "content/01_topic/07_installing_comapeo" -> "installing comapeo"
+  const basename = path.basename(sectionPath);
+  return stripPrefix(basename).replace(/_/g, ' ').toLowerCase().trim();
+}
+
+function calculateWordSimilarity(query, target) {
+  // Simple word-based similarity scoring
+  const queryWords = query.toLowerCase().split(/\s+/).filter(Boolean);
+  const targetWords = target.toLowerCase().split(/\s+/).filter(Boolean);
+
+  if (queryWords.length === 0 || targetWords.length === 0) return 0;
+
+  let matchCount = 0;
+  let positionBonus = 0;
+
+  for (let i = 0; i < queryWords.length; i++) {
+    const qWord = queryWords[i];
+    for (let j = 0; j < targetWords.length; j++) {
+      const tWord = targetWords[j];
+
+      // Exact match
+      if (qWord === tWord) {
+        matchCount += 1;
+        // Bonus for matching at similar positions
+        if (i === j) positionBonus += 0.2;
+        break;
+      }
+
+      // Partial match (word starts with query word)
+      if (tWord.startsWith(qWord) && qWord.length >= 3) {
+        matchCount += 0.7;
+        if (i === j) positionBonus += 0.1;
+        break;
+      }
+
+      // Fuzzy match (query word is contained in target word)
+      if (tWord.includes(qWord) && qWord.length >= 4) {
+        matchCount += 0.5;
+        break;
+      }
+    }
+  }
+
+  // Score based on match ratio and position bonus
+  const matchRatio = matchCount / queryWords.length;
+  const coverageRatio = matchCount / Math.max(queryWords.length, targetWords.length);
+
+  return Math.min(1.0, (matchRatio * 0.7) + (coverageRatio * 0.2) + positionBonus);
+}
+
+function findBestMatchingSection(query) {
+  const allSections = listSections();
+  let bestMatch = null;
+  let bestScore = 0;
+  const threshold = 0.3; // Minimum score to consider
+
+  for (const sectionPath of allSections) {
+    const humanName = extractHumanName(sectionPath);
+    const score = calculateWordSimilarity(query, humanName);
+
+    logDebug(`Comparing "${query}" with "${humanName}" (${path.relative(ROOT, sectionPath)}): score=${score.toFixed(3)}`);
+
+    if (score > bestScore && score >= threshold) {
+      bestScore = score;
+      bestMatch = sectionPath;
+    }
+  }
+
+  if (bestMatch) {
+    const humanName = extractHumanName(bestMatch);
+    return {
+      path: bestMatch,
+      humanName,
+      score: bestScore
+    };
+  }
+
+  return null;
+}
+
 function ensureNextVersion(sectionPath, { copyFromPrevious = false, ensureTemplate = false } = {}) {
   const entries = fs.readdirSync(sectionPath, { withFileTypes: true });
   let maxVersion = 0;
@@ -273,7 +355,7 @@ function main() {
             maxV = Math.max(maxV, parseInt(match[1], 10));
           }
         }
-        
+
         // Priority 1: Section has no versions (v0) - Pick immediately
         if (!hasVersion) {
           bestCandidate = sec;
@@ -287,12 +369,33 @@ function main() {
           bestCandidate = sec;
         }
       }
-      
+
       if (bestCandidate) {
         sectionArg = path.relative(ROOT, bestCandidate);
         if (lowestVersion !== Infinity) {
            logInfo(`Auto-selecting section with version v${lowestVersion}: ${color(path.relative(ROOT, bestCandidate), 'blue')}`);
         }
+      }
+    }
+  } else {
+    // Check if sectionArg is a fuzzy query (no slashes) or an exact path
+    if (!sectionArg.includes('/') && !sectionArg.includes(path.sep)) {
+      logInfo(`Searching for section matching: ${color(sectionArg, 'blue')}`);
+      const match = findBestMatchingSection(sectionArg);
+
+      if (match) {
+        logInfo(`Found match: ${color(match.humanName, 'green')} (score: ${color(match.score.toFixed(2), 'yellow')})`);
+        logInfo(`Path: ${color(path.relative(ROOT, match.path), 'blue')}`);
+        sectionArg = path.relative(ROOT, match.path);
+      } else {
+        logWarn(`No matching section found for query: "${sectionArg}"`);
+        logInfo(`Available sections:`);
+        const allSections = listSections();
+        allSections.forEach(sec => {
+          const humanName = extractHumanName(sec);
+          logInfo(`  - ${humanName} (${path.relative(ROOT, sec)})`);
+        });
+        process.exit(1);
       }
     }
   }
@@ -398,13 +501,18 @@ function main() {
     // Escape single quotes within the prompt content
     const escapedPrompt = fullPromptContent.replace(/'/g, "'\\''");
     
+    let cmd;
+    if (cliTool === 'gemini') {
+      cmd = `${cliTool} -m ${targetModel} -p $'${escapedPrompt}'`;
+    } else {
+      cmd = `${cliTool} -m ${targetModel} ${cliToolFlags} $'${escapedPrompt}'`;
+    }
+
     // Construct the command to log
-    const logCmd = `${cliTool} -m ${targetModel} ${cliToolFlags} $'${escapedPrompt}'`;
+    const logCmd = cmd;
     logInfo(`Invoking ${color(cliTool, 'blue')} with model ${color(targetModel, 'blue')} (${profile ? `profile ${profile}` : (autoConfirm ? 'auto-confirm' : 'interactive')})`);
     if (mcpFlags && cliTool === 'codex') logInfo(`Disabling MCP servers: ${color('yes', 'orange')}`);
     logDebug(`Command: ${logCmd}`);
-    
-    const cmd = `${cliTool} -m ${targetModel} ${cliToolFlags} $'${escapedPrompt}'`; // Full command
 
     try {
       execSync(cmd, { stdio: 'inherit', shell: '/bin/bash' });
