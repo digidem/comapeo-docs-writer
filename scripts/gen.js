@@ -7,6 +7,13 @@ const ROOT = process.cwd();
 const CONTENT_ROOT = path.join(ROOT, 'content');
 const PROMPT_FILE = path.join(ROOT, 'context', 'prompts', 'create-next-version.md');
 const SECTION_TEMPLATE = path.join(ROOT, 'context', 'templates', 'SECTION.template.md');
+const STEP_BY_STEP_TEMPLATE = path.join(ROOT, 'context', 'templates', 'step-by-step.template.md');
+const PROCESS_GUIDE = path.join(ROOT, 'context', 'system', 'PROCESS.md');
+const STYLE_GUIDE = path.join(ROOT, 'context', 'system', 'STYLE_GUIDE.md');
+const TONE_GUIDE = path.join(ROOT, 'context', 'system', 'TONE_GUIDE.md');
+const CHECKLIST = path.join(ROOT, 'context', 'system', 'AGENT_CONTENT_CHECKLIST.md');
+const GLOSSARY_REF = path.join(ROOT, 'context', 'system', 'GLOSSARY_REF.md');
+const GOLD_STANDARD = path.join(ROOT, 'context', 'system', 'GOLD_STANDARD.md');
 
 const COLORS = {
   reset: '\u001b[0m',
@@ -229,22 +236,54 @@ function main() {
     return;
   }
 
-  const tmpFile = path.join(ROOT, '.tmp-prompt.md');
-  const prompt = fs.readFileSync(PROMPT_FILE, 'utf8') + `\n\nSection: ${relSection}\n`;
-  fs.writeFileSync(tmpFile, prompt);
+  const injectedContext = [
+    { name: 'PROMPT: create-next-version.md', path: PROMPT_FILE },
+    { name: 'TEMPLATE: SECTION.template.md', path: SECTION_TEMPLATE },
+    { name: 'TEMPLATE: step-by-step.template.md', path: STEP_BY_STEP_TEMPLATE },
+    { name: 'GUIDE: PROCESS.md', path: PROCESS_GUIDE },
+    { name: 'GUIDE: STYLE_GUIDE.md', path: STYLE_GUIDE },
+    { name: 'GUIDE: TONE_GUIDE.md', path: TONE_GUIDE },
+    { name: 'GUIDE: AGENT_CONTENT_CHECKLIST.md', path: CHECKLIST },
+    { name: 'GUIDE: GLOSSARY_REF.md', path: GLOSSARY_REF },
+    { name: 'GUIDE: GOLD_STANDARD.md', path: GOLD_STANDARD }
+  ];
+
+  let fullPromptContent = '';
+  for (const { name, path: filePath } of injectedContext) {
+    if (fs.existsSync(filePath)) {
+      fullPromptContent += `\n\n--- CONTEXT_FILE_START: ${name} ---\n`;
+      fullPromptContent += fs.readFileSync(filePath, 'utf8');
+      fullPromptContent += `\n--- CONTEXT_FILE_END: ${name} ---\n\n`;
+    } else {
+      logWarn(`Context file not found: ${filePath}. Skipping injection.`);
+    }
+  }
+
+  // Add the specific section information at the end of the prompt
+  fullPromptContent += `\n\nSection: ${relSection}\n`;
+
+  if (skipCodex) {
+    if (!initial.wroteFiles && !initial.copiedFiles) {
+      ensureNextVersion(sectionPath, { ensureTemplate: true });
+    }
+    logWarn('Skipping Codex execution (dry run).');
+    // For dry run, we can optionally print the fullPromptContent to verify
+    // console.log(fullPromptContent);
+    return;
+  }
 
   try {
     const profileFlag = profile ? `-p ${profile}` : '--dangerously-bypass-approvals-and-sandbox';
-    const cmd = `codex -m gpt-5 ${profileFlag} exec "$(cat "${tmpFile}")"`;
+    // Escape single quotes within the prompt content
+    const escapedPrompt = fullPromptContent.replace(/'/g, "'\\''");
+    const cmd = `codex -m gpt-5 ${profileFlag} exec $'${escapedPrompt}'`; // Use $'...' for ANSI C quoting
     logInfo(`Invoking Codex with model ${color('gpt-5', 'blue')} (${profile ? `profile ${profile}` : 'default profile'})`);
     logDebug(`Command: ${cmd}`);
     execSync(cmd, { stdio: 'inherit', shell: '/bin/bash' });
     logSuccess(`Codex run completed for ${color(versionName, 'blue')}`);
-  } finally {
-    if (fs.existsSync(tmpFile)) {
-      fs.unlinkSync(tmpFile);
-      logDebug(`Removed temp prompt file ${path.relative(ROOT, tmpFile)}`);
-    }
+  } catch (error) {
+    logWarn(`Codex execution failed: ${error.message}`);
+    process.exit(1);
   }
 
   const post = ensureNextVersion(sectionPath, { ensureTemplate: true });

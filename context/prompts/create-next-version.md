@@ -12,7 +12,7 @@ Required input
 1) Resolve the section directory from `Section:`. Abort with a clear message if missing or invalid.
 2) Detect the current highest version `vN` (folders like `v1`, `v2`, ...). If none, set N=0.
 3) Create `vN+1/` with:
-   - `index.md` from `context/templates/SECTION.template.md` (substitute H1 with the section title inferred from folder name; follow `context/system/STYLE_GUIDE.md`).
+   - `index.md`: Use `context/templates/step-by-step.template.md` (preferred for procedural content) or `context/templates/SECTION.template.md`. Refer to `context/system/GOLD_STANDARD.md` for tone and structural examples. Substitute `{{title}}`, `{{slug}}`, `{{date}}`.
    - `referenced.md` as a copy of `index.md` plus inline `[Source: context/…]` per claim/group and a final `Sources:` block.
    - `images/` folder (empty) under `vN+1/`.
 4) Use `context/sources/INDEX.md` to choose materials; start with `quickstart_guides/INDEX.md`, then follow the order in the checklist (mega_deck, setup_guide/screenshots, videos, legacy background).
@@ -40,6 +40,7 @@ Required input
 - Drafts pass the `context/system/AGENT_CONTENT_CHECKLIST.md`.
 
 ## References
+- Gold Standard: `context/system/GOLD_STANDARD.md`
 - Process: `context/system/PROCESS.md`
 - Style: `context/system/STYLE_GUIDE.md`
 - Tone: `context/system/TONE_GUIDE.md`
