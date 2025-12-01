@@ -29,3 +29,8 @@ This project follows a structured content-first approach. Your role is to work w
 - Use `snake_case`, lowercase, ASCII for filenames/folders
 - Keep images local to each section
 - Add visible TODOs for missing details not found in `context/`
+
+## Files NOT for LLM Reading
+**DO NOT read or reference these paths:**
+- `context/.snapshots/**` - Human-only prompt context snapshots for debugging and analysis
+- These files create circular references and are intended only for human consumption
