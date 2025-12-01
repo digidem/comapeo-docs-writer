@@ -1,0 +1,117 @@
+name: Generate Content
+
+on:
+  workflow_dispatch:
+    inputs:
+      section_name:
+        description: 'Section name (e.g., "installing comapeo", "initial use")'
+        required: true
+        type: string
+      model:
+        description: 'Model to use (optional, defaults to gpt-5.1)'
+        required: false
+        type: string
+        default: 'gpt-5.1'
+      engine:
+        description: 'Engine to use (optional: gemini or default)'
+        required: false
+        type: string
+        default: 'default'
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Codex authentication
+        run: |
+          mkdir -p ~/.codex
+
+          # Try to use auth.json if provided, otherwise use API key
+          if [ -n "${{ secrets.CODEX_AUTH_JSON }}" ]; then
+            echo "Setting up Codex with auth.json"
+            echo '${{ secrets.CODEX_AUTH_JSON }}' > ~/.codex/auth.json
+          elif [ -n "${{ secrets.OPENAI_API_KEY }}" ]; then
+            echo "Setting up Codex with API key"
+            cat > ~/.codex/auth.json << 'EOF'
+          {
+            "OPENAI_API_KEY": "${{ secrets.OPENAI_API_KEY }}",
+            "tokens": null
+          }
+          EOF
+          else
+            echo "Error: Neither CODEX_AUTH_JSON nor OPENAI_API_KEY secret is set"
+            exit 1
+          fi
+
+          # Verify auth.json was created
+          if [ ! -f ~/.codex/auth.json ]; then
+            echo "Error: Failed to create auth.json"
+            exit 1
+          fi
+
+      - name: Install Codex CLI
+        run: |
+          # Install Codex CLI (adjust based on actual installation method)
+          # This assumes codex is available via npm or needs to be installed
+          npm install -g @openai/codex || echo "Codex might already be available"
+
+      - name: Generate content
+        run: |
+          # Determine engine flag
+          ENGINE_FLAG=""
+          if [ "${{ inputs.engine }}" != "default" ]; then
+            ENGINE_FLAG="-e ${{ inputs.engine }}"
+          fi
+
+          # Run generation with auto-confirm
+          npm run gen "${{ inputs.section_name }}" -- \
+            -m "${{ inputs.model }}" \
+            ${ENGINE_FLAG} \
+            -y
+
+      - name: Check for generated content
+        id: check_changes
+        run: |
+          git diff --quiet content/ || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and push generated content
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add content/
+          git commit -m "chore: generate content for ${{ inputs.section_name }}
+
+Generated using model: ${{ inputs.model }}
+Engine: ${{ inputs.engine }}
+Triggered by: @${{ github.actor }}"
+          git push
+
+      - name: No changes detected
+        if: steps.check_changes.outputs.changed != 'true'
+        run: |
+          echo "No content changes were generated"
+          echo "This might mean:"
+          echo "  - The section already has the latest version"
+          echo "  - No new content was added by Codex"
+          echo "  - The section name didn't match any existing section"
+
+      - name: Cleanup auth file
+        if: always()
+        run: |
+          rm -f ~/.codex/auth.json
