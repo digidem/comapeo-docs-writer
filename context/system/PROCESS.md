@@ -2,6 +2,7 @@
 
 Use this process to create consistent, versioned documentation. Follow the roadmap, use only `context/` sources, and keep structure and tone aligned.
 
+
 Scope
 - Applies to all sections under `./content/<NN_topic>/<NN_section>/vN/`.
 - Templates are immutable; copy structure from `context/templates/`.
