@@ -10,13 +10,15 @@ Orchestrates AI-driven content generation using OpenAI Codex to create versioned
   - Creates next version folder (`vN/`) for a given section
   - Scaffolds directory structure with `index.md`, `referenced.md`, and `images/`
   - Invokes Codex with prompts from `context/prompts/`
-  - Uses model `gpt-5` by default
+  - Supports `-m`/`--model` to set model (defaults to `gpt-5.1`, or `gemini-3-pro-preview` if `-e gemini` is used)
+  - Supports `-e`/`--engine` to set engine (e.g., `gemini`). **Note: `-y` is implicitly active when engine is `gemini`.**
+  - Supports `-y`/`--yes` to bypass approvals (non-interactive)
   - Supports `--skip-codex` for dry-run testing
   - Validates generated content against templates
 
 - `scripts/gen-all.js` - Batch generator for all sections
   - Iterates through all sections under `content/`
-  - Calls `gen.js` for each section sequentially
+  - Calls `gen.js` for each section sequentially, forwarding flags
   - Exits on first failure to prevent cascading errors
   - Provides colorful progress logging
 
@@ -65,7 +67,7 @@ Orchestrates AI-driven content generation using OpenAI Codex to create versioned
 2. **Version Management** - The system assumes monotonically increasing version numbers (`v1`, `v2`, `v3`...). Do not skip versions.
 3. **Idempotency** - Generation scripts are designed to be re-run safely. They check for existing files before creating.
 4. **Template Integrity** - Templates in `context/templates/` must never be modified by generation scripts. Always copy, never mutate.
-5. **Codex Model Selection** - Default model is `gpt-5`. Changes to model should be environment-configurable, not hardcoded.
+5. **Codex Model Selection** - Default model is `gpt-5.1`. Changes to model should be environment-configurable, not hardcoded.
 6. **Error Handling** - Generation failures should be caught early. If template content remains unchanged after generation, scripts warn the user.
 7. **Sandbox Mode** - Scripts use `--dangerously-bypass-approvals-and-sandbox` flag by default. Production systems should use proper approval profiles.
 8. **Colorful Logging** - Uses ANSI color codes for terminal output (orange for general, green for success, red for warnings). DEBUG mode provides verbose output.
@@ -76,7 +78,7 @@ Orchestrates AI-driven content generation using OpenAI Codex to create versioned
 3. Creates `vN/` directory with `index.md`, `referenced.md`, `images/`
 4. Loads prompt from `context/prompts/create-next-version.md`
 5. Appends section path to prompt
-6. Invokes Codex with `gpt-5` model and full prompt
+6. Invokes Codex with `gpt-5.1` (or configured model) and full prompt
 7. Codex reads templates, sources, style guides, and previous versions
 8. Codex generates content following `SECTION.template.md` structure
 9. Script validates output is not identical to template or previous version

@@ -87,10 +87,22 @@ Reference files:
 
 ### Codex (prompt‑driven generation)
 - `npm run gen:test` — Generate first three missing sections (non-interactive). Uses deck roadmap and sources; in read-only/never mode, Codex outputs an `apply_patch` you can apply manually.
+  - Options: `npm run gen:test -- -m <model> -e <engine> -y` (e.g. `npm run gen:test -- -e gemini`)
 - `npm run gen:all` — Generate all missing sections (non-interactive). Same behavior as above for read-only/never.
+  - Options: `npm run gen:all -- -m <model> -e <engine> -y`
+- `npm run gen` — Generate content for a specific section.
+  - Usage: `npm run gen <section_path> -- [options]`
+  - Options:
+    - `-m, --model <model>`: Set the model (defaults to gpt-5.1, or gemini-3-pro-preview if engine is gemini).
+    - `-e, --engine <engine>`: Set the engine (e.g. gemini). **Note: `-y` is implicitly active when engine is 'gemini'.**
+    - `-y, --yes`: Bypass approval prompts (automatic execution).
+    - `-p, --profile <profile>`: Use a Codex profile.
+    - `--dry-run`: Skip Codex execution.
 - `npm run gen:smoke` — Dry-run sanity check that scaffolds a test section without calling Codex (0 tokens) and verifies a new `v1/` is produced.
-- `npm run gen:next` — Create next version for a specific section. Provide the section path via env var:
-  - `SECTION="content/01_preparing_to_use_comapeo_mobile/01_understanding_comapeo_s_core_concepts_and_functions" npm run gen:next`
+- `npm run gen:next` — Create next version for a content section.
+  - **Smart Selection**: Automatically identifies the next logical section to work on (prioritizes new sections, then lowest versions).
+  - Usage: `npm run gen:next -- [options]` (e.g., `npm run gen:next -- -e gemini`)
+  - Override: To target a specific section, use `npm run gen:next <section_path>` or set `SECTION="<path>" npm run gen:next`.
 - `npm run caption:all` — Propose captions for all images under `context/` (writes sidecars if permitted).
 - `npm run caption` — Propose a caption for a single image (expects path in the interactive session or adapted script).
 - `npm run check:links` — Check Markdown links across the repo (skips external links and template examples).

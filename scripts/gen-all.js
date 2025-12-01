@@ -52,12 +52,14 @@ function listSections() {
 }
 
 function main(){
+  const args = process.argv.slice(2);
   const sections = listSections();
   logInfo(`Running generator for ${sections.length} section(s)`);
   for (const s of sections) {
     const rel = path.relative(ROOT, s);
     logInfo(`→ ${COLORS.blue}${rel}${COLORS.reset}`);
-    const r = spawnSync('node', [path.join('scripts','gen.js'), rel], { stdio: 'inherit' });
+    const childArgs = [path.join('scripts','gen.js'), rel, ...args];
+    const r = spawnSync('node', childArgs, { stdio: 'inherit' });
     if (r.status !== 0) {
       logWarn(`gen failed for section: ${rel}`);
       process.exit(r.status);

@@ -8,7 +8,6 @@ Because materials will be the result of a collaborative process, with contributi
 
 ### Tone and language
 See `context/system/TONE_GUIDE.md` for voice and language. This Style Guide focuses on structure and formatting.
-🟢
 
 ### Structure and style
 
@@ -22,7 +21,6 @@ See `context/system/TONE_GUIDE.md` for voice and language. This Style Guide focu
     2. Hero image
     3. Table of contents (in this page we’ll learn…)
     4. Subtitles
-🔵
 
 ## Links and callouts
 For callouts (💡 Tip, 👉🏾 More) see `context/system/TONE_GUIDE.md`.
@@ -33,40 +31,23 @@ Limit hyperlinked text to the following specific formats:
 - Go to 🔗 [**Title of linked page → page section**](/docs/page-slug/#section-slug)
 
 Do not hyperlink arbitrary words in the middle of sentences. Use the dedicated "Go to 🔗" format.
-🟤
 
 ## Titles
 
 - Keep them short and simple.
 - Use verb action-oriented headers, ie. “Understanding Exchange”.
-- Use feature names clearly. Capitalize them and write them in bold.⚪
+- Use feature names clearly. Capitalize them and write them in bold.
 
 ## Subtitles
 
 - Break down large chunks of text into smaller paragraphs. This makes information more accessible to diverse kinds of readers.
 - If your section is more than two paragraphs long, consider adding subtitles to improve readability
-- Number step subtitles, consequently, and give them a title of 2-6 .⚫
+- Number step subtitles, consequently, and give them a title of 2-6 .
 
 ## Writing with visuals
 
 - As you draft, add ideas for images that will support readers with the content.
 - Think of images as complementary -  they support the text but the text should be clear enough alone.
-### Questions for PS team
-
-- Should features be capitalized? (Exchange, Multi Projects)
-    - Everywhere yes
-- Should feature be in bold? (**Exchange, Multi Projects**)
-    - only in intro/description paragraph
-- Should steps have a title or just be listed as Step1, Step 2 (and so on)?  to explore still
-
-### Feedback
-
-### Other notes
-
-Notes from María and Aldo kick off meeting:
-
-[PS Style Guide worknsession September 4, 2025 ](https://www.notion.so/PS-Style-Guide-worknsession-2641b08162d5803b8157fe3c859cd3f2?pvs=21) meeting
-🟣
 
 ## Sources and citations
 Follow `context/system/AGENT_CONTENT_CHECKLIST.md` for source lookup order and citation rules. Cite only `context/` files, and place “Sources:” only in `referenced.md`.

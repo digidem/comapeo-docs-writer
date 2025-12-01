@@ -1,51 +1,50 @@
 # Create Next Version For a Section
 
-- Purpose: Generate the next version (vN+1) for a specific section, based on templates and sources.
+- Purpose: Populate the next version of documentation with content from sources.
 
 Required input
-- Section path (relative to repo root), e.g.:
-  - `content/01_preparing_to_use_comapeo_mobile/01_understanding_comapeo_s_core_concepts_and_functions`
-- This prompt expects the section path to be provided at the end of the user message as:
-  - `Section: <path>`
+- Target version directory (relative to repo root), e.g.: `content/01_topic/01_section/v2`
+- This is provided at the end of the prompt as: `Target: <path>`
 
 ## Steps
-1) Resolve the section directory from `Section:`. Abort with a clear message if missing or invalid.
-2) Detect the current highest version `vN` (folders like `v1`, `v2`, ...). If none, set N=0.
-3) Create `vN+1/` with:
-   - `index.md`: Use `context/templates/step-by-step.template.md` (preferred for procedural content) or `context/templates/SECTION.template.md`. Refer to `context/system/GOLD_STANDARD.md` for tone and structural examples. Substitute `{{title}}`, `{{slug}}`, `{{date}}`.
-   - `referenced.md` as a copy of `index.md` plus inline `[Source: context/…]` per claim/group and a final `Sources:` block.
-   - `images/` folder (empty) under `vN+1/`.
-4) Use `context/sources/INDEX.md` to choose materials; start with `quickstart_guides/INDEX.md`, then follow the order in the checklist (mega_deck, setup_guide/screenshots, videos, legacy background).
-5) Keep prose concise and scannable; use imperative tone (`context/system/TONE_GUIDE.md`).
-6) Do not create a `TODO.md`; use `context/templates/TODO.template.md` only as a thinking aid.
+1) **Source Check (CRITICAL)**:
+   - Search `context/sources/` for material specifically relevant to this section's topic.
+   - Check `context/sources/quickstart_guides/INDEX.md` and `context/content_deck/INDEX.md` first.
+   - **IF NO SPECIFIC SOURCE MATERIAL IS FOUND**: STOP. Do not generate generic filler content. Output "NO SPECIFIC SOURCE FOUND" and exit.
+
+2) **Content Generation**:
+   - The target directory (`Target:`) has been initialized with `index.md` and `referenced.md` (containing templates).
+   - **Plan**: Focus on the specific section topic (e.g., purpose, offline features, collaboration steps) based *only* on found sources.
+   - **Image Handling**:
+     - Identify relevant hero or screenshot images in `context/sources/`.
+     - **COPY** them into `<Target>/images/` (do not link to `context/` directly in the final markdown).
+     - Use relative links in markdown: `![Alt text](./images/filename.png)`.
+   - **Overwrite `index.md`**: Write action-oriented content.
+     - Adhere to `context/system/STYLE_GUIDE.md` and `GOLD_STANDARD.md`.
+     - If the content is procedural, follow the structure of `context/templates/step-by-step.template.md`.
+     - Otherwise, follow `context/templates/SECTION.template.md`.
+   - **Overwrite `referenced.md`**: Copy the new `index.md` content and add:
+     - Inline `[Source: context/...]` citations for every claim.
+     - A `Sources:` block at the end listing all files used.
+
+3) **Quality Control**:
+   - Ensure no `TODO` files are created (use the template only for thinking).
+   - Ensure images are referenced correctly (prefer existing `context/sources` images; else use placeholders).
+   - Verify against `context/system/AGENT_CONTENT_CHECKLIST.md`.
 
 ## Read‑only / approvals=never fallback
-- If you cannot write files, output a single apply_patch block with minimal diffs to add:
-  - `content/.../vN+1/index.md`
-  - `content/.../vN+1/referenced.md`
-- Use this exact envelope:
+- Output a single `apply_patch` block to update the files:
 ```
 *** Begin Patch
-*** Add File: content/.../vN+1/index.md
-[# Title]
-[Body per SECTION.template.md]
-*** Add File: content/.../vN+1/referenced.md
-[# Title]
-[Body matching index.md with [Source: context/…] annotations]
+*** Add File: <Target>/index.md
+[Content]
+*** Add File: <Target>/referenced.md
+[Content with citations]
 *** End Patch
 ```
 
-## Acceptance
-- A new `vN+1/` folder with `index.md` and `referenced.md` is created under the specified section.
-- Drafts pass the `context/system/AGENT_CONTENT_CHECKLIST.md`.
-
 ## References
-- Gold Standard: `context/system/GOLD_STANDARD.md`
 - Process: `context/system/PROCESS.md`
-- Style: `context/system/STYLE_GUIDE.md`
-- Tone: `context/system/TONE_GUIDE.md`
-- Checklist: `context/system/AGENT_CONTENT_CHECKLIST.md`
-- Glossary: `context/system/GLOSSARY_REF.md`
+- Sources: `context/sources/INDEX.md`
 - Templates: `context/templates/INDEX.md`
-- Sources: `context/sources/INDEX.md`, `context/content_deck/INDEX.md`
 

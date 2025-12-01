@@ -23,11 +23,22 @@ function listSections() {
 }
 
 function main(){
-  const n = parseInt(process.argv[2] || '3', 10);
+  const args = process.argv.slice(2);
+  let n = 3;
+  let flags = [];
+  
+  if (args.length > 0 && !isNaN(parseInt(args[0])) && !args[0].startsWith('-')) {
+    n = parseInt(args[0], 10);
+    flags = args.slice(1);
+  } else {
+    flags = args;
+  }
+
   const sections = listSections().slice(0, n);
   for (const s of sections) {
     const rel = path.relative(ROOT, s);
-    const r = spawnSync('node', [path.join('scripts','gen.js'), rel], { stdio: 'inherit' });
+    const childArgs = [path.join('scripts','gen.js'), rel, ...flags];
+    const r = spawnSync('node', childArgs, { stdio: 'inherit' });
     if (r.status !== 0) {
       console.error('gen failed for section:', rel);
       process.exit(r.status);
