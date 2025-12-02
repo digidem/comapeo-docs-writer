@@ -2,18 +2,16 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const {
+  loadContextConfig,
+  loadContextContent,
+  validateContextFiles,
+  getContextStats,
+  listContextSets
+} = require('./context-loader');
 
 const ROOT = process.cwd();
 const CONTENT_ROOT = path.join(ROOT, 'content');
-const PROMPT_FILE = path.join(ROOT, 'context', 'prompts', 'create-next-version.md');
-const SECTION_TEMPLATE = path.join(ROOT, 'context', 'templates', 'SECTION.template.md');
-const STEP_BY_STEP_TEMPLATE = path.join(ROOT, 'context', 'templates', 'step-by-step.template.md');
-const PROCESS_GUIDE = path.join(ROOT, 'context', 'system', 'PROCESS.md');
-const STYLE_GUIDE = path.join(ROOT, 'context', 'system', 'STYLE_GUIDE.md');
-const TONE_GUIDE = path.join(ROOT, 'context', 'system', 'TONE_GUIDE.md');
-const CHECKLIST = path.join(ROOT, 'context', 'system', 'AGENT_CONTENT_CHECKLIST.md');
-const GLOSSARY_REF = path.join(ROOT, 'context', 'system', 'GLOSSARY_REF.md');
-const GOLD_STANDARD = path.join(ROOT, 'context', 'system', 'GOLD_STANDARD.md');
 
 const COLORS = {
   reset: '\u001b[0m',
@@ -154,7 +152,7 @@ function findBestMatchingSection(query) {
   return null;
 }
 
-function ensureNextVersion(sectionPath, { copyFromPrevious = false, ensureTemplate = false } = {}) {
+function ensureNextVersion(sectionPath, { copyFromPrevious = false, ensureTemplate = false, sectionTemplatePath = null } = {}) {
   const entries = fs.readdirSync(sectionPath, { withFileTypes: true });
   let maxVersion = 0;
   for (const entry of entries) {
@@ -184,7 +182,20 @@ function ensureNextVersion(sectionPath, { copyFromPrevious = false, ensureTempla
     logDebug(`Ensured images directory ${path.relative(ROOT, imagesDir)}`);
   }
 
-  const template = fs.readFileSync(SECTION_TEMPLATE, 'utf8');
+  // Load section template
+  let template;
+  if (sectionTemplatePath && fs.existsSync(sectionTemplatePath)) {
+    template = fs.readFileSync(sectionTemplatePath, 'utf8');
+  } else {
+    // Fallback to default template location for backward compatibility
+    const defaultTemplatePath = path.join(ROOT, 'context', 'templates', 'SECTION.template.md');
+    if (fs.existsSync(defaultTemplatePath)) {
+      template = fs.readFileSync(defaultTemplatePath, 'utf8');
+      logWarn(`Using default section template: ${path.relative(ROOT, defaultTemplatePath)}`);
+    } else {
+      throw new Error(`Section template not found. Tried: ${sectionTemplatePath || 'not specified'} and ${defaultTemplatePath}`);
+    }
+  }
   const sectionTitle = titleCaseName(path.basename(sectionPath));
   const filled = template.replace(/\[SECTION TITLE\]/g, sectionTitle);
 
@@ -312,6 +323,31 @@ function main() {
   let engine = null;
   let autoConfirm = false;
   let showHelp = false;
+  let contextSet = process.env.CONTEXT_SET || null;
+
+  // Check for help flag early
+  if (args.includes('-h') || args.includes('--help')) {
+    console.log(`
+Usage: npm run gen [options] [section]
+
+Options:
+  -p, --profile PROFILE    Use specific Codex profile
+  --skip-codex, --dry-run  Skip Codex execution (dry run)
+  -m, --model MODEL        Specify AI model (default: gpt-5.1)
+  -e, --engine ENGINE      Specify AI engine (gemini, etc.)
+  -y, --yes                Auto-confirm all prompts
+  -C, --context-set SET    Use specific context set (default: standard)
+  -h, --help               Show this help message
+
+Examples:
+  npm run gen
+  npm run gen -- --skip-codex
+  npm run gen -- --context-set minimal
+  npm run gen -- content/01_topic/07_section
+  npm run gen -- "installing comapeo"  # Fuzzy search
+`);
+    return;
+  }
 
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
@@ -329,6 +365,8 @@ function main() {
       autoConfirm = true;
     } else if (arg === '-h' || arg === '--help') {
       showHelp = true;
+    } else if (arg === '--context-set' || arg === '-C') {
+      contextSet = args[++i];
     } else if (!arg.startsWith('-') && !sectionArg) {
       sectionArg = arg;
     }
@@ -400,14 +438,41 @@ function main() {
     }
   }
 
-  const sectionPath = sectionArg ? path.join(ROOT, sectionArg) : sections[0];
+  const sectionPath = sectionArg ? path.join(ROOT, sectionArg) : allSections[0];
   if (!fs.existsSync(sectionPath)) {
     logWarn(`Section does not exist: ${sectionPath}`);
     process.exit(1);
   }
   const relSection = path.relative(ROOT, sectionPath);
   logInfo(`Preparing next version for ${color(relSection, 'blue')}`);
-  
+
+  // Load context configuration early so we can get template path
+  let contextConfig;
+  try {
+    contextConfig = loadContextConfig(contextSet);
+    logInfo(`Using context set: ${color(contextConfig.contextSet, 'blue')} (${color(contextConfig.contextSetConfig.name, 'green')})`);
+  } catch (error) {
+    logWarn(`Failed to load context configuration: ${error.message}`);
+    process.exit(1);
+  }
+
+  // Validate context files
+  const validation = validateContextFiles(contextConfig.contextSetConfig.files);
+  if (!validation.valid) {
+    logWarn(`Missing required context files:`);
+    validation.missingRequired.forEach(file => {
+      logWarn(`  - ${file.name} (${file.path})`);
+    });
+    process.exit(1);
+  }
+
+  // Find section template path from configuration
+  const sectionTemplateFile = contextConfig.contextSetConfig.files.find(file => file.id === 'section-template');
+  const sectionTemplatePath = sectionTemplateFile ? sectionTemplateFile.absolutePath : null;
+  if (sectionTemplatePath) {
+    logDebug(`Using section template from config: ${path.relative(ROOT, sectionTemplatePath)}`);
+  }
+
   // Resolve model and enforce autoConfirm for gemini engine
   let targetModel = model;
   let mcpFlags = getMcpDisableFlags(); // Always disable MCPs for gen scripts
@@ -419,7 +484,7 @@ function main() {
     } else {
       targetModel = 'gpt-5.1';
     }
-  } else if (engine === 'gemini') { 
+  } else if (engine === 'gemini') {
     // If model is explicitly set, but engine is gemini, still force autoConfirm
     autoConfirm = true;
   }
@@ -429,7 +494,8 @@ function main() {
 
   const initial = ensureNextVersion(sectionPath, {
     copyFromPrevious: !skipCodex,
-    ensureTemplate: skipCodex
+    ensureTemplate: skipCodex,
+    sectionTemplatePath: sectionTemplatePath
   });
   const { versionDir, versionName } = initial;
   const relVersion = path.relative(ROOT, versionDir);
@@ -438,33 +504,22 @@ function main() {
 
   if (skipCodex) {
     if (!initial.wroteFiles && !initial.copiedFiles) {
-      ensureNextVersion(sectionPath, { ensureTemplate: true });
+      ensureNextVersion(sectionPath, {
+        ensureTemplate: true,
+        sectionTemplatePath: sectionTemplatePath
+      });
     }
     logWarn('Skipping Codex execution (dry run).');
     return;
   }
 
-  const injectedContext = [
-    { name: 'PROMPT: create-next-version.md', path: PROMPT_FILE },
-    { name: 'TEMPLATE: SECTION.template.md', path: SECTION_TEMPLATE },
-    { name: 'TEMPLATE: step-by-step.template.md', path: STEP_BY_STEP_TEMPLATE },
-    { name: 'GUIDE: PROCESS.md', path: PROCESS_GUIDE },
-    { name: 'GUIDE: STYLE_GUIDE.md', path: STYLE_GUIDE },
-    { name: 'GUIDE: TONE_GUIDE.md', path: TONE_GUIDE },
-    { name: 'GUIDE: AGENT_CONTENT_CHECKLIST.md', path: CHECKLIST },
-    { name: 'GUIDE: GLOSSARY_REF.md', path: GLOSSARY_REF },
-    { name: 'GUIDE: GOLD_STANDARD.md', path: GOLD_STANDARD }
-  ];
-
-  let fullPromptContent = '';
-  for (const { name, path: filePath } of injectedContext) {
-    if (fs.existsSync(filePath)) {
-      fullPromptContent += `\n\n--- CONTEXT_FILE_START: ${name} ---\n`;
-      fullPromptContent += fs.readFileSync(filePath, 'utf8');
-      fullPromptContent += `\n--- CONTEXT_FILE_END: ${name} ---\n\n`;
-    } else {
-      logWarn(`Context file not found: ${filePath}. Skipping injection.`);
-    }
+  // Load context content
+  let fullPromptContent;
+  try {
+    fullPromptContent = loadContextContent(contextConfig.contextSetConfig.files);
+  } catch (error) {
+    logWarn(`Failed to load context content: ${error.message}`);
+    process.exit(1);
   }
 
   // Add the specific section information at the end of the prompt

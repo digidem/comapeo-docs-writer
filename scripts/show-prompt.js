@@ -1,35 +1,16 @@
 #!/usr/bin/env node
 const fs = require('fs');
 const path = require('path');
+const {
+  loadContextConfig,
+  getContextStats,
+  loadContextContent,
+  validateContextFiles,
+  listContextSets,
+  formatBytes
+} = require('./context-loader');
 
 const ROOT = process.cwd();
-const PROMPT_FILE = path.join(ROOT, 'context', 'prompts', 'create-next-version.md');
-const SECTION_TEMPLATE = path.join(ROOT, 'context', 'templates', 'SECTION.template.md');
-const STEP_BY_STEP_TEMPLATE = path.join(ROOT, 'context', 'templates', 'step-by-step.template.md');
-const PROCESS_GUIDE = path.join(ROOT, 'context', 'system', 'PROCESS.md');
-const STYLE_GUIDE = path.join(ROOT, 'context', 'system', 'STYLE_GUIDE.md');
-const TONE_GUIDE = path.join(ROOT, 'context', 'system', 'TONE_GUIDE.md');
-const CHECKLIST = path.join(ROOT, 'context', 'system', 'AGENT_CONTENT_CHECKLIST.md');
-const GLOSSARY_REF = path.join(ROOT, 'context', 'system', 'GLOSSARY_REF.md');
-const GOLD_STANDARD = path.join(ROOT, 'context', 'system', 'GOLD_STANDARD.md');
-
-const CONTEXT_FILES = [
-  { name: 'PROMPT: create-next-version.md', path: PROMPT_FILE, category: 'Core Prompt' },
-  { name: 'TEMPLATE: SECTION.template.md', path: SECTION_TEMPLATE, category: 'Templates' },
-  { name: 'TEMPLATE: step-by-step.template.md', path: STEP_BY_STEP_TEMPLATE, category: 'Templates' },
-  { name: 'GUIDE: PROCESS.md', path: PROCESS_GUIDE, category: 'Process Guides' },
-  { name: 'GUIDE: STYLE_GUIDE.md', path: STYLE_GUIDE, category: 'Style & Tone' },
-  { name: 'GUIDE: TONE_GUIDE.md', path: TONE_GUIDE, category: 'Style & Tone' },
-  { name: 'GUIDE: AGENT_CONTENT_CHECKLIST.md', path: CHECKLIST, category: 'Quality Controls' },
-  { name: 'GUIDE: GLOSSARY_REF.md', path: GLOSSARY_REF, category: 'References' },
-  { name: 'GUIDE: GOLD_STANDARD.md', path: GOLD_STANDARD, category: 'Quality Controls' }
-];
-
-function formatBytes(bytes) {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
-}
 
 function estimateTokens(text) {
   // Rough estimate: ~4 characters per token
@@ -113,6 +94,8 @@ function main() {
   let showStats = true;
   let section = null;
   let outputFile = null;
+  let contextSet = null;
+  let listSets = false;
 
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
@@ -125,26 +108,64 @@ function main() {
     } else if (arg === '--output' || arg === '-o') {
       outputFile = args[++i];
       showContent = true; // Auto-enable content when outputting to file
+    } else if (arg === '--context-set' || arg === '-C') {
+      contextSet = args[++i];
+    } else if (arg === '--list-sets' || arg === '-l') {
+      listSets = true;
     } else if (arg === '--help' || arg === '-h') {
       console.log(`
 Usage: npm run show-prompt [options]
 
 Options:
-  -c, --content      Show full content of each file (default: summary only)
-  --no-stats         Hide statistics summary
-  -s, --section PATH Specify target section path
-  -o, --output FILE  Write output to markdown file (auto-enables --content)
-  -h, --help         Show this help message
+  -c, --content           Show full content of each file (default: summary only)
+  --no-stats              Hide statistics summary
+  -s, --section PATH      Specify target section path
+  -o, --output FILE       Write output to markdown file (auto-enables --content)
+  -C, --context-set NAME  Use specific context set (default: standard)
+  -l, --list-sets         List available context sets
+  -h, --help              Show this help message
 
 Examples:
   npm run show-prompt
   npm run show-prompt -- --content
   npm run show-prompt -- --output prompt-context.md
   npm run show-prompt -- --section content/01_preparing_to_use_comapeo_mobile/07_installing_comapeo_and_onboarding
+  npm run show-prompt -- --context-set minimal
+  npm run show-prompt -- --list-sets
 `);
       return;
     }
   }
+
+  // Handle --list-sets option
+  if (listSets) {
+    const sets = listContextSets();
+    if (sets.length === 0) {
+      console.log('No context sets found. Make sure context-config.json exists.');
+      return;
+    }
+
+    console.log('Available context sets:');
+    for (const set of sets) {
+      console.log(`  ${set.key}${set.isDefault ? ' (default)' : ''}`);
+      console.log(`    Name: ${set.name}`);
+      console.log(`    Description: ${set.description}`);
+      console.log(`    Files: ${set.fileCount}`);
+      console.log();
+    }
+    return;
+  }
+
+  // Load context configuration
+  let contextConfig;
+  try {
+    contextConfig = loadContextConfig(contextSet);
+  } catch (error) {
+    console.error(`❌ Failed to load context configuration: ${error.message}`);
+    process.exit(1);
+  }
+
+  const contextFiles = contextConfig.contextSetConfig.files;
 
   // Set file output mode if outputFile is specified
   if (outputFile) {
@@ -156,13 +177,14 @@ Examples:
 
   output('This shows the complete context that gets injected into each generation call.');
   output('The gen.js script combines these files into a single prompt for the AI.');
+  output(`Using context set: ${contextConfig.contextSet} (${contextConfig.contextSetConfig.name})`);
   output('');
 
   // Table of Contents
   printSection('📑 TABLE OF CONTENTS');
 
   const categories = {};
-  for (const file of CONTEXT_FILES) {
+  for (const file of contextFiles) {
     if (!categories[file.category]) {
       categories[file.category] = [];
     }
@@ -178,7 +200,7 @@ Examples:
       output(category + ':');
     }
     for (const file of files) {
-      const exists = fs.existsSync(file.path);
+      const exists = fs.existsSync(file.absolutePath);
       const status = exists ? '✓' : '✗';
       if (isFileOutput) {
         output(`${fileIndex}. [${status}] ${file.name}`);
@@ -198,9 +220,9 @@ Examples:
     let totalLines = 0;
     let filesFound = 0;
 
-    for (const file of CONTEXT_FILES) {
-      if (fs.existsSync(file.path)) {
-        const content = fs.readFileSync(file.path, 'utf8');
+    for (const file of contextFiles) {
+      if (fs.existsSync(file.absolutePath)) {
+        const content = fs.readFileSync(file.absolutePath, 'utf8');
         const size = Buffer.byteLength(content, 'utf8');
         totalSize += size;
         totalTokens += estimateTokens(content);
@@ -210,7 +232,7 @@ Examples:
     }
 
     if (isFileOutput) {
-      output(`- **Files Found**: ${filesFound}/${CONTEXT_FILES.length}`);
+      output(`- **Files Found**: ${filesFound}/${contextFiles.length}`);
       output(`- **Total Size**: ${formatBytes(totalSize)}`);
       output(`- **Total Lines**: ${totalLines.toLocaleString()}`);
       output(`- **Total Tokens**: ~${totalTokens.toLocaleString()}`);
@@ -219,7 +241,7 @@ Examples:
         output(`- **Target Section**: ${section}`);
       }
     } else {
-      output(`Files Found:    ${filesFound}/${CONTEXT_FILES.length}`);
+      output(`Files Found:    ${filesFound}/${contextFiles.length}`);
       output(`Total Size:     ${formatBytes(totalSize)}`);
       output(`Total Lines:    ${totalLines.toLocaleString()}`);
       output(`Total Tokens:   ~${totalTokens.toLocaleString()}`);
@@ -246,9 +268,9 @@ Examples:
     }
 
     for (const file of files) {
-      if (fs.existsSync(file.path)) {
-        const content = fs.readFileSync(file.path, 'utf8');
-        printFileInfo(file.name, file.path, content);
+      if (fs.existsSync(file.absolutePath)) {
+        const content = fs.readFileSync(file.absolutePath, 'utf8');
+        printFileInfo(file.name, file.absolutePath, content);
 
         if (showContent) {
           if (isFileOutput) {
@@ -283,12 +305,12 @@ Examples:
         if (isFileOutput) {
           output(`### ❌ ${file.name}`);
           output('');
-          output(`- **Path**: \`${path.relative(ROOT, file.path)}\``);
+          output(`- **Path**: \`${path.relative(ROOT, file.absolutePath)}\``);
           output(`- **Status**: FILE NOT FOUND`);
           output('');
         } else {
           output(`❌ ${file.name}`);
-          output(`   Path: ${path.relative(ROOT, file.path)}`);
+          output(`   Path: ${path.relative(ROOT, file.absolutePath)}`);
           output(`   Status: FILE NOT FOUND\n`);
         }
       }

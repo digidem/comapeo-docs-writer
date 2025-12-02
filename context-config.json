@@ -1,0 +1,230 @@
+{
+  "$schema": "./schemas/context-config.schema.json",
+  "version": "1.0.0",
+  "description": "Configuration for context files injected into generation prompts",
+  "defaultContextSet": "standard",
+  "contextSets": {
+    "standard": {
+      "name": "Standard Generation Context",
+      "description": "Default context for regular content generation. Matches the original hardcoded 9 files.",
+      "files": [
+        {
+          "id": "main-prompt",
+          "name": "PROMPT: create-next-version.md",
+          "path": "context/prompts/create-next-version.md",
+          "category": "Core Prompt",
+          "required": true,
+          "injectOrder": 1,
+          "notes": "Primary prompt that defines the generation task"
+        },
+        {
+          "id": "section-template",
+          "name": "TEMPLATE: SECTION.template.md",
+          "path": "context/templates/SECTION.template.md",
+          "category": "Templates",
+          "required": true,
+          "injectOrder": 2,
+          "notes": "Main template for section structure"
+        },
+        {
+          "id": "step-by-step-template",
+          "name": "TEMPLATE: step-by-step.template.md",
+          "path": "context/templates/step-by-step.template.md",
+          "category": "Templates",
+          "required": true,
+          "injectOrder": 3,
+          "notes": "Template for procedural content"
+        },
+        {
+          "id": "process-guide",
+          "name": "GUIDE: PROCESS.md",
+          "path": "context/system/PROCESS.md",
+          "category": "Process Guides",
+          "required": true,
+          "injectOrder": 4,
+          "notes": "Workflow and process documentation"
+        },
+        {
+          "id": "style-guide",
+          "name": "GUIDE: STYLE_GUIDE.md",
+          "path": "context/system/STYLE_GUIDE.md",
+          "category": "Style & Tone",
+          "required": true,
+          "injectOrder": 5,
+          "notes": "Writing style and formatting guidelines"
+        },
+        {
+          "id": "tone-guide",
+          "name": "GUIDE: TONE_GUIDE.md",
+          "path": "context/system/TONE_GUIDE.md",
+          "category": "Style & Tone",
+          "required": true,
+          "injectOrder": 6,
+          "notes": "Voice and tone guidelines"
+        },
+        {
+          "id": "checklist",
+          "name": "GUIDE: AGENT_CONTENT_CHECKLIST.md",
+          "path": "context/system/AGENT_CONTENT_CHECKLIST.md",
+          "category": "Quality Controls",
+          "required": true,
+          "injectOrder": 7,
+          "notes": "Validation checklist for generated content"
+        },
+        {
+          "id": "glossary",
+          "name": "GUIDE: GLOSSARY_REF.md",
+          "path": "context/system/GLOSSARY_REF.md",
+          "category": "References",
+          "required": true,
+          "injectOrder": 8,
+          "notes": "Terminology and glossary reference"
+        },
+        {
+          "id": "gold-standard",
+          "name": "GUIDE: GOLD_STANDARD.md",
+          "path": "context/system/GOLD_STANDARD.md",
+          "category": "Quality Controls",
+          "required": true,
+          "injectOrder": 9,
+          "notes": "Example of high-quality content"
+        }
+      ]
+    },
+    "minimal": {
+      "name": "Minimal Context",
+      "description": "Reduced context for testing or quick iterations. Includes only essential files.",
+      "files": [
+        {
+          "id": "main-prompt",
+          "name": "PROMPT: create-next-version.md",
+          "path": "context/prompts/create-next-version.md",
+          "category": "Core Prompt",
+          "required": true,
+          "injectOrder": 1,
+          "notes": "Primary prompt that defines the generation task"
+        },
+        {
+          "id": "section-template",
+          "name": "TEMPLATE: SECTION.template.md",
+          "path": "context/templates/SECTION.template.md",
+          "category": "Templates",
+          "required": true,
+          "injectOrder": 2,
+          "notes": "Main template for section structure"
+        },
+        {
+          "id": "checklist",
+          "name": "GUIDE: AGENT_CONTENT_CHECKLIST.md",
+          "path": "context/system/AGENT_CONTENT_CHECKLIST.md",
+          "category": "Quality Controls",
+          "required": true,
+          "injectOrder": 3,
+          "notes": "Validation checklist for generated content"
+        }
+      ]
+    },
+    "extended": {
+      "name": "Extended Context",
+      "description": "Additional context for complex sections or new contributors. Includes all standard files plus content roadmap.",
+      "files": [
+        {
+          "id": "main-prompt",
+          "name": "PROMPT: create-next-version.md",
+          "path": "context/prompts/create-next-version.md",
+          "category": "Core Prompt",
+          "required": true,
+          "injectOrder": 1,
+          "notes": "Primary prompt that defines the generation task"
+        },
+        {
+          "id": "section-template",
+          "name": "TEMPLATE: SECTION.template.md",
+          "path": "context/templates/SECTION.template.md",
+          "category": "Templates",
+          "required": true,
+          "injectOrder": 2,
+          "notes": "Main template for section structure"
+        },
+        {
+          "id": "step-by-step-template",
+          "name": "TEMPLATE: step-by-step.template.md",
+          "path": "context/templates/step-by-step.template.md",
+          "category": "Templates",
+          "required": true,
+          "injectOrder": 3,
+          "notes": "Template for procedural content"
+        },
+        {
+          "id": "process-guide",
+          "name": "GUIDE: PROCESS.md",
+          "path": "context/system/PROCESS.md",
+          "category": "Process Guides",
+          "required": true,
+          "injectOrder": 4,
+          "notes": "Workflow and process documentation"
+        },
+        {
+          "id": "style-guide",
+          "name": "GUIDE: STYLE_GUIDE.md",
+          "path": "context/system/STYLE_GUIDE.md",
+          "category": "Style & Tone",
+          "required": true,
+          "injectOrder": 5,
+          "notes": "Writing style and formatting guidelines"
+        },
+        {
+          "id": "tone-guide",
+          "name": "GUIDE: TONE_GUIDE.md",
+          "path": "context/system/TONE_GUIDE.md",
+          "category": "Style & Tone",
+          "required": true,
+          "injectOrder": 6,
+          "notes": "Voice and tone guidelines"
+        },
+        {
+          "id": "checklist",
+          "name": "GUIDE: AGENT_CONTENT_CHECKLIST.md",
+          "path": "context/system/AGENT_CONTENT_CHECKLIST.md",
+          "category": "Quality Controls",
+          "required": true,
+          "injectOrder": 7,
+          "notes": "Validation checklist for generated content"
+        },
+        {
+          "id": "glossary",
+          "name": "GUIDE: GLOSSARY_REF.md",
+          "path": "context/system/GLOSSARY_REF.md",
+          "category": "References",
+          "required": true,
+          "injectOrder": 8,
+          "notes": "Terminology and glossary reference"
+        },
+        {
+          "id": "gold-standard",
+          "name": "GUIDE: GOLD_STANDARD.md",
+          "path": "context/system/GOLD_STANDARD.md",
+          "category": "Quality Controls",
+          "required": true,
+          "injectOrder": 9,
+          "notes": "Example of high-quality content"
+        },
+        {
+          "id": "content-deck",
+          "name": "ROADMAP: content_deck/INDEX.md",
+          "path": "context/content_deck/INDEX.md",
+          "category": "Content Roadmap",
+          "required": false,
+          "injectOrder": 10,
+          "notes": "Content roadmap and priorities"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "created": "2025-12-01",
+    "lastModified": "2025-12-01",
+    "totalContextSets": 3,
+    "notes": "Add new context sets by copying and modifying existing ones. Use 'defaultContextSet' to control which set is used by default. Files are injected in injectOrder sequence (ascending)."
+  }
+}

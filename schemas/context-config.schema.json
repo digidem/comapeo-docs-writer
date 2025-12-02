@@ -1,0 +1,98 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Context Configuration Schema",
+  "description": "Schema for validating context configuration files",
+  "type": "object",
+  "required": ["version", "defaultContextSet", "contextSets"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version of the configuration format"
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable description of this configuration"
+    },
+    "defaultContextSet": {
+      "type": "string",
+      "description": "Key of the default context set to use"
+    },
+    "contextSets": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["name", "files"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Human-readable name of this context set"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of when to use this context set"
+          },
+          "files": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "name", "path", "category"],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9_-]+$",
+                  "description": "Unique identifier for this context file"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Display name for the context file"
+                },
+                "path": {
+                  "type": "string",
+                  "description": "Relative path from project root to the context file"
+                },
+                "category": {
+                  "type": "string",
+                  "description": "Category for grouping in UI/display"
+                },
+                "required": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "Whether this file is required (if missing, generation fails)"
+                },
+                "injectOrder": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "description": "Order in which to inject this file (lower numbers first)"
+                },
+                "notes": {
+                  "type": "string",
+                  "description": "Optional notes about this context file"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "created": {
+          "type": "string",
+          "format": "date"
+        },
+        "lastModified": {
+          "type": "string",
+          "format": "date"
+        },
+        "totalContextSets": {
+          "type": "integer"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
