@@ -1,0 +1,11 @@
+# Reunindo o Equipamento Certo para o CoMapeo
+
+Element Type: Page
+↳ Page Order: 5
+Language: Portuguese
+Parent item: Gathering the Right Equipment for CoMapeo (Gathering%20the%20Right%20Equipment%20for%20CoMapeo%202331b08162d580a1810edbb15a2e0f68.md)
+
+title: Reunindo o Equipamento Certo para o CoMapeo
+
+markdown:
+[Conteúdo formatado em inglês colado aqui da página de atribuição - Resolva todos os comentários!!]

@@ -1,0 +1,6 @@
+# Nueva Página
+
+Element Type: Page
+↳ Page Order: 6
+Language: Spanish
+Parent item: Device Setup and Maintenance for CoMapeo (Device%20Setup%20and%20Maintenance%20for%20CoMapeo%202331b08162d5800daf10f07c30d8abe0.md)

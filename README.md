@@ -5,7 +5,7 @@ A content authoring workspace for CoMapeo Product Support documentation. Write a
 ## Structure
 
 - `context/` — Source of truth and codebase documentation
-  - Module documentation (`01-*.md` through `06-*.md`) explains system architecture for agents
+  - Module documentation (`manual/01-*.md` through `manual/06-*.md`) explains system architecture for agents
   - Style guide, templates, prompts for content generation
   - Source materials (quickstart guides, screenshots, legacy docs)
   - Content roadmap and deck materials
@@ -59,12 +59,12 @@ If you have a bulk export of content (e.g. from Notion) placed in `content/new/`
 
 Reference files:
 - `AGENTS.md` — Agent guide with module reference table
-- `context/01-content-generation-system.md` — Generation scripts and versioning
-- `context/02-documentation-builder.md` — Static site builder and viewer
-- `context/03-context-system.md` — Templates, prompts, sources
-- `context/04-content-storage.md` — Content structure and conventions
-- `context/05-utility-scripts.md` — Validation and maintenance tools
-- `context/06-configuration-infrastructure.md` — Project setup and workflows
+- `context/manual/01-content-generation-system.md` — Generation scripts and versioning
+- `context/manual/02-documentation-builder.md` — Static site builder and viewer
+- `context/manual/03-context-system.md` — Templates, prompts, sources
+- `context/manual/04-content-storage.md` — Content structure and conventions
+- `context/manual/05-utility-scripts.md` — Validation and maintenance tools
+- `context/manual/06-configuration-infrastructure.md` — Project setup and workflows
 - `context/system/STYLE_GUIDE.md`
 - `context/system/AGENT_CONTENT_CHECKLIST.md`
 - `context/templates/SECTION.template.md`
@@ -133,5 +133,5 @@ Reference files:
 
 ### For Agents/Developers
 - Start with `AGENTS.md` for an overview and module reference table
-- When working in a specific module, open the corresponding `context/*.md` file (e.g., `context/01-content-generation-system.md` for generation scripts)
+- When working in a specific module, open the corresponding `context/manual/*.md` file (e.g., `context/manual/01-content-generation-system.md` for generation scripts)
 - Follow the data flow: Context System (inputs) → Content Generation (processing) → Content Storage (outputs) → Documentation Builder (presentation)

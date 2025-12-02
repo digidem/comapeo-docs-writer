@@ -5,8 +5,8 @@
 ## Quick Reference
 
 **I want to...**
-- **Generate content** → `npm run gen:all` or `npm run gen:test` ([details](context/01-content-generation-system.md))
-- **Preview docs locally** → `npm run docs` ([details](context/02-documentation-builder.md))
+- **Generate content** → `npm run gen:all` or `npm run gen:test` ([details](context/manual/01-content-generation-system.md))
+- **Preview docs locally** → `npm run docs` ([details](context/manual/02-documentation-builder.md))
 - **Validate my work** → `npm run check:links` + [`context/system/AGENT_CONTENT_CHECKLIST.md`](context/system/AGENT_CONTENT_CHECKLIST.md)
 - **Understand a module** → See Module Reference table below
 - **Find source materials** → [`context/sources/quickstart_guides/INDEX.md`](context/sources/quickstart_guides/INDEX.md)
@@ -16,12 +16,12 @@
 
 | Module | File | Tags | Summary |
 |--------|------|------|---------|
-| Content Generation System | [`context/01-content-generation-system.md`](context/01-content-generation-system.md) | `generation` `automation` `versioning` | Codex-driven generation scripts, versioning logic, and prompt orchestration |
-| Documentation Builder | [`context/02-documentation-builder.md`](context/02-documentation-builder.md) | `build` `preview` `presentation` | Static site generation, viewer, and local preview server |
-| Context System | [`context/03-context-system.md`](context/03-context-system.md) | `source-of-truth` `templates` `style` | Templates, prompts, style guides, source materials, and content roadmap |
-| Content Storage | [`context/04-content-storage.md`](context/04-content-storage.md) | `content` `versioning` `structure` | Versioned documentation structure, file conventions, and quality gates |
-| Utility Scripts | [`context/05-utility-scripts.md`](context/05-utility-scripts.md) | `validation` `maintenance` `tools` | Validation, image management, formatting, and maintenance tools |
-| Configuration & Infrastructure | [`context/06-configuration-infrastructure.md`](context/06-configuration-infrastructure.md) | `infrastructure` `config` `git` | Project setup, npm scripts, Git conventions, and agent workflows |
+| Content Generation System | [`context/manual/01-content-generation-system.md`](context/manual/01-content-generation-system.md) | `generation` `automation` `versioning` | Codex-driven generation scripts, versioning logic, and prompt orchestration |
+| Documentation Builder | [`context/manual/02-documentation-builder.md`](context/manual/02-documentation-builder.md) | `build` `preview` `presentation` | Static site generation, viewer, and local preview server |
+| Context System | [`context/manual/03-context-system.md`](context/manual/03-context-system.md) | `source-of-truth` `templates` `style` | Templates, prompts, style guides, source materials, and content roadmap |
+| Content Storage | [`context/manual/04-content-storage.md`](context/manual/04-content-storage.md) | `content` `versioning` `structure` | Versioned documentation structure, file conventions, and quality gates |
+| Utility Scripts | [`context/manual/05-utility-scripts.md`](context/manual/05-utility-scripts.md) | `validation` `maintenance` `tools` | Validation, image management, formatting, and maintenance tools |
+| Configuration & Infrastructure | [`context/manual/06-configuration-infrastructure.md`](context/manual/06-configuration-infrastructure.md) | `infrastructure` `config` `git` | Project setup, npm scripts, Git conventions, and agent workflows |
 
 ### Filter by Tag
 - **Content creation**: `generation`, `content`, `source-of-truth`
@@ -149,7 +149,7 @@ git add -A  # ❌ Adds everything indiscriminately
 
 ### For Code Work
 - **Module navigation**: Use table above to find `context/*.md` files
-- **Data flow**: `context/03-context-system.md` (inputs) → `context/01-content-generation-system.md` (processing) → `context/04-content-storage.md` (outputs) → `context/02-documentation-builder.md` (presentation)
+- **Data flow**: `context/manual/03-context-system.md` (inputs) → `context/manual/01-content-generation-system.md` (processing) → `context/manual/04-content-storage.md` (outputs) → `context/manual/02-documentation-builder.md` (presentation)
 - **Adding modules**: Create `context/0N-module-name.md` following established pattern (Purpose, Key Files, Major Functions, Dependencies, Context Engineering Considerations)
 
 ---

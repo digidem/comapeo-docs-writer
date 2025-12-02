@@ -201,7 +201,7 @@ done
 
 ## Related Documentation
 
-- `context/README.md` - Comprehensive system documentation
-- `context/MIGRATION.md` - Migration from hardcoded system
-- `schemas/context-config.schema.json` - Configuration schema
-- `scripts/context-loader.js` - API documentation in code comments
+- `../README.md` - Comprehensive system documentation
+- `./MIGRATION.md` - Migration from hardcoded system
+- `../../schemas/context-config.schema.json` - Configuration schema
+- `../../scripts/context-loader.js` - API documentation in code comments

@@ -3,10 +3,10 @@ const path = require('path');
 const crypto = require('crypto');
 
 const ROOT = process.cwd();
-const SOURCE_DIR = path.join(ROOT, 'content', 'new');
+const SOURCE_DIR = path.join(ROOT, 'content', '_staging', 'new');
 const IMAGES_DIR_NEW = path.join(SOURCE_DIR, 'images');
 const CONTENT_ROOT = path.join(ROOT, 'content');
-const OLD_DIR = path.join(CONTENT_ROOT, 'old');
+const OLD_DIR = path.join(CONTENT_ROOT, '_staging', 'old');
 
 const SECTION_MAP = {
     '10-Preparing to use CoMapeo': '01_preparing_to_use_comapeo_mobile',
@@ -102,12 +102,12 @@ if (fs.existsSync(SOURCE_DIR)) {
 const items = fs.readdirSync(CONTENT_ROOT);
 items.forEach(item => {
     const itemPath = path.join(CONTENT_ROOT, item);
-    if (item === 'new' || item === 'old' || !fs.statSync(itemPath).isDirectory()) {
+    if (item === '_staging' || !fs.statSync(itemPath).isDirectory()) {
         return;
     }
     fs.rmSync(itemPath, { recursive: true, force: true });
 });
-console.log('Cleaned content directory (preserved new/ and old/).');
+console.log('Cleaned content directory (preserved _staging/).');
 
 // --- 2. Analyze Existing Structure ---
 const existingSections = new Map();

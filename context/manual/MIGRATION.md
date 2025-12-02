@@ -279,4 +279,4 @@ If you encounter issues with the migration:
 2. Verify `context-config.json` exists and is valid JSON
 3. Ensure required context files exist at the specified paths
 4. Use `DEBUG=1` environment variable for detailed logging
-5. Refer to `context/README.md` for comprehensive documentation
+- `../README.md` - Comprehensive system documentation

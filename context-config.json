@@ -219,6 +219,76 @@
           "notes": "Content roadmap and priorities"
         }
       ]
+    },
+    "system-manual": {
+      "name": "System Manual",
+      "description": "Full system documentation for agents to understand the codebase architecture and workflows.",
+      "files": [
+        {
+          "id": "gen-system",
+          "name": "DOC: 01-content-generation-system.md",
+          "path": "context/manual/01-content-generation-system.md",
+          "category": "System Manual",
+          "required": true,
+          "injectOrder": 1
+        },
+        {
+          "id": "doc-builder",
+          "name": "DOC: 02-documentation-builder.md",
+          "path": "context/manual/02-documentation-builder.md",
+          "category": "System Manual",
+          "required": true,
+          "injectOrder": 2
+        },
+        {
+          "id": "context-sys",
+          "name": "DOC: 03-context-system.md",
+          "path": "context/manual/03-context-system.md",
+          "category": "System Manual",
+          "required": true,
+          "injectOrder": 3
+        },
+        {
+          "id": "content-store",
+          "name": "DOC: 04-content-storage.md",
+          "path": "context/manual/04-content-storage.md",
+          "category": "System Manual",
+          "required": true,
+          "injectOrder": 4
+        },
+        {
+          "id": "utils",
+          "name": "DOC: 05-utility-scripts.md",
+          "path": "context/manual/05-utility-scripts.md",
+          "category": "System Manual",
+          "required": true,
+          "injectOrder": 5
+        },
+        {
+          "id": "config-infra",
+          "name": "DOC: 06-configuration-infrastructure.md",
+          "path": "context/manual/06-configuration-infrastructure.md",
+          "category": "System Manual",
+          "required": true,
+          "injectOrder": 6
+        },
+        {
+          "id": "migration",
+          "name": "DOC: MIGRATION.md",
+          "path": "context/manual/MIGRATION.md",
+          "category": "System Manual",
+          "required": true,
+          "injectOrder": 7
+        },
+        {
+          "id": "quick-ref",
+          "name": "DOC: QUICK_REFERENCE.md",
+          "path": "context/manual/QUICK_REFERENCE.md",
+          "category": "System Manual",
+          "required": true,
+          "injectOrder": 8
+        }
+      ]
     }
   },
   "metadata": {
