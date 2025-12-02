@@ -75,8 +75,8 @@ From system prompt:
 - **`test:ds`** - Dataset-specific test (`node scripts/gen-test-ds.js`)
 
 #### Image & Caption Scripts
-- **`caption:all`** - Generate captions for all images (uses Codex + `gpt-5`)
-- **`caption`** - Generate caption for single image (uses Codex + `gpt-5`)
+- **`caption:all`** - Generate captions for all images (uses Codex + `gpt-5.1`)
+- **`caption`** - Generate caption for single image (uses Codex + `gpt-5.1`)
 
 #### Validation Scripts
 - **`check:links`** - Validate Markdown links (`node scripts/check_links.js`)
@@ -113,7 +113,7 @@ From `AGENTS.md`:
 
 ### Codex Integration
 - Codex is the primary content generation tool
-- Uses `gpt-5` model by default
+- Uses `gpt-5.1` model by default
 - Prompts in `context/prompts/` drive generation
 - Flag: `--dangerously-bypass-approvals-and-sandbox` (for automation)
 
@@ -184,7 +184,7 @@ npm run gen:smoke
 ### Known Limitations
 - **No automated tests** - `package.json` has `"test": "echo \"Error: no test specified\" && exit 1"`
 - **Manual Codex setup** - Requires user to configure OpenAI API credentials
-- **Single model** - Hardcoded to `gpt-5` in generation scripts
+- **Single model** - Hardcoded to `gpt-5.1` in generation scripts
 - **No CI/CD yet** - GitHub Actions not configured for automated testing
 
 ### Best Practices

@@ -44,7 +44,7 @@ ${healthScan}
 ${duplicates}
 `;
 
-    console.log(`\n${colors.bold}${colors.blue}➤ Analyzing report with Codex (GPT-5)...${colors.reset}\n`);
+    console.log(`\n${colors.bold}${colors.blue}➤ Analyzing report with Codex (GPT-5.1)...${colors.reset}\n`);
 
     // 3. Execute Codex
     // We use the 'exec' command to send the prompt.
@@ -74,7 +74,7 @@ Keep it professional and strictly based on the data provided.
 
     try {
         // Adjusting command to use the globally available 'codex' if possible, or npx
-        execSync(`codex -m gpt-5 --dangerously-bypass-approvals-and-sandbox exec "$(cat ${promptPath})"`, { stdio: 'inherit' });
+        execSync(`codex -m gpt-5.1 --dangerously-bypass-approvals-and-sandbox exec "$(cat ${promptPath})"`, { stdio: 'inherit' });
     } catch (err) {
         console.error("Failed to run Codex analysis.", err);
     } finally {
