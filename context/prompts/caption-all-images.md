@@ -27,12 +27,13 @@ Caption Style Guide (see also `context/system/TONE_GUIDE.md`)
 
 Procedure
 1) Collect images
-   - Recursively list files under `./context/` matching the extensions above, ignoring excluded folders.
+   - Use a single recursive filesystem query (e.g., `find` or `rg --files`) under `./context/` to list files matching the supported extensions, ignoring excluded folders.
+   - Work from this list; do not re-scan the filesystem for each image.
 
 2) For each image
    - Determine sidecar path per Sidecar Rules.
    - If a sidecar or `caption.txt` exists, record as "skipped (caption exists)" and continue.
-   - Open/preview the image for inspection.
+   - When possible, inspect the actual pixels using an image-aware tool; otherwise, infer from filename and any nearby markdown references while staying strictly factual.
    - Draft a caption following the Style Guide. Keep one line if possible.
    - Save caption as UTF-8 text in the sidecar file with a trailing newline.
 

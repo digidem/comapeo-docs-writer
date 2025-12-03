@@ -114,12 +114,21 @@
           "notes": "Main template for section structure"
         },
         {
+          "id": "step-by-step-template",
+          "name": "TEMPLATE: step-by-step.template.md",
+          "path": "context/templates/step-by-step.template.md",
+          "category": "Templates",
+          "required": true,
+          "injectOrder": 3,
+          "notes": "Template for procedural content"
+        },
+        {
           "id": "checklist",
           "name": "GUIDE: AGENT_CONTENT_CHECKLIST.md",
           "path": "context/system/AGENT_CONTENT_CHECKLIST.md",
           "category": "Quality Controls",
           "required": true,
-          "injectOrder": 3,
+          "injectOrder": 4,
           "notes": "Validation checklist for generated content"
         }
       ]
@@ -293,8 +302,8 @@
   },
   "metadata": {
     "created": "2025-12-01",
-    "lastModified": "2025-12-01",
-    "totalContextSets": 3,
-    "notes": "Add new context sets by copying and modifying existing ones. Use 'defaultContextSet' to control which set is used by default. Files are injected in injectOrder sequence (ascending)."
+    "lastModified": "2025-12-03",
+    "totalContextSets": 4,
+    "notes": "Add new context sets by copying and modifying existing ones. Use 'defaultContextSet' to control which set is used by default. Files are injected in injectOrder sequence (ascending). Keep the number of files per set as small as possible to reduce token usage."
   }
 }

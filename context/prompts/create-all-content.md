@@ -1,6 +1,6 @@
 # Create All Content From Deck Roadmap
 
-- Purpose: Generate all missing items from the deck roadmap by repeatedly invoking the “Create Next Missing Content” procedure.
+- Purpose: Generate all missing items from the deck roadmap by repeatedly invoking the “Create Next Missing Content” procedure, without re-reading or re-scanning more than necessary.
 
 ## Scope and Inputs
 - Working directory: project root containing `./content/` and `./context/content_deck/`.
@@ -15,11 +15,12 @@
 
 ## Generation
 - Loop: apply the `create-next-content.md` procedure until no missing items remain.
- - If you cannot write files (read‑only FS / `never` approvals), output a single apply_patch patch that aggregates the minimal diffs to add all missing sections, following the format documented in `create-first-three.md`.
+  - Reuse knowledge of the roadmap and already-created sections across iterations; you do not need to re-parse the index from scratch every time.
+  - If you cannot write files (read‑only FS / `never` approvals), output a single `apply_patch` block that aggregates the minimal diffs to add all missing sections, following the format documented in `create-first-three.md`.
 - Stop condition: one full pass over the index yields no new files created.
 
 ## Rules
-- “Call” other prompts by following their instructions precisely (inlining steps is fine).
+- “Call” other prompts by following their instructions precisely (inlining their steps is fine).
 - Idempotent after stashing; do not overwrite generated output.
 - Safety: never delete or overwrite files in `../old-content`; do not modify the deck index.
 - Versioning: always create or update `vN/` inside the numbered topic/section folder (do not edit `template/`).
@@ -32,7 +33,7 @@
 ## Acceptance
 - Every item in `context/content_deck/INDEX.md` has a corresponding section under `./content/` as defined in `create-next-content.md`.
 - For sections generated during this run, do not create `TODO.md` files; use `context/templates/TODO.template.md` as an internal thinking aid only.
- - If a patch was emitted, it applies cleanly and creates the same files.
+  - If a patch was emitted, it applies cleanly and creates the same files.
 
 ## References
 - Process: `context/system/PROCESS.md`

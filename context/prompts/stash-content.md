@@ -25,7 +25,7 @@ Procedure
    - Compute a timestamp `YYYYMMDD-HHMMSS` and create `./old-content/<timestamp>/`.
 
 4) Move content
-   - Move all files and subdirectories from `./content/` into `./old-content/<timestamp>/`.
+   - Use a single move operation per top-level entry (e.g., `mv ./content/* ./old-content/<timestamp>/`) instead of moving files one by one.
    - If any name conflicts occur (unexpected), append a numeric suffix to the moved name to avoid overwriting within the stash folder.
 
 5) Leave a clean content directory

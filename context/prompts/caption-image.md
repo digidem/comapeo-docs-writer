@@ -28,7 +28,7 @@ Caption Style Guide
 Procedure
 1) Resolve image path and validate existence/extension.
 2) Check for existing sidecar files per Sidecar Rules; if found, output "skipped (caption exists)" and stop.
-3) Open/preview the image for inspection.
+3) When possible, inspect the actual pixels using an image-aware tool; otherwise, infer from filename and any nearby markdown references while staying strictly factual.
 4) Draft a caption following the Style Guide. Keep one line if possible.
 5) Write the caption to the sidecar `.txt` file (UTF-8, trailing newline).
 6) Output the sidecar path and a brief confirmation.
